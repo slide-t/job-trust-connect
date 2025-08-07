@@ -186,7 +186,7 @@ nav ul li a:hover {
     right: 20px; /* Changed from right: -50px */
     z-index: 1001;
     background-color: var(--card-bg);
-    padding: 10px;
+    padding: 20px;
     border-radius: 8px;
     cursor: pointer;
   }
@@ -279,6 +279,28 @@ nav ul li a:hover {
       <p>We care about every individual who trusts us. JobTrust Connect is here to elevate.</p>
     </div>
   </div>  
+<div class="dropdown" onclick="toggleDropdown(this)">
+  <div class="dropdown-header">About Us <span>&#9660;</span></div>
+  <div class="dropdown-content">
+    <p>We care about every individual who trusts us. JobTrust Connect is here to elevate.</p>
+  </div>
+</div>
+
+<!-- Dropdown 2 -->
+<div class="dropdown" onclick="toggleDropdown(this)">
+  <div class="dropdown-header">Our Services <span>&#9660;</span></div>
+  <div class="dropdown-content">
+    <p>We offer training, job placements, caregiving support, and consulting tailored to your needs.</p>
+  </div>
+</div>
+
+<!-- Dropdown 3 -->
+<div class="dropdown" onclick="toggleDropdown(this)">
+  <div class="dropdown-header">Contact <span>&#9660;</span></div>
+  <div class="dropdown-content">
+    <p>Reach us anytime via our contact form, email, or social platforms. We're always available.</p>
+  </div>
+</div>
   <script>
     const slides = document.querySelectorAll(".slide");
     let index = 0;
