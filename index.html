@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>JobTrust Connect</title>
+  <link rel="manifest" href="manifest.json" />
+<meta name="theme-color" content="#0a0a0a">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
   <style>
     :root {
@@ -343,6 +345,18 @@
       el.querySelector('span').innerHTML = content.classList.contains("show") ? '&#x25B2;' : '&#x25BC;';
     }
   </script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/service-worker.js')
+        .then(function (registration) {
+          console.log('Service Worker registered with scope:', registration.scope);
+        }, function (err) {
+          console.log('Service Worker registration failed:', err);
+        });
+    });
+  }
+</script>
 </body>
 </html>
 
