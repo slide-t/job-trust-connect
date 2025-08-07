@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Application Form</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7f9;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .container {
+      background: #fff;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    }
+
+    h1, h2 {
+      color: #2c3e50;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 15px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #0066cc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #004d99;
+    }
+
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    .photo-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .photo-preview img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .date-range {
+      display: flex;
+      gap: 10px;
+    }
+
+    .date-range label {
+      flex: 1;
+    }
+
+    @media print {
+      input[type="file"] {
+        display: none;
+      }
+      button {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <h1>Job Application Form</h1>
+<form action="https://formspree.io/f/mgvzpoge" method="POST" enctype="multipart/form-data">
+  <!-- <form id="jobForm" action="https://formspree.io/f/mgvzpoge" method="POST">-->
+      <div class="photo-container">
+        <div>
+          <label for="photo">Upload Passport Photograph:</label>
+          <input type="file" id="photo" accept="image/*" onchange="previewPhoto(event)">
+        </div>
+        <div class="photo-preview">
+          <img id="photoDisplay" src="" alt="Passport Photo" />
+        </div>
+      </div>
+
+      <input type="hidden" name="_subject" value="New Job Application">
+      <input type="hidden" name="_captcha" value="false">
+
+      <!-- Section 1: Personal Information -->
+      <section class="form-section active" id="section1">
+        <h2>Personal Information</h2>
+        <label>Full Name <input type="text" name="fullName" required></label>
+        <label>Email <input type="email" name="email" required></label>
+        <label>Phone Number <input type="tel" name="phone" required></label>
+        <label>Gender
+          <select name="gender" required>
+            <option value="">Select</option>
+            <option>Male</option>
+            <option>Female</option>
+          </select>
+        </label>
+        <label>Home Address <textarea name="address" required></textarea></label>
+        <button type="button" onclick="nextSection(1)">Next</button>
+      </section>
+
+      <!-- Section 2: Job Role -->
+      <section class="form-section" id="section2">
+        <h2>Job Role</h2>
+        <label>Select Job
+          <select name="jobRole" required>
+            <option value="">Choose...</option>
+            <option>Care-giver</option>
+            <option>Teacher</option>
+            <option>Sales Rep</option>
+            <option>Marketer</option>
+            <option>Manager</option>
+            <option>Brand Officer</option>
+            <option>Driver</option>
+            <option>Office Assistant</option>
+            <option>Others</option>
+          </select>
+        </label>
+        <button type="button" onclick="nextSection(2)">Next</button>
+      </section>
+
+      <!-- Section 3: Bank Details -->
+      <section class="form-section" id="section3">
+        <h2>Account Details</h2>
+        <label>Bank Name
+          <select name="bank" required>
+            <option value="">Select</option>
+            <option>Access Bank</option>
+            <option>First Bank</option>
+            <option>GTBank</option>
+            <option>UBA</option>
+            <option>Opay</option>
+            <option>Palmpay</option>
+            <option>Moniepoint</option>
+          </select>
+        </label>
+        <label>Account Number <input type="text" name="accountNumber" required maxlength="10" pattern="\d{10}"></label>
+        <button type="button" onclick="nextSection(3)">Next</button>
+      </section>
+
+      <!-- Section 4: Guarantor Details -->
+      <section class="form-section" id="section4">
+        <h2>Guarantor Information</h2>
+        <label>Guarantor's Full Name <input type="text" name="guarantorName" required></label>
+        <label>Relationship <input type="text" name="guarantorRelationship" required></label>
+        <label>Guarantor's Phone <input type="tel" name="guarantorPhone" required></label>
+        <label>Guarantor's Address <textarea name="guarantorAddress" required></textarea></label>
+        <label>Is your parent the guarantor?
+          <select name="isParentGuarantor" onchange="toggleParentSection(this.value)" required>
+            <option value="">Select</option>
+            <option value="yes">Yes</option>
+            <option value="no">No</option>
+          </select>
+        </label>
+        <button type="button" onclick="nextSection(4)">Next</button>
+      </section>
+
+      <!-- Section 5: Parent Info -->
+      <section class="form-section" id="section5">
+        <h2>Parent Information (Optional)</h2>
+        <label>Father's Name <input type="text" name="fatherName"></label>
+        <label>Mother's Name <input type="text" name="motherName"></label>
+        <label>Parent Address <textarea name="parentAddress"></textarea></label>
+        <button type="button" onclick="nextSection(5)">Next</button>
+      </section>
+
+      <!-- Section 6: Previous Work -->
+      <section class="form-section" id="section6">
+        <h2>Previous Work Experience</h2>
+        <label>Previous Workplace <input type="text" name="prevWorkplace" required></label>
+        <label>Address of Workplace <input type="text" name="prevAddress" required></label>
+        <label>Position Held / Role <input type="text" name="positionHeld" required></label>
+
+        <div class="date-range">
+          <label>From: <input type="date" name="workFrom" required></label>
+          <label>To: <input type="date" name="workTo" required></label>
+        </div>
+
+        <label>Reason for Leaving
+          <textarea name="reasonLeaving" required maxlength="300" placeholder="Max 50 words..."></textarea>
+        </label>
+
+        <label>Contact Phone of Someone at Former Workplace
+          <input type="tel" name="formerContact" required>
+        </label>
+
+        <button type="button" onclick="nextSection(6)">Next</button>
+      </section>
+
+      <!-- Section 7: Final -->
+      <section class="form-section" id="section7">
+        <h2>Review & Submit</h2>
+        <p>Ensure all information is correct. On submission, your form will be emailed and a PDF copy will be generated.</p>
+        <button type="submit">Submit & Download PDF</button>
+      </section>
+    </form>
+  </main>
+
+  <script>
+    function previewPhoto(event) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function () {
+        document.getElementById('photoDisplay').src = reader.result;
+      }
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function nextSection(step) {
+      document.getElementById('section' + step).classList.remove('active');
+      document.getElementById('section' + (step + 1)).classList.add('active');
+    }
+
+    function toggleParentSection(value) {
+      const parentSection = document.getElementById('section5');
+      if (value === "yes") {
+        parentSection.style.display = "block";
+      } else {
+        parentSection.style.display = "none";
+      }
+    }
+
+    document.getElementById('jobForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const form = e.target;
+
+      fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: {
+          'Accept': 'application/json'
+        }
+      }).then(response => {
+        if (response.ok) {
+          alert('Application submitted successfully! Preparing your PDF...');
+          setTimeout(() => {
+            window.print();
+          }, 1500);
+        } else {
+          alert('Submission failed. Try again.');
+        }
+      }).catch(error => {
+        alert('Error: Could not connect.');
+      });
+    });
+  </script>
+</body>
+</html>
