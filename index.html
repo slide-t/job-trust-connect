@@ -178,12 +178,12 @@ nav ul li a:hover {
 .dropdown.active .dropdown-content {
   max-height: 300px;
 }
-/*@media (max-width: 768px) {
+@media (max-width: 768px) {
   .menu-toggle {
     display: flex;
     position: fixed;
     top: 20px;
-    right: 20px; /* Changed from right: -50px *
+    right: 20px; /* Changed from right: -50px */
     z-index: 1001;
     background-color: var(--card-bg);
     padding: 20px;
@@ -199,7 +199,7 @@ nav ul li a:hover {
     display: flex;
     flex-direction: column;
     position: fixed;
-    top: 60px; /* Below toggle *
+    top: 60px; /* Below toggle */
     left: 0;
     width: 100%;
     background-color: var(--bg-color);
@@ -231,7 +231,7 @@ nav {
   cursor: pointer;
 }
 
-/* Show toggle icon and hide links on small screens 
+ Show toggle icon and hide links on small screens 
 @media (max-width: 768px) {
   .nav-links {
     display: none;
@@ -258,7 +258,7 @@ nav {
     padding: 12px;
     font-size: 1.2rem;
   }
-}*/
+}
 
     /*
 @media (max-width: 768px) {
@@ -279,8 +279,9 @@ nav {
     border: none;
   }
 }*/
+    
 /* === NAVIGATION === */
-nav {
+/*nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -333,39 +334,18 @@ nav {
   cursor: pointer;
   color: var(--nav-text);
 }
-
+*/
     
   </style>
 </head><body>
   <div class="dark-toggle" onclick="toggleDarkMode()">Toggle</div>
-  <header>
-
-<nav>
-    <div class="logo"><i class="fas fa-user-tie"></i> JobTrust Connect</div>
-    <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
-    <ul class="nav-links">
-      <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
-      <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
-      <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
-      <li><a href="#"><i class="fas fa-question-circle"></i> FAQs</a></li>
-    </ul>
-  </nav>
-
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#">Home</a>
-    <a href="#">Contact</a>
-    <a href="#">Blog</a>
-    <a href="#">FAQs</a>
-  </div>
-
-    
-    <!--
+  <header>   
 <nav>
   <div class="logo">
     <i class="fas fa-briefcase"></i> JobTrust Connect
   </div>
 
-  <!-- Toggle icon INSIDE nav --
+  <!-- Toggle icon INSIDE nav -->
   <div class="menu-toggle" onclick="toggleMenu()">
     <i class="fas fa-bars"></i>
   </div>
