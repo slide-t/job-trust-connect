@@ -1,4 +1,4 @@
-const CACHE_NAME = 'jobtrust-connect-cache-v2.7';
+const CACHE_NAME = 'jobtrust-connect-cache-v8.6';
 const urlsToCache = [
   '/',
   '/index.html',
