@@ -1,3 +1,273 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobTrust Connect</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    :root {
+      --bg-color: #0d1117;
+      --text-color: #ffffff;
+      --accent: #4da6ff;
+    }body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0.5s, color 0.5s;
+}
+
+header {
+  background: #001f3f;
+  padding: 10px 20px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--text-color);
+}
+
+nav {
+  display: flex;
+  align-items: center;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 10px;
+}
+
+nav ul li a {
+  color: var(--text-color);
+  text-decoration: none;
+  font-weight: bold;
+  padding: 8px 12px;
+  border-radius: 25px;
+  transition: transform 0.3s, background-color 0.3s;
+}
+
+nav ul li a:hover {
+  background-color: var(--accent);
+  transform: scale(1.05);
+}
+
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+}
+
+.menu-toggle div {
+  width: 25px;
+  height: 3px;
+  background: var(--text-color);
+  margin: 4px 0;
+}
+
+.mobile-menu {
+  display: none;
+  flex-direction: column;
+  background-color: #001f3f;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  width: 100%;
+}
+
+.mobile-menu a {
+  padding: 12px;
+  border-bottom: 1px solid #333;
+  text-decoration: none;
+  color: white;
+}
+
+.dark-toggle {
+  position: fixed;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--accent);
+  color: white;
+  padding: 8px;
+  border-radius: 10px;
+  z-index: 1001;
+  cursor: pointer;
+}
+
+.slider {
+  margin-top: 60px;
+  position: relative;
+  overflow: hidden;
+  height: 60vh;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+  opacity: 1;
+}
+
+.slide-text {
+  position: absolute;
+  bottom: 20%;
+  left: 10%;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.dropdown {
+  margin: 20px auto;
+  max-width: 900px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.dropdown-header {
+  background: #002b5c;
+  padding: 12px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+.dropdown-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s ease-in-out;
+  background-color: #001f3f;
+  padding: 0 15px;
+}
+
+.dropdown-content p {
+  padding: 12px 0;
+}
+
+.dropdown.active .dropdown-content {
+  max-height: 300px;
+}
+
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+  }
+
+  nav ul {
+    display: none;
+  }
+
+  .mobile-menu.show {
+    display: flex;
+  }
+
+  nav ul li a {
+    border: none;
+  }
+}
+
+  </style>
+</head><body>
+  <div class="dark-toggle" onclick="toggleDarkMode()">Toggle</div>
+  <header>
+    <div class="logo">JobTrust Connect</div>
+    <nav>
+      <div class="menu-toggle" onclick="toggleMenu()">
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">FAQs</a></li>
+      </ul>
+    </nav>
+  </header>  <div class="mobile-menu" id="mobileMenu">
+    <a href="#">Home</a>
+    <a href="#">Contact</a>
+    <a href="#">Blog</a>
+    <a href="#">FAQs</a>
+  </div>  
+  <div class="slider">
+    <div class="slide active" style="background-image: url('slide1.jpg');">
+      <div class="slide-text">Caring for elderly</div>
+    </div>
+    <div class="slide" style="background-image: url('slide2.jpg');">
+      <div class="slide-text">Training in all field of life is important</div>
+    </div>
+    <div class="slide" style="background-image: url('slide3.jpg');">
+      <div class="slide-text">Landing you a good job is our priority</div>
+    </div>
+    <div class="slide" style="background-image: url('slide3.jpg');">
+      <div class="slide-text">Our desire is to connect you to greater heights</div>
+    </div>
+  </div> 
+  <div class="dropdown" onclick="toggleDropdown(this)">
+    <div class="dropdown-header">About Us <span>&#9660;</span></div>
+    <div class="dropdown-content">
+      <p>We care about every individual who trusts us. JobTrust Connect is here to elevate.</p>
+    </div>
+  </div>  
+  <script>
+    const slides = document.querySelectorAll(".slide");
+    let index = 0;
+    setInterval(() => {
+      slides[index].classList.remove("active");
+      index = (index + 1) % slides.length;
+      slides[index].classList.add("active");
+    }, 4000);
+
+    function toggleMenu() {
+      document.getElementById("mobileMenu").classList.toggle("show");
+    }
+
+    function toggleDropdown(el) {
+      el.classList.toggle("active");
+    }
+
+    function toggleDarkMode() {
+      const body = document.body;
+      if (body.classList.contains("light")) {
+        document.documentElement.style.setProperty('--bg-color', '#0d1117');
+        document.documentElement.style.setProperty('--text-color', '#ffffff');
+        body.classList.remove("light");
+      } else {
+        document.documentElement.style.setProperty('--bg-color', '#ffffff');
+        document.documentElement.style.setProperty('--text-color', '#000000');
+        body.classList.add("light");
+      }
+    }
+  </script></body></html>
+
+
+
+
+
+<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -136,60 +406,6 @@ nav {
   }
 }
     
-
-    /* === NAVIGATION === *
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #000;
-      padding: 10px 20px;
-      position: sticky;
-      top: 0;
-      z-index: 999;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      font-size: 1.3rem;
-      font-weight: bold;
-    }
-
-    .logo i {
-      margin-right: 8px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 15px;
-    }
-
-    nav ul li {
-      list-style: none;
-    }
-
-    nav ul li a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      padding: 8px 12px;
-      border-radius: 25px;
-      transition: transform 0.3s ease;
-    }
-
-    nav ul li a:hover {
-      transform: scale(1.1);
-      background: var(--accent);
-      color: #000;
-    }
-
-    .menu-toggle {
-      display: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-    }
-
     /* === MOBILE MENU === */
     .mobile-menu {
       display: none;
@@ -349,7 +565,7 @@ nav {
     <a href="#">FAQs</a>
   </div>
 
-  <!-- SLIDER -->
+  <!-- SLIDER --
   <div class="slider" id="slider">
     <div class="slides">
       <div class="slide" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1HUuxgxidmi6T0GI6GjWgu6l0PxADCTaEs6ezY6TkaA26NMStNEsNp35qHrfohNYdbCx2HtQNe9G6wminNcuLjftELSEZ3odGi6E4J_v9Cu5-lqpbwT8ETLQbDqArv2QX1zLixgIKNew0v69QR0BlRDVoppcKLMaa1P46Nx6g49GFEQmhblGYBy55JR4/s320/1000050874.jpg');">
@@ -383,7 +599,7 @@ nav {
     <div class="dots" id="dots"></div>
   </div>
 
-  <!-- COLLAPSIBLE SECTIONS -->
+  <!-- COLLAPSIBLE SECTIONS --
   <div class="section">
     <div class="section-header" onclick="toggleSection(this)">About Us <span>&#x25BC;</span></div>
     <div class="section-content">
