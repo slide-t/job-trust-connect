@@ -178,7 +178,44 @@ nav ul li a:hover {
 .dropdown.active .dropdown-content {
   max-height: 300px;
 }
+@media (max-width: 768px) {
+  .menu-toggle {
+    display: flex;
+    position: fixed;
+    top: 20px;
+    left: 20px; /* Changed from right: -50px */
+    z-index: 1001;
+    background-color: var(--card-bg);
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
 
+  nav ul {
+    display: none;
+  }
+
+  .mobile-menu.show {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 60px; /* Below toggle */
+    left: 0;
+    width: 100%;
+    background-color: var(--bg-color);
+    padding: 10px;
+    z-index: 1000;
+  }
+
+  nav ul li a {
+    border: none;
+    padding: 10px;
+    font-size: 1.2rem;
+  }
+}
+
+
+    /*
 @media (max-width: 768px) {
   .menu-toggle {
     display: flex;
@@ -196,7 +233,7 @@ nav ul li a:hover {
   nav ul li a {
     border: none;
   }
-}
+}*/
 
   </style>
 </head><body>
