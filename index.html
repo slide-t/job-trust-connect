@@ -213,7 +213,52 @@ nav ul li a:hover {
     font-size: 1.2rem;
   }
 }
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #002233;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
 
+.menu-toggle {
+  display: none;
+  font-size: 1.5rem;
+  color: white;
+  cursor: pointer;
+}
+
+/* Show toggle icon and hide links on small screens */
+@media (max-width: 768px) {
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    background: #002233;
+    width: 100%;
+    position: absolute;
+    top: 60px; /* below navbar */
+    left: 0;
+    padding: 10px 0;
+    z-index: 998;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  .nav-links.show {
+    display: flex;
+  }
+
+  nav ul li a {
+    border: none;
+    padding: 12px;
+    font-size: 1.2rem;
+  }
+}
 
     /*
 @media (max-width: 768px) {
@@ -240,6 +285,26 @@ nav ul li a:hover {
   <div class="dark-toggle" onclick="toggleDarkMode()">Toggle</div>
   <header>
     <div class="logo">JobTrust Connect</div>
+<nav>
+  <div class="logo">
+    <i class="fas fa-briefcase"></i> JobTrust Connect
+  </div>
+
+  <!-- Toggle icon INSIDE nav -->
+  <div class="menu-toggle" onclick="toggleMenu()">
+    <i class="fas fa-bars"></i>
+  </div>
+
+  <ul class="nav-links" id="mobileMenu">
+    <li><a href="#">Home</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">FAQs</a></li>
+    <li><a href="#">Contact</a></li>
+  </ul>
+</nav>
+    
+
+    <!--
     <nav>
       <div class="menu-toggle" onclick="toggleMenu()">
         <div></div>
@@ -253,7 +318,9 @@ nav ul li a:hover {
         <li><a href="#">FAQs</a></li>
       </ul>
     </nav>
-  </header>  <div class="mobile-menu" id="mobileMenu">
+    -->
+  </header>  
+  <div class="mobile-menu" id="mobileMenu">
     <a href="#">Home</a>
     <a href="#">Contact</a>
     <a href="#">Blog</a>
