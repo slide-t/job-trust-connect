@@ -1,1134 +1,250 @@
-<!DOCTYPE html><html lang="en"><head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JobTrust Connect</title>
-  <link rel="manifest" href="manifest.json">
-  <style>
-    :root {
-      --bg-color: #0d1117;
-      --text-color: #ffffff;
-      --accent: #4da6ff;
-    }body {
-  margin: 0;
-  font-family: 'Segoe UI', sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  transition: background-color 0.5s, color 0.5s;
-}
-
-header {
-  background: #001f3f;
-  padding: 10px 20px;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  z-index: 1000;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-}
-
-.logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--text-color);
-}
-
-nav {
-  display: flex;
-  align-items: center;
-}
-
-nav ul {
-  list-style: none;
-  display: flex;
-  gap: 10px;
-}
-
-nav ul li a {
-  color: var(--text-color);
-  text-decoration: none;
-  font-weight: bold;
-  padding: 8px 12px;
-  border-radius: 25px;
-  transition: transform 0.3s, background-color 0.3s;
-}
-
-nav ul li a:hover {
-  background-color: var(--accent);
-  transform: scale(1.05);
-}
-
-.menu-toggle {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  
-}
-
-.menu-toggle div {
-  width: 25px;
-  height: 3px;
-  background: var(--text-color);
-  margin: 4px 0;
-  
-}
-
-.mobile-menu {
-  display: none;
-  flex-direction: column;
-  background-color: #001f3f;
-  position: absolute;
-  top: 60px;
-  left: 0;
-  width: 100%;
-}
-
-.mobile-menu a {
-  padding: 12px;
-  border-bottom: 1px solid #333;
-  text-decoration: none;
-  color: white;
-}
-
-.dark-toggle {
-  position: fixed;
-  left: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  background: var(--accent);
-  color: white;
-  padding: 8px;
-  border-radius: 10px;
-  z-index: 1001;
-  cursor: pointer;
-}
-
-.slider {
-  margin-top: 60px;
-  position: relative;
-  overflow: hidden;
-  height: 60vh;
-}
-
-.slide {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  background-size: cover;
-  background-position: center;
-  opacity: 0;
-  transition: opacity 1s ease-in-out;
-  /*top: 0;*/
-  left: 0;
-}
-.slide.active {
-  opacity: 1;
-  z-index: 1;
-}
-    
-
-.slide.active {
-  opacity: 1;
-}
-
-.slide-text {
-  position: absolute;
-  bottom: 20%;
-  left: 10%;
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: white;
-  background: rgba(0, 0, 0, 0.6);
-  padding: 10px 20px;
-  border-radius: 8px;
-}
-
-.dropdown {
-  margin: 20px auto;
-  max-width: 900px;
-  border: 1px solid var(--accent);
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.dropdown-header {
-  background: #002b5c;
-  padding: 12px;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-weight: bold;
-}
-
-.dropdown-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.5s ease-in-out;
-  background-color: #001f3f;
-  padding: 0 15px;
-}
-
-.dropdown-content p {
-  padding: 12px 0;
-}
-
-.dropdown.active .dropdown-content {
-  max-height: 300px;
-}
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: flex;
-    position: fixed;
-    top: 20px;
-    right: 20px; /* Changed from right: -50px */
-    z-index: 1001;
-    background-color: var(--card-bg);
-    padding: 20px;
-    border-radius: 8px;
-    cursor: pointer;
-  }
-
-  nav ul {
-    display: none;
-  }
-
-  .mobile-menu.show {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 60px; /* Below toggle */
-    left: 0;
-    width: 100%;
-    background-color: var(--bg-color);
-    padding: 10px;
-    z-index: 1000;
-  }
-
-  nav ul li a {
-    border: none;
-    padding: 10px;
-    font-size: 1.2rem;
-  }
-}
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #002233;
-  padding: 10px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-}
-
-.menu-toggle {
-  display: none;
-  font-size: 1.5rem;
-  color: white;
-  cursor: pointer;
-}
-
- Show toggle icon and hide links on small screens 
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-    flex-direction: column;
-    background: #002233;
-    width: 100%;
-    position: absolute;
-    top: 60px; /* below navbar */
-    left: 0;
-    padding: 10px 0;
-    z-index: 998;
-  }
-
-  .menu-toggle {
-    display: block;
-  }
-
-  .nav-links.show {
-    display: flex;
-  }
-
-  nav ul li a {
-    border: none;
-    padding: 12px;
-    font-size: 1.2rem;
-  }
-}
-
-    
-@media (max-width: 768px) {
-  .menu-toggle {
-    display: flex;
-    right:-50px;
-  }
-
-  nav ul {
-    display: none;
-  }
-
-  .mobile-menu.show {
-    display: flex;
-  }
-
-  nav ul li a {
-    border: none;
-  }
-}
-    
-
-
-
-    
-  </style>
-</head><body>
-  <div class="dark-toggle" onclick="toggleDarkMode()">Toggle</div>
-  <header>   
-<nav>
-  <div class="logo">
-    <i class="fas fa-briefcase"></i> JobTrust Connect
-  </div>
-
-  <!-- Toggle icon INSIDE nav -->
-  <div class="menu-toggle" onclick="toggleMenu()">
-    <i class="fas fa-bars"></i>
-  </div>
-
-  <ul class="nav-links" id="mobileMenu">
-    <li><a href="#">Home</a></li>
-    <li><a href="#">Blog</a></li>
-    <li><a href="#">FAQs</a></li>
-    <li><a href="#">Contact</a></li>
-  </ul>
-</nav>
-    
-
-    <!--
-    <nav>
-      <div class="menu-toggle" onclick="toggleMenu()">
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Contact</a></li>
-        <li><a href="#">Blog</a></li>
-        <li><a href="#">FAQs</a></li>
-      </ul>
-    </nav>
-    -->
-  </header>  
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#">Home</a>
-    <a href="#">Contact</a>
-    <a href="#">Blog</a>
-    <a href="#">FAQs</a>
-  </div>  
-  <div class="slider">
-    <div class="slide active" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiC1mGQEXjyH2zkXlnLtivHR34u072DBFbrDqD7_st4zjQsesFPT3XFEfJIeIoRJFNThYFbEx3SzneZelkXWOQSNcEPCKhECTKP73_Q4c5vgo9xT5zksMYYI_sJ8L67EAa_5bl9mghUbfHgwrXJy5s_OQlaZ5sCs_2eZ2jBXiQ5EwSPQvRGNf_35zCOvOw/s320/1000050876.jpg');">
-      <div class="slide-text">Caring for elderly</div>
-    </div>
-    <div class="slide" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1HUuxgxidmi6T0GI6GjWgu6l0PxADCTaEs6ezY6TkaA26NMStNEsNp35qHrfohNYdbCx2HtQNe9G6wminNcuLjftELSEZ3odGi6E4J_v9Cu5-lqpbwT8ETLQbDqArv2QX1zLixgIKNew0v69QR0BlRDVoppcKLMaa1P46Nx6g49GFEQmhblGYBy55JR4/s320/1000050874.jpg');">
-      <div class="slide-text">Training in all field of life is important</div>
-    </div>
-    <div class="slide" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEj9YrSl4dUU7A0mNqncAW60M3FSaZGOKBvYbQHWGR2C-wzGtdg47SJQhJSnfCzesWMbfP4eikdEAE3gvKtTMU7aQbcfkVqFP1nTZNmnino2QwFXcKX-LkzhG3LsuBlZFi-lTnLFbt3wciRzsUaaXXc5J-2nXF1JjFRVdsq4GxSN6PPkM8GyyoRzpceFxcA/s320/1000050953.jpg');">
-      <div class="slide-text">Landing you a good job is our priority</div>
-    </div>
-    <div class="slide" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjf4OFFa2gj8tSOzoFnSfo4GBqckFcsidN9-LRN3Y59ErHjcivWKswXp3LWQ5N7P0tSCTErfM9k1hw6UV72o75mt85TqiEq5t8aSmlXHZcAZEJAhrcQllOjytjkhrL6vypJyBw980bVKk3-oLzI5KYZ2MZFKZfh-RnP6WxlyMoIQbmJRq3KtTYlPFLqKv4/s320/1000050954.jpg');">
-      <div class="slide-text">Our desire is to connect you to greater heights</div>
-    </div>
-  </div> 
-  <div class="dropdown" onclick="toggleDropdown(this)">
-    <div class="dropdown-header">About Us <span>&#9660;</span></div>
-    <div class="dropdown-content">
-      <p>We care about every individual who trusts us. JobTrust Connect is here to elevate.</p>
-    </div>
-  </div>  
-<div class="dropdown" onclick="toggleDropdown(this)">
-  <div class="dropdown-header">About Us <span>&#9660;</span></div>
-  <div class="dropdown-content">
-    <p>We care about every individual who trusts us. JobTrust Connect is here to elevate.</p>
-  </div>
-</div>
-
-<!-- Dropdown 2 -->
-<div class="dropdown" onclick="toggleDropdown(this)">
-  <div class="dropdown-header">Our Services <span>&#9660;</span></div>
-  <div class="dropdown-content">
-    <p>We offer training, job placements, caregiving support, and consulting tailored to your needs.</p>
-  </div>
-</div>
-
-<!-- Dropdown 3 -->
-<div class="dropdown" onclick="toggleDropdown(this)">
-  <div class="dropdown-header">Contact <span>&#9660;</span></div>
-  <div class="dropdown-content">
-    <p>Reach us anytime via our contact form, email, or social platforms. We're always available.</p>
-  </div>
-</div>
-  <script>
-    const slides = document.querySelectorAll(".slide");
-    let index = 0;
-    setInterval(() => {
-      slides[index].classList.remove("active");
-      index = (index + 1) % slides.length;
-      slides[index].classList.add("active");
-    }, 4000);
-
-    function toggleMenu() {
-      document.getElementById("mobileMenu").classList.toggle("show");
-    }
-
-    function toggleDropdown(el) {
-      el.classList.toggle("active");
-    }
-
-    function toggleDarkMode() {
-      const body = document.body;
-      if (body.classList.contains("light")) {
-        document.documentElement.style.setProperty('--bg-color', '#0d1117');
-        document.documentElement.style.setProperty('--text-color', '#ffffff');
-        body.classList.remove("light");
-      } else {
-        document.documentElement.style.setProperty('--bg-color', '#ffffff');
-        document.documentElement.style.setProperty('--text-color', '#000000');
-        body.classList.add("light");
-      }
-    }
-function toggleMenu() {
-  document.getElementById("mobileMenu").classList.toggle("show");
-}
-    
-  </script>
-</body>
-</html>
-
-
-
-
-
-<!--
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>JobTrust Connect</title>
-  <link rel="manifest" href="manifest.json" />
-<meta name="theme-color" content="#0a0a0a">
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
-  <style>
-    :root {
-      --bg-dark: #121212;
-      --text-light: #ffffff;
-      --accent: #4da6ff;
-      --section-bg: #1e1e1e;
-    }
-
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: var(--bg-dark);
-      color: var(--text-light);
-      transition: background 0.5s, color 0.5s;
-    }
-
-    /* === DARK MODE TOGGLE === */
-    .dark-toggle {
-      position: fixed;
-      top: 20px;
-      left: 20px;
-      z-index: 1001;
-      background: var(--accent);
-      border-radius: 50%;
-      padding: 10px;
-      color: #000;
-      cursor: pointer;
-    }
-:root {
-  --accent: #00bcd4;
-  --nav-bg: #000;
-  --nav-text: #fff;
-  --nav-hover-bg: var(--accent);
-  --nav-hover-text: #000;
-}*/
-
-/* === NAVIGATION === */
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: var(--nav-bg);
-  padding: 12px 24px;
-  position: sticky;
-  top: 0;
-  z-index: 999;
-  font-family: 'Roboto', sans-serif;
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--nav-text);
-}
-
-.logo i {
-  margin-right: 10px;
-}
-
-.nav-links {
-  display: flex;
-  gap: 20px;
-}
-
-.nav-links li {
-  list-style: none;
-}
-
-.nav-links a {
-  color: var(--nav-text);
-  text-decoration: none;
-  font-weight: 500;
-  padding: 8px 16px;
-  border-radius: 20px;
-  transition: background 0.3s ease, transform 0.3s ease;
-}
-
-.nav-links a:hover {
-  background: var(--nav-hover-bg);
-  color: var(--nav-hover-text);
-  transform: scale(1.05);
-}
-
-.menu-toggle {
-  display: none;
-  font-size: 1.8rem;
-  cursor: pointer;
-  color: var(--nav-text);
-}
-
-/* === MOBILE MENU === */
-.mobile-menu {
-  display: none;
-  flex-direction: column;
-  background: var(--nav-bg);
-  width: 100%;
-  padding: 10px 0;
-  text-align: center;
-}
-
-.mobile-menu a {
-  color: var(--nav-text);
-  padding: 12px 0;
-  text-decoration: none;
-  border-top: 1px solid #333;
-  transition: background 0.3s;
-}
-
-.mobile-menu a:hover {
-  background: var(--nav-hover-bg);
-  color: var(--nav-hover-text);
-}
-
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-  }
-
-  .menu-toggle {
-    display: block;
-  }
-
-  .mobile-menu.active {
-    display: flex;
-  }
-}*/
-    
-    /* === MOBILE MENU === */
-    .mobile-menu {
-      display: none;
-      flex-direction: column;
-      background: #000;
-      text-align: center;
-      padding: 10px 0;
-    }
-
-    .mobile-menu a {
-      padding: 10px;
-      display: block;
-      border-bottom: 1px solid #333;
-    }
-
-    @media (max-width: 768px) {
-      .nav-links {
-        display: none;
-      }
-
-      .menu-toggle {
-        display: block;
-        color: white;
-      }
-
-      .mobile-menu.active {
-        display: flex;
-      }
-
-      nav ul li a {
-        border: none;
-      }
-    }
-
-    /* === SLIDER === */
-    .slider {
-      position: relative;
-      overflow: hidden;
-      max-height: 70vh;
-    }
-
-    .slides {
-      display: flex;
-      transition: transform 0.5s ease-in-out;
-    }
-
-    .slide {
-      min-width: 100%;
-      height: 70vh;
-      background-size: cover;
-      background-position: center;
-      position: relative;
-    }
-
-    .slide-content {
-      position: absolute;
-      bottom: 20px;
-      left: 30px;
-      color: white;
-    }
-
-    .slide-content button,
-    .slide-content a {
-      margin: 5px;
-      background: var(--accent);
-      border: none;
-      padding: 10px 15px;
-      border-radius: 20px;
-      cursor: pointer;
-      text-decoration: none;
-      color: black;
-    }
-
-    .dots {
-      position: absolute;
-      bottom: 10px;
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: 8px;
-    }
-
-    .dot {
-      width: 12px;
-      height: 12px;
-      background: white;
-      border-radius: 50%;
-      opacity: 0.5;
-      cursor: pointer;
-    }
-
-    .dot.active {
-      opacity: 1;
-      background: var(--accent);
-    }
-
-    /* === COLLAPSIBLE SECTIONS === */
-    .section {
-      background: var(--section-bg);
-      margin: 20px;
-      border-radius: 10px;
-      overflow: hidden;
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-      cursor: pointer;
-      font-size: 1.2rem;
-      font-weight: bold;
-      background: #222;
-    }
-
-    .section-content {
-      padding: 15px 20px;
-      display: none;
-      animation: drop 0.5s ease forwards;
-    }
-
-    .section-content.show {
-      display: block;
-    }
-
-    @keyframes drop {
-      from {
-        opacity: 0;
-        transform: translateY(-10px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-  </style>
-</head>
-<body>
-
-  <div class="dark-toggle" onclick="toggleDarkMode()"><i class="fas fa-moon"></i></div>
-
-  <nav>
-    <div class="logo"><i class="fas fa-user-tie"></i> JobTrust Connect</div>
-    <div class="menu-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></div>
-    <ul class="nav-links">
-      <li><a href="#"><i class="fas fa-home"></i> Home</a></li>
-      <li><a href="#"><i class="fas fa-envelope"></i> Contact</a></li>
-      <li><a href="#"><i class="fas fa-blog"></i> Blog</a></li>
-      <li><a href="#"><i class="fas fa-question-circle"></i> FAQs</a></li>
-    </ul>
-  </nav>
-
-  <div class="mobile-menu" id="mobileMenu">
-    <a href="#">Home</a>
-    <a href="#">Contact</a>
-    <a href="#">Blog</a>
-    <a href="#">FAQs</a>
-  </div>
-
-  <!-- SLIDER --
-  <div class="slider" id="slider">
-    <div class="slides">
-      <div class="slide" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1HUuxgxidmi6T0GI6GjWgu6l0PxADCTaEs6ezY6TkaA26NMStNEsNp35qHrfohNYdbCx2HtQNe9G6wminNcuLjftELSEZ3odGi6E4J_v9Cu5-lqpbwT8ETLQbDqArv2QX1zLixgIKNew0v69QR0BlRDVoppcKLMaa1P46Nx6g49GFEQmhblGYBy55JR4/s320/1000050874.jpg');">
-        <div class="slide-content">
-          <button>Download Job Form</button>
-          <a href="#">Job Links</a>
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-whatsapp"></i></a>
-        </div>
-      </div>
-      <div class="slide" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiGVlXnPfoCnxIwlNdBulTHiJ-Eaw3wlc1HK61tBVVq36l-JGJ8aLli-dOEyjvtY1Lxc91Ej6Afx4O_qFjqA7RMBz6E9GiLx-863jSvIArnb9rHJfFf17t168lYv8GuVBBRw_5AhRAsDgWZeHHw1v49afJQUF4Uv5JHFfWmsrxWm7qIVDpaUwqv-hm1YAw/s320/1000050879.jpg');">
-        <div class="slide-content">
-          <button>Download Job Form</button>
-          <a href="#">Job Links</a>
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-whatsapp"></i></a>
-        </div>
-      </div>
-      <div class="slide" style="background-image: url('https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiC1mGQEXjyH2zkXlnLtivHR34u072DBFbrDqD7_st4zjQsesFPT3XFEfJIeIoRJFNThYFbEx3SzneZelkXWOQSNcEPCKhECTKP73_Q4c5vgo9xT5zksMYYI_sJ8L67EAa_5bl9mghUbfHgwrXJy5s_OQlaZ5sCs_2eZ2jBXiQ5EwSPQvRGNf_35zCOvOw/s320/1000050876.jpg');">
-        <div class="slide-content">
-          <button>Download Job Form</button>
-          <a href="#">Job Links</a>
-          <a href="#"><i class="fab fa-facebook"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-whatsapp"></i></a>
-        </div>
-      </div>
-    </div>
-    <div class="dots" id="dots"></div>
-  </div>
-
-  <!-- COLLAPSIBLE SECTIONS --
-  <div class="section">
-    <div class="section-header" onclick="toggleSection(this)">About Us <span>&#x25BC;</span></div>
-    <div class="section-content">
-      <p>We are a new company from Ijebu-Ode, Ogun State. Started by two people, we aim to provide trustworthy job opportunities. Our mission includes helping the less privileged and connecting people to great jobs.</p>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-header" onclick="toggleSection(this)">Our Services <span>&#x25BC;</span></div>
-    <div class="section-content">
-      <p><strong>EduKids Africa</strong> (since 2019): Educating children across Africa.</p>
-      <p><strong>SmartKids Coding</strong> (since 2022): Introducing coding to children and teens.</p>
-      <p><strong>JobTrust Connect</strong> (since 2025): Bridging the gap between job seekers and opportunities.</p>
-    </div>
-  </div>
-
-  <script>
-    // Slider Logic
-    let slideIndex = 0;
-    const slides = document.querySelector(".slides");
-    const dotsContainer = document.getElementById("dots");
-
-    const totalSlides = slides.children.length;
-    for (let i = 0; i < totalSlides; i++) {
-      const dot = document.createElement("div");
-      dot.classList.add("dot");
-      dot.addEventListener("click", () => moveToSlide(i));
-      dotsContainer.appendChild(dot);
-    }
-
-    function moveToSlide(i) {
-      slides.style.transform = `translateX(-${i * 100}%)`;
-      document.querySelectorAll(".dot").forEach(dot => dot.classList.remove("active"));
-      document.querySelectorAll(".dot")[i].classList.add("active");
-      slideIndex = i;
-    }
-
-    function autoSlide() {
-      slideIndex = (slideIndex + 1) % totalSlides;
-      moveToSlide(slideIndex);
-    }
-
-    setInterval(autoSlide, 4000);
-    moveToSlide(0);
-
-    // Mobile Menu
-    function toggleMenu() {
-      document.getElementById("mobileMenu").classList.toggle("active");
-    }
-
-    // Dark Mode
-    function toggleDarkMode() {
-      document.body.classList.toggle("light-mode");
-    }
-
-    // Collapsible Sections
-    function toggleSection(el) {
-      const content = el.nextElementSibling;
-      content.classList.toggle("show");
-      el.querySelector('span').innerHTML = content.classList.contains("show") ? '&#x25B2;' : '&#x25BC;';
-    }
-  </script>
-  <script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(function (registration) {
-          console.log('Service Worker registered with scope:', registration.scope);
-        }, function (err) {
-          console.log('Service Worker registration failed:', err);
-        });
-    });
-  }
-</script>
-</body>
-</html>
-
-
-
-
-
-
-
-<!--
-<!DOCTYPE html>
-<html lang="en">  
-<head>
-  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>JobTrust Connect</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+    :root {
+      --bg-color: #0d1117;
+      --text-color: #f5f5f5;
+      --accent-color: #0074D9;
+      --card-bg: #161b22;
+      --hover-color: #1f6feb;
     }
 
     body {
+      margin: 0;
       font-family: 'Segoe UI', sans-serif;
-      line-height: 1.6;
+      background-color: var(--bg-color);
+      color: var(--text-color);
     }
 
     header {
-      background: #001f3f;
-      color: #fff;
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    }
-
-    .navbar {
-      max-width: 1100px;
-      margin: auto;
-      padding: 1rem;
+      background-color: #000;
       display: flex;
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
     .logo {
+      font-size: 1.5rem;
+      color: var(--accent-color);
+      font-weight: bold;
+    }
+
+    nav {
       display: flex;
-      align-items: center;
-      gap: 10px;
+      gap: 1.5rem;
     }
 
-    .logo img {
-      width: 35px;
+    nav a {
+      color: var(--text-color);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
     }
 
-    nav ul {
-      display: flex;
-      list-style: none;
-      gap: 20px;
-    }
-
-    nav ul li a {
-  color: white;
-  text-decoration: none;
-  font-weight: bold;
-  border: 1px solid #4da6ff;
-  border-radius: 25px;
-  padding: 8px 12px;
-  transition: transform 0.3s ease-in-out; /* smooth zoom */
-  display: inline-block; /* ensures transform works properly */
-}
-
-nav ul li a:hover {
-  transform: scale(1.1); /* zoom in */
+    nav a:hover {
+      color: var(--hover-color);
     }
 
     .menu-toggle {
       display: none;
-      font-size: 24px;
+      font-size: 1.5rem;
+      color: var(--text-color);
       cursor: pointer;
     }
 
+    .section {
+      padding: 2rem;
+      border-bottom: 1px solid #222;
+    }
+
+    .collapsible {
+      cursor: pointer;
+      background-color: var(--card-bg);
+      padding: 1rem;
+      font-weight: bold;
+      border: none;
+      text-align: left;
+      outline: none;
+      width: 100%;
+      transition: background 0.3s ease;
+      margin-bottom: 1rem;
+    }
+
+    .collapsible:hover {
+      background-color: #1c1f26;
+    }
+    .section button {
+       color: #fff;
+    }
+
+    .content {
+      display: none;
+      padding: 1rem;
+      background-color: #1e242d;
+      animation: flipIn 0.6s ease;
+    }
+
+    @keyframes flipIn {
+      from {
+        transform: rotateX(-90deg);
+        opacity: 0;
+      }
+      to {
+        transform: rotateX(0);
+        opacity: 1;
+      }
+    }
+
+    footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      background-color: #000;
+      padding: 2rem;
+    }
+
+    .footer-left, .footer-right {
+      flex: 1 1 300px;
+      padding: 1rem;
+    }
+
+    .footer-left h4, .footer-right h4 {
+      margin-bottom: 1rem;
+    }
+
+    .footer-left a, .footer-right a {
+      display: block;
+      color: var(--text-color);
+      margin: 0.5rem 0;
+      text-decoration: none;
+    }
+
+    .footer-left a:hover, .footer-right a:hover {
+      color: var(--hover-color);
+    }
+
+    .social-icons a {
+      margin-right: 1rem;
+      color: var(--text-color);
+      font-size: 1.2rem;
+    }
+
+    .social-icons a:hover {
+      color: var(--hover-color);
+    }
+
     @media (max-width: 768px) {
-      nav ul {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        background: #003366;
-        width: 100%;
-        flex-direction: column;
+      nav {
         display: none;
+        flex-direction: column;
+        background-color: #000;
+        position: absolute;
+        top: 60px;
+        right: 0;
+        width: 100%;
       }
 
-      nav ul.show {
+      nav.show {
         display: flex;
-        animation: slideDown 0.3s ease-in-out;
-      }
-
-      @keyframes slideDown {
-        from { transform: translateY(-10px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
       }
 
       .menu-toggle {
         display: block;
-        color: white;
       }
-    }
-
-    .slider {
-      margin-top: 120px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .slides {
-      display: flex;
-      width: 300%;
-      animation: slide 12s infinite;
-    }
-
-    .slide {
-      flex: 1 0 100%;
-      position: relative;
-    }
-
-    .slide img {
-      width: 100%;
-      height: 350px;
-      object-fit: cover;
-    }
-
-    .slide-content {
-      position: absolute;
-      top: 30%;
-      left: 5%;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      padding: 15px;
-      border-radius: 5px;
-    }
-
-    .slide-content a {
-      display: inline-block;
-      margin: 10px 10px 0 0;
-      padding: 8px 15px;
-      background: #28a745;
-      color: white;
-      text-decoration: none;
-      border-radius: 5px;
-    }
-
-    .social-icons {
-      margin-top: 10px;
-    }
-
-    .social-icons a {
-      color: white;
-      margin-right: 10px;
-      font-size: 20px;
-      text-decoration: none;
-    }
-
-    .dots {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-    .dot {
-      display: inline-block;
-      height: 10px;
-      width: 10px;
-      background: gray;
-      margin: 5px;
-      border-radius: 50%;
-      cursor: pointer;
-    }
-
-    .active {
-      background: #001f3f;
-    }
-
-    section {
-      max-width: 1000px;
-      margin: auto;
-      padding: 2rem;
-    }
-
-    h2 {
-      text-align: center;
-      color: #001f3f;
-      margin-bottom: 1rem;
-    }
-
-    footer {
-      background: #001f3f;
-      color: white;
-      text-align: center;
-      padding: 1rem;
     }
   </style>
 </head>
 <body>
 
   <header>
-    <div class="navbar">
-      <div class="logo">
-        <img src="https://cdn-icons-png.flaticon.com/512/847/847969.png" alt="logo">
-        <h1>JobTrust Connect</h1>
-      </div>
-      <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-      <nav>
-        <ul id="menu">
-          <li><a href="#"><span>🏠</span> Home</a></li>
-          <li><a href="#contact"><span>📞</span> Contact</a></li>
-          <li><a href="#blog"><span>📰</span> Blog</a></li>
-          <li><a href="#faqs"><span>❓</span> FAQs</a></li>
-        </ul>
-      </nav>
-    </div>
+    <div class="logo"><i class="fas fa-briefcase"></i> JobTrust</div>
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    <nav id="navLinks">
+      <a href="#">Home</a>
+      <a href="#">Contact</a>
+      <a href="#">Blog</a>
+      <a href="#">FAQs</a>
+    </nav>
   </header>
 
-  <div class="slider">
-    <div class="slides">
-      <div class="slide">
-        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh1HUuxgxidmi6T0GI6GjWgu6l0PxADCTaEs6ezY6TkaA26NMStNEsNp35qHrfohNYdbCx2HtQNe9G6wminNcuLjftELSEZ3odGi6E4J_v9Cu5-lqpbwT8ETLQbDqArv2QX1zLixgIKNew0v69QR0BlRDVoppcKLMaa1P46Nx6g49GFEQmhblGYBy55JR4/s320/1000050874.jpg" />
-        <div class="slide-content">
-          <h3>Welcome to JobTrust Connect</h3>
-          <a href="#">Download Form</a>
-          <a href="#">Job Links</a>
-          <div class="social-icons">
-            <a href="#">📘</a>
-            <a href="#">🐦</a>
-            <a href="#">📸</a>
-          </div>
-        </div>
-      </div>
-      <div class="slide">
-        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiGVlXnPfoCnxIwlNdBulTHiJ-Eaw3wlc1HK61tBVVq36l-JGJ8aLli-dOEyjvtY1Lxc91Ej6Afx4O_qFjqA7RMBz6E9GiLx-863jSvIArnb9rHJfFf17t168lYv8GuVBBRw_5AhRAsDgWZeHHw1v49afJQUF4Uv5JHFfWmsrxWm7qIVDpaUwqv-hm1YAw/s320/1000050879.jpg" />
-        <div class="slide-content">
-          <h3>Find Trustworthy Jobs</h3>
-          <a href="#">Download Form</a>
-          <a href="#">Job Links</a>
-        </div>
-      </div>
-      <div class="slide">
-        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiC1mGQEXjyH2zkXlnLtivHR34u072DBFbrDqD7_st4zjQsesFPT3XFEfJIeIoRJFNThYFbEx3SzneZelkXWOQSNcEPCKhECTKP73_Q4c5vgo9xT5zksMYYI_sJ8L67EAa_5bl9mghUbfHgwrXJy5s_OQlaZ5sCs_2eZ2jBXiQ5EwSPQvRGNf_35zCOvOw/s320/1000050876.jpg" />
-        <div class="slide-content">
-          <h3>We're Here For You</h3>
-          <a href="#">Download Form</a>
-          <a href="#">Job Links</a>
-        </div>
-      </div>
-    </div>
-    <div class="dots">
-      <span class="dot active"></span>
-      <span class="dot"></span>
-      <span class="dot"></span>
+  <!-- Collapsible About Section -->
+  <div class="section">
+    <button class="collapsible">About JobTrust Connect ⬇</button>
+    <div class="content">
+      <p>JobTrust Connect is your reliable partner for job discovery, training, and workforce empowerment. We bridge the gap between employers and job seekers by offering opportunities, resources, and guidance to achieve career success.</p>
     </div>
   </div>
 
-  <section id="about">
-    <h2>About Us</h2>
-    <p>
-      JobTrust Connect is a new company you can trust to help you find a suitable job. We began with just two passionate individuals in Ijebu-Ode, Ogun State, Nigeria, and have since grown with a vision to help the less privileged and job seekers across Nigeria. We're not just a job site — we are a mission-driven team connecting people to purpose.
-    </p>
-  </section>
+  <!-- Collapsible Services Section -->
+  <div class="section">
+    <button class="collapsible">Our Services ⬇</button>
+    <div class="content">
+      <ul>
+        <li>🔹 Job Listing & Recommendations</li>
+        <li>🔹 Career Coaching</li>
+        <li>🔹 Resume & Interview Prep</li>
+        <li>🔹 Online Trainings & Webinars</li>
+        <li>🔹 Employer Branding & Recruitment</li>
+      </ul>
+    </div>
+  </div>
 
-  <section id="services">
-    <h2>Our Services</h2>
-    <ul>
-      <li>✔ EduKids Africa (Since 2019)</li>
-      <li>✔ SmartKids Coding (Since 2022)</li>
-      <li>✔ JobTrust Connect (Launched 2025)</li>
-    </ul>
-  </section>
+  <!-- Collapsible Testimonials Section -->
+  <div class="section">
+    <button class="collapsible">What People Say ⬇</button>
+    <div class="content">
+      <p><strong>Jane A.:</strong> "JobTrust helped me land my first job in tech. Their platform is user-friendly and full of useful resources!"</p>
+      <p><strong>Ahmed O.:</strong> "The training sessions were practical and engaging. I gained confidence and skills quickly!"</p>
+      <p><strong>Lola M.:</strong> "As an employer, I found the best talents through JobTrust Connect. Highly recommended!"</p>
+    </div>
+  </div>
 
+  <!-- Footer Section -->
   <footer>
-    &copy; 2025 JobTrust Connect | All rights reserved.
+    <div class="footer-left">
+      <h4>Follow Us</h4>
+      <div class="social-icons">
+        <a href="#"><i class="fab fa-facebook-f"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+      </div>
+    </div>
+    <div class="footer-right">
+      <h4>More Links</h4>
+      <a href="#">YouTube Video</a>
+      <a href="#">Seminar</a>
+      <a href="#">Training Session</a>
+      <a href="#">NaijaJobsPortal.com</a>
+      <a href="#">MyJobMag.com</a>
+      <a href="#">HotNigerianJobs.com</a>
+      <a href="#">Jobberman.com</a>
+    </div>
   </footer>
 
   <script>
     function toggleMenu() {
-      document.getElementById("menu").classList.toggle("show");
+      const nav = document.getElementById("navLinks");
+      nav.classList.toggle("show");
     }
 
-    // Slider auto slide
-    const slides = document.querySelector('.slides');
-    const dots = document.querySelectorAll('.dot');
-    let currentIndex = 0;
-
-    function showSlide(index) {
-      slides.style.transform = `translateX(-${index * 100}%)`;
-      dots.forEach(dot => dot.classList.remove('active'));
-      dots[index].classList.add('active');
-    }
-
-    dots.forEach((dot, i) => {
-      dot.addEventListener('click', () => {
-        currentIndex = i;
-        showSlide(currentIndex);
+    const collapsibles = document.querySelectorAll(".collapsible");
+    collapsibles.forEach(button => {
+      button.addEventListener("click", () => {
+        const content = button.nextElementSibling;
+        content.style.display = content.style.display === "block" ? "none" : "block";
+        button.classList.toggle("active");
       });
     });
-
-    setInterval(() => {
-      currentIndex = (currentIndex + 1) % 3;
-      showSlide(currentIndex);
-    }, 5000);
   </script>
 
 </body>
