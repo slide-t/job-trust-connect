@@ -161,6 +161,78 @@
         display: block;
       }
     }
+.slider-section {
+  position: relative;
+  max-width: 100%;
+  overflow: hidden;
+  background-color: #000;
+}
+
+.slider-container {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+}
+
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 1s ease-in-out;
+  z-index: 0;
+}
+
+.slide.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.caption {
+  position: absolute;
+  bottom: 30px;
+  left: 40px;
+  color: white;
+  font-size: 2rem;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+
+.slider-dots {
+  position: absolute;
+  bottom: 15px;
+  width: 100%;
+  text-align: center;
+  z-index: 2;
+}
+
+.slider-dots .dot {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin: 0 6px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.5;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+}
+
+.slider-dots .dot.active {
+  opacity: 1;
+}
+
+      
   </style>
 </head>
 <body>
@@ -177,6 +249,34 @@
     </nav>
   </header>
 
+<section class="slider-section">
+  <div class="slider-container">
+    <div class="slide active">
+      <img src="img/slider1.jpg" alt="Career Support">
+      <div class="caption">Build Your Career with Confidence</div>
+    </div>
+    <div class="slide">
+      <img src="img/slider2.jpg" alt="Job Offers">
+      <div class="caption">Find Job Offers that Suit You</div>
+    </div>
+    <div class="slide">
+      <img src="img/slider3.jpg" alt="Expert Advice">
+      <div class="caption">Expert Advice for Job Seekers</div>
+    </div>
+    <div class="slide">
+      <img src="img/slider4.jpg" alt="Trust Connection">
+      <div class="caption">Trust JobTrust to Connect You</div>
+    </div>
+  </div>
+
+  <div class="slider-dots">
+    <span class="dot active" onclick="showSlide(0)"></span>
+    <span class="dot" onclick="showSlide(1)"></span>
+    <span class="dot" onclick="showSlide(2)"></span>
+    <span class="dot" onclick="showSlide(3)"></span>
+  </div>
+</section>
+  
   <!-- Collapsible About Section -->
   <div class="section">
     <button class="collapsible">About JobTrust Connect ⬇</button>
@@ -249,5 +349,28 @@
     });
   </script>
 
+<script>
+  let slideIndex = 0;
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.dot');
+
+  function showSlide(n) {
+    slides.forEach((slide, i) => {
+      slide.classList.remove('active');
+      dots[i].classList.remove('active');
+    });
+    slides[n].classList.add('active');
+    dots[n].classList.add('active');
+    slideIndex = n;
+  }
+
+  function nextSlide() {
+    slideIndex = (slideIndex + 1) % slides.length;
+    showSlide(slideIndex);
+  }
+
+  setInterval(nextSlide, 4000); // Auto-slide every 4 seconds
+</script>
+  
 </body>
 </html>
