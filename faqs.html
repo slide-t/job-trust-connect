@@ -1,1 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Job Search FAQs</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    margin: 0;
+    color: white;
+  }
+  .faq-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+  }
+  .faq-item {
+    border-bottom: 1px solid #333;
+  }
+  .faq-question {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 15px;
+    font-size: 1.1em;
+    color: #ff69b4;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .faq-question i {
+    transition: transform 0.3s ease;
+  }
+  .faq-question.active i {
+    transform: rotate(90deg);
+  }
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    padding: 0 15px;
+    color: white;
+    background-color: #1e1e1e;
+  }
+  .faq-answer.show {
+    padding: 15px;
+  }
+  footer {
+    background: #222;
+    text-align: center;
+    padding: 15px;
+    font-size: 0.9em;
+    color: #ccc;
+    margin-top: 30px;
+    border-top: 1px solid #444;
+  }
+  footer a {
+    color: #ff69b4;
+    text-decoration: none;
+  }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
 
+<div class="faq-container" id="faqContainer"></div>
+  <!--
+<footer>
+  <p>&copy; 2025 Job Trust Connect. All Rights Reserved.</p>
+  <p><a href="index.html">Back to Home</a></p>
+</footer>
+-->
+<!-- JSON FAQ Data -->
+<script id="faqData" type="application/json">
+[
+  {"q": "How do I find job opportunities online?", "a": "Use reputable job boards, LinkedIn, and company career pages to search for openings."},
+  {"q": "Should I customize my resume for each job?", "a": "Yes, tailor your resume to highlight skills and experiences relevant to the specific role."},
+  {"q": "How important is networking in job search?", "a": "Very important. Many jobs are filled through referrals and personal connections."},
+  {"q": "What should I include in a cover letter?", "a": "Explain why you are a great fit, highlight relevant skills, and show enthusiasm for the company."},
+  {"q": "How do I prepare for an interview?", "a": "Research the company, practice common questions, and prepare your own questions to ask."},
+  {"q": "Is LinkedIn really necessary?", "a": "Yes, it helps recruiters find you and showcases your professional profile."},
+  {"q": "How do I handle gaps in my employment?", "a": "Be honest and focus on skills gained during that time, such as volunteering or learning."},
+  {"q": "What’s the best way to negotiate salary?", "a": "Research industry rates, know your value, and be confident when discussing offers."},
+  {"q": "Should I apply if I don’t meet all job requirements?", "a": "Yes, if you meet most requirements and can learn quickly, apply."},
+  {"q": "How many pages should my resume be?", "a": "One page for less experience, two pages for extensive experience."},
+  {"q": "How can I stand out from other applicants?", "a": "Show unique skills, measurable achievements, and a proactive approach."},
+  {"q": "What’s the difference between CV and Resume?", "a": "A resume is concise, while a CV is more detailed, often used in academia."},
+  {"q": "How soon should I follow up after an interview?", "a": "Send a thank-you email within 24 hours."},
+  {"q": "How do I avoid job scams?", "a": "Avoid offers asking for money or personal data before hiring."},
+  {"q": "Should I apply for multiple positions at the same company?", "a": "Apply to the one best suited to your skills, unless positions are clearly related."},
+  {"q": "How do I improve my online presence?", "a": "Maintain a professional LinkedIn, clean social media, and share industry content."},
+  {"q": "What are transferable skills?", "a": "Skills like communication, teamwork, and problem-solving that apply to many jobs."},
+  {"q": "How do I handle rejection?", "a": "Use it as feedback to improve and keep applying."},
+  {"q": "What’s the best job search strategy?", "a": "Combine networking, online applications, and skill-building."},
+  {"q": "How important is volunteering for career growth?", "a": "It adds experience, expands networks, and shows commitment."},
+  {"q": "Can internships help in finding a job?", "a": "Yes, they give experience and often lead to full-time roles."},
+  {"q": "How do I handle tricky interview questions?", "a": "Stay calm, take your time, and answer honestly."},
+  {"q": "What’s the STAR method?", "a": "Situation, Task, Action, Result — a way to answer behavioral questions."},
+  {"q": "How do I write an ATS-friendly resume?", "a": "Use keywords from the job posting, avoid graphics, and keep formatting simple."},
+  {"q": "Is it okay to ask about remote work options?", "a": "Yes, especially if it’s important to you."},
+  {"q": "What is job shadowing?", "a": "Spending time with a professional to learn about their role."},
+  {"q": "Should I include hobbies on my resume?", "a": "Only if they’re relevant to the job or show valuable skills."},
+  {"q": "What are soft skills?", "a": "Interpersonal skills like teamwork, communication, and adaptability."},
+  {"q": "What are hard skills?", "a": "Technical abilities learned through training or experience."},
+  {"q": "How do I handle multiple job offers?", "a": "Compare benefits, salary, culture, and growth opportunities before deciding."},
+  {"q": "Should I take a lower-paying job for experience?", "a": "Sometimes, if it offers valuable growth and future prospects."},
+  {"q": "What is a portfolio?", "a": "A collection of work samples to showcase your skills."},
+  {"q": "How do I explain a career change?", "a": "Highlight transferable skills and reasons for your interest in the new field."},
+  {"q": "What is a job fair?", "a": "An event where employers and job seekers meet to discuss opportunities."},
+  {"q": "Should I send a thank-you email after an interview?", "a": "Yes, it shows appreciation and professionalism."},
+  {"q": "How do I prepare for a virtual interview?", "a": "Test your tech, choose a quiet spot, and dress professionally."},
+  {"q": "What is professional branding?", "a": "How you present yourself to employers through skills and reputation."},
+  {"q": "Should I use a professional email address?", "a": "Yes, avoid nicknames or casual addresses."},
+  {"q": "What is continuous learning?", "a": "Regularly updating your skills to stay competitive in your career."}
+]
+</script>
+
+<script>
+  const faqData = JSON.parse(document.getElementById("faqData").textContent);
+  const container = document.getElementById("faqContainer");
+
+  faqData.forEach(item => {
+    const faqItem = document.createElement("div");
+    faqItem.className = "faq-item";
+
+    const questionBtn = document.createElement("button");
+    questionBtn.className = "faq-question";
+    questionBtn.innerHTML = `${item.q} <i class="fas fa-chevron-right"></i>`;
+
+    const answerDiv = document.createElement("div");
+    answerDiv.className = "faq-answer";
+    answerDiv.textContent = item.a;
+
+    questionBtn.addEventListener("click", () => {
+      questionBtn.classList.toggle("active");
+      if (answerDiv.style.maxHeight) {
+        answerDiv.style.maxHeight = null;
+        answerDiv.classList.remove("show");
+      } else {
+        answerDiv.style.maxHeight = answerDiv.scrollHeight + "px";
+        answerDiv.classList.add("show");
+      }
+    });
+
+    faqItem.appendChild(questionBtn);
+    faqItem.appendChild(answerDiv);
+    container.appendChild(faqItem);
+  });
+</script>
+<div id="footer"></div>
+<script>
+  fetch("footer.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("footer").innerHTML = data;
+    });
+</script>
+</body>
+</html>
