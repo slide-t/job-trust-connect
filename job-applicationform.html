@@ -402,7 +402,152 @@
       </div>
     </div>
   </div>
+<script>
+  /********** CONFIG **********/
+  const SHEETDB_URL = 'https://sheetdb.io/api/v1/v7ewb4v3x7zwa'; // your SheetDB endpoint
+  /*****************************/
 
+  // simple utilities
+  const qs = (sel, root=document) => root.querySelector(sel);
+  const qsa = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+  // steps & progress
+  const sections = qsa('.form-section');
+  let step = 0;
+  const total = sections.length;
+  const bars = qsa('.bar');
+
+  function updateProgress(i){
+    bars.forEach((b, idx) => {
+      if(idx <= i) b.style.width = '100%';
+      else b.style.width = '0%';
+    });
+  }
+  updateProgress(0);
+
+  function showStep(n){
+    sections.forEach((s, idx) => s.classList.toggle('active', idx === n));
+    step = n;
+    updateProgress(n);
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+
+  function validateSection(idx){
+    const sec = sections[idx];
+    const requireds = qsa('input[required], select[required], textarea[required]', sec);
+    let ok = true;
+    requireds.forEach(el => {
+      const errorEl = sec.querySelector('#err-' + el.id);
+      if(!el.value || (el.type === 'file' && el.files.length === 0)){
+        if(errorEl) errorEl.style.display='block';
+        ok = false;
+      } else {
+        if(errorEl) errorEl.style.display='none';
+      }
+    });
+    if(idx === 0){
+      const acct = qs('#accountNumber').value.trim();
+      if(!/^\d{10}$/.test(acct)){
+        qs('#err-accountNumber').style.display='block';
+        ok = false;
+      } else {
+        qs('#err-accountNumber').style.display='none';
+      }
+    }
+    return ok;
+  }
+
+  // navigation
+  qs('#nextBtn').addEventListener('click', ()=>{ if(validateSection(0)) showStep(1); });
+  qs('#nextBtn2').addEventListener('click', ()=>{ if(validateSection(1)) showStep(2); });
+  qs('#nextBtn3').addEventListener('click', ()=>{ if(validateSection(2)) showStep(3); });
+  qs('#nextBtn4').addEventListener('click', ()=>{ if(validateSection(3)) showStep(4); });
+  qs('#nextBtn5').addEventListener('click', ()=>{ if(validateSection(4)) showStep(5); });
+  qs('#nextBtn6').addEventListener('click', ()=>{ showStep(6); });
+
+  qs('#backBtn').addEventListener('click', ()=> showStep(0));
+  qs('#backBtn2').addEventListener('click', ()=> showStep(1));
+  qs('#backBtn3').addEventListener('click', ()=> showStep(2));
+  qs('#backBtn4').addEventListener('click', ()=> showStep(3));
+  qs('#backBtn5').addEventListener('click', ()=> showStep(4));
+  qs('#backBtn6').addEventListener('click', ()=> showStep(5));
+
+  // photo preview
+  qs('#photo').addEventListener('change', function(){
+    const file = this.files[0];
+    if(file){
+      const reader = new FileReader();
+      reader.onload = e => {
+        qs('#photoPreview').innerHTML = `<img src="${e.target.result}" alt="Photo">`;
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // preview modal
+  const previewModal = qs('#previewModal');
+  qs('#previewBtn').addEventListener('click', ()=>{
+    if(validateSection(6)){
+      // fill preview fields
+      qs('#pvFullName').textContent = qs('#fullName').value;
+      qs('#pvEmail').textContent = qs('#email').value;
+      qs('#pvPhone').textContent = qs('#phone').value;
+      qs('#pvAddress').textContent = qs('#address').value;
+      qs('#pvBank').textContent = `${qs('#bank').value} / ${qs('#accountNumber').value}`;
+      const photoFile = qs('#photo').files[0];
+      if(photoFile){
+        const reader = new FileReader();
+        reader.onload = e => {
+          qs('#previewPhoto').innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover">`;
+        };
+        reader.readAsDataURL(photoFile);
+      }
+      previewModal.classList.add('open');
+    }
+  });
+
+  qs('#closePreview').addEventListener('click', ()=> previewModal.classList.remove('open'));
+
+  // PDF print
+  qs('#printPdf').addEventListener('click', ()=>{
+    html2canvas(qs('#previewContent')).then(canvas=>{
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jspdf.jsPDF();
+      pdf.addImage(imgData, 'PNG', 10, 10, 190, 0);
+      pdf.save('application.pdf');
+    });
+  });
+
+  // Submit to SheetDB
+  qs('#submitFinal').addEventListener('click', ()=>{
+    const formData = new FormData(qs('#appForm'));
+    const data = {};
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+
+    fetch(SHEETDB_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ data: [data] })
+    })
+    .then(res => res.json())
+    .then(res => {
+      alert('Form submitted successfully!');
+      window.location.href = 'thankyou.html';
+    })
+    .catch(err => {
+      console.error(err);
+      alert('Error submitting form.');
+    });
+  });
+</script>
+
+
+
+
+
+  <!--
   <script>
     /********** CONFIG **********/
     const SHEETDB_URL = 'https://sheetdb.io/api/v1/v7ewb4v3x7zwa'; // your SheetDB endpoint
@@ -768,6 +913,6 @@ document.getElementById("jobForm").addEventListener("submit", function(e) {
     });
 });
 </script>
-  
+  -->
 </body>
 </html>
