@@ -137,7 +137,7 @@
       <div class="step"><div class="bar" id="bar6"></div></div>
     </div>
 
-    <form id="appForm" novalidate>
+    <form id="jobForm" novalidate>
       <!-- SECTION 0: Personal / Account -->
       <section class="section form-section active" data-step="0">
         <label>Full name *</label>
@@ -564,7 +564,87 @@
         alert('Could not generate PDF: ' + err.message);
       }
     });
+// Final submit to SheetDB
+qs('#submitFinal').addEventListener('click', async (e) => {
+  e.preventDefault(); // stop default form action
 
+  const form = qs('#jobForm');
+  const requiredFields = form.querySelectorAll('[required]');
+  let firstInvalid = null;
+
+  // Simple required field validation
+  requiredFields.forEach(field => {
+    if (!field.value.trim()) {
+      if (!firstInvalid) firstInvalid = field;
+      field.classList.add('error-field'); // optional: add red border
+    } else {
+      field.classList.remove('error-field');
+    }
+  });
+
+  if (firstInvalid) {
+    alert(`Please complete the required field: ${firstInvalid.getAttribute('name') || firstInvalid.id}`);
+    firstInvalid.focus();
+    return;
+  }
+
+  // construct payload object
+  const payload = {
+    data: [{
+      fullName: qs('#fullName').value.trim(),
+      email: qs('#email').value.trim(),
+      phone: qs('#phone').value.trim(),
+      address: qs('#address').value.trim(),
+      bank: qs('#bank').value,
+      accountNumber: qs('#accountNumber').value.trim(),
+      dob: qs('#dob').value,
+      age: qs('#age').value,
+      gender: qs('#gender').value,
+      maritalStatus: qs('#maritalStatus').value,
+      parentName: qs('#parentName').value,
+      parentPhone: qs('#parentPhone').value,
+      parentRelationship: qs('#parentRelationship').value,
+      parentAddress: qs('#parentAddress').value,
+      prevWorkplace: qs('#prevWorkplace').value,
+      positionHeld: qs('#positionHeld').value,
+      workFrom: qs('#workFrom').value,
+      workTo: qs('#workTo').value,
+      workContact: qs('#workContact').value,
+      reasonLeaving: qs('#reasonLeaving').value,
+      guarantorName: qs('#guarantorName').value,
+      guarantorPhone: qs('#guarantorPhone').value,
+      guarantorAddress: qs('#guarantorAddress').value,
+      education: qs('#education').value,
+      institution: qs('#institution').value,
+      gradYear: qs('#gradYear').value,
+      photoData: photoDataURL || ''
+    }]
+  };
+
+  try {
+    qs('#submitFinal').disabled = true;
+    qs('#submitFinal').textContent = 'Submitting...';
+    const res = await fetch(SHEETDB_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) {
+      const txt = await res.text();
+      throw new Error('Server responded with ' + res.status + ': ' + txt);
+    }
+    alert('Application submitted successfully. Redirecting...');
+    setTimeout(() => location.href = 'index.html', 1200);
+  } catch (err) {
+    alert('Submission error: ' + err.message);
+    qs('#submitFinal').disabled = false;
+    qs('#submitFinal').textContent = 'Submit';
+  }
+});
+
+
+    
+/*
     // Final submit to SheetDB
     qs('#submitFinal').addEventListener('click', async ()=>{
       // validate all required sections before submit
@@ -629,7 +709,7 @@
         qs('#submitFinal').textContent = 'Submit';
       }
     });
-
+*/
     // Save draft (localStorage) - optional convenience
     qs('#saveDraftBtn').addEventListener('click', ()=>{
       const data = {};
