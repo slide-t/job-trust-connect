@@ -655,5 +655,39 @@
     })();
 
   </script>
+<form id="jobForm">
+  <input type="text" name="name" placeholder="Full Name" required>
+  <input type="email" name="email" placeholder="Email" required>
+  <textarea name="message" placeholder="Your Message" required></textarea>
+  <button type="submit">Submit</button>
+</form>
+
+<script>
+document.getElementById("jobForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(this);
+    const formObject = {};
+    formData.forEach((value, key) => formObject[key] = value);
+
+    fetch("https://sheetdb.io/api/v1/v7ewb4v3x7zwa", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ data: [formObject] })
+    })
+    .then(response => response.json())
+    .then(data => {
+        alert("Form submitted successfully!");
+        this.reset();
+    })
+    .catch(error => {
+        alert("Error submitting form.");
+        console.error(error);
+    });
+});
+</script>
+  
 </body>
 </html>
