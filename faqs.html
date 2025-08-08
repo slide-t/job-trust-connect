@@ -171,6 +171,39 @@
       }
     }
   }
+  /* Flip-in-from-right animation */
+@keyframes flipInFromRight {
+  0% {
+    transform: perspective(600px) rotateY(90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: perspective(600px) rotateY(0);
+    opacity: 1;
+  }
+}
+
+/* Apply animation to menu links when nav opens */
+#navLinks.show a {
+  animation: flipInFromRight 0.5s ease forwards;
+}
+
+/* Delay each link for a cascading effect */
+#navLinks.show a:nth-child(1) {
+  animation-delay: 0.1s;
+}
+#navLinks.show a:nth-child(2) {
+  animation-delay: 0.2s;
+}
+#navLinks.show a:nth-child(3) {
+  animation-delay: 0.3s;
+}
+#navLinks.show a:nth-child(4) {
+  animation-delay: 0.4s;
+}
+#navLinks.show a:nth-child(5) {
+  animation-delay: 0.5s;
+}
 </style>
 </head>
   <body>
