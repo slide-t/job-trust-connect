@@ -64,9 +64,131 @@
   }
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
 
+
+<!-- Font Awesome for Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+
+
+<style>
+  /* Header Styling */
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #001219;
+    color: #fff;
+    padding: 10px 20px;
+    font-family: Arial, sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+
+  header .logo {
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  /* Menu Toggle */
+  .menu-toggle {
+    font-size: 24px;
+    cursor: pointer;
+    display: none;
+  }
+
+  /* Navigation Links */
+  nav {
+    display: flex;
+    gap: 20px;
+  }
+
+  nav a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    position: relative;
+  }
+
+  nav a::after {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    background-color: pink;
+    transition: 0.3s ease;
+  }
+
+  nav a:hover::after {
+    width: 100%;
+  }
+
+  /* Mobile Styles */
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block;
+    }
+
+    nav {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      background: #001219;
+      width: 100%;
+      flex-direction: column;
+      align-items: center;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-in-out;
+    }
+
+    nav.show {
+      max-height: 300px;
+      animation: flipDown 0.4s ease-in-out;
+    }
+
+    nav a {
+      padding: 12px 0;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* Flip down animation */
+    @keyframes flipDown {
+      0% {
+        transform: rotateX(-90deg);
+        opacity: 0;
+      }
+      100% {
+        transform: rotateX(0);
+        opacity: 1;
+      }
+    }
+  }
+</style>
+</head>
+  <body>
+<header>
+  <div class="logo"><i class="fas fa-briefcase"></i> JobTrust Connect</div>
+  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+  <nav id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="contact.html">Contact</a>
+    <a href="blog.html">Blog</a>
+    <a href="faqs.html">FAQs</a>
+    <a href="job-applicationform.html">Download Job Form</a>
+  </nav>
+</header>
+
+    
+
+  
 <div class="faq-container" id="faqContainer"></div>
 <!--
 <div style="text-align:center; margin-top:50px;">
@@ -166,5 +288,24 @@
       document.getElementById("footer").innerHTML = data;
     });
 </script>
+<script>
+  function toggleMenu() {
+    const nav = document.getElementById("navLinks");
+    nav.classList.toggle("show");
+  }
+
+  // Close menu on link click (mobile)
+  document.addEventListener("DOMContentLoaded", () => {
+    const navLinks = document.querySelectorAll("#navLinks a");
+    const nav = document.getElementById("navLinks");
+
+    navLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        nav.classList.remove("show");
+      });
+    });
+  });
+</script>
+    
 </body>
 </html>
