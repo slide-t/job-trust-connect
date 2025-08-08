@@ -106,7 +106,7 @@
       }
     }
 
-    footer {
+   /* footer {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
@@ -142,7 +142,7 @@
 
     .social-icons a:hover {
       color: var(--hover-color);
-    }
+    }*/
 
     @media (max-width: 768px) {
       nav {
@@ -336,8 +336,9 @@
       </ul>
     </div>
   </div>
+  
 
-  <!-- Footer Section -->
+  <!-- Footer Section --
   <footer>
     <div class="footer-left">
       <h4>Follow Us</h4>
@@ -359,7 +360,7 @@
       <a href="#">Jobberman.com</a>
     </div>
   </footer>
-
+-->
   <script>
     function toggleMenu() {
       const nav = document.getElementById("navLinks");
@@ -398,6 +399,15 @@
 
   setInterval(nextSlide, 4000); // Auto-slide every 4 seconds
 </script>
+<div id="footer"></div>
+<script>
+  fetch("footer.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("footer").innerHTML = data;
+    });
+</script>
+
   
 </body>
 </html>
