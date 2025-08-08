@@ -68,12 +68,18 @@
 <body>
 
 <div class="faq-container" id="faqContainer"></div>
-  <!--
-<footer>
-  <p>&copy; 2025 Job Trust Connect. All Rights Reserved.</p>
-  <p><a href="index.html">Back to Home</a></p>
-</footer>
+<!--
+<div style="text-align:center; margin-top:50px;">
+  <a href="index.html" 
+     style="display:inline-flex; align-items:center; gap:8px; padding:10px 20px;
+            border:2px solid pink; background-color:transparent; color:pink; 
+            font-weight:bold; text-decoration:none; border-radius:8px; 
+            font-size:18px; cursor:pointer;">
+    <span style="font-size:20px;">🏠</span> Back Home
+  </a>
+</div>
 -->
+  
 <!-- JSON FAQ Data -->
 <script id="faqData" type="application/json">
 [
@@ -119,6 +125,7 @@
 ]
 </script>
 
+  
 <script>
   const faqData = JSON.parse(document.getElementById("faqData").textContent);
   const container = document.getElementById("faqContainer");
