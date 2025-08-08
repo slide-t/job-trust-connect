@@ -362,10 +362,24 @@
   </footer>
 -->
   <script>
+function toggleMenu() {
+  const nav = document.getElementById("navLinks");
+  nav.classList.toggle("show");
+
+  // Close menu on link click
+  const links = nav.querySelectorAll("a");
+  links.forEach(link => {
+    link.addEventListener("click", () => {
+      nav.classList.remove("show");
+    });
+  });
+}
+
+    /*
     function toggleMenu() {
       const nav = document.getElementById("navLinks");
       nav.classList.toggle("show");
-    }
+    }*/
 
     const collapsibles = document.querySelectorAll(".collapsible");
     collapsibles.forEach(button => {
