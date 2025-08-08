@@ -296,7 +296,7 @@
       pdf.save("application_preview.pdf");
     });
   });
-
+/*
   // Submit to SheetDB
   document.getElementById("submitFinal").addEventListener("click", () => {
     const formData = new FormData(document.getElementById("jobForm"));
@@ -342,7 +342,7 @@
     console.error("Error:", error);
   });
 });
-
+*/
 
   // Close modal on click outside
   window.onclick = function(e) {
@@ -393,5 +393,38 @@ document.getElementById('applicantPhoto').addEventListener('change', function(ev
 
 
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("jobForm");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
+    }
+
+    fetch(form.action, {
+      method: "POST",
+      body: new FormData(form)
+    })
+    .then(response => {
+      if (response.ok) {
+        alert("Form submitted successfully!");
+        window.location.href = "index.html"; // Redirect to home page
+      } else {
+        alert("Error submitting the form. Please try again.");
+      }
+    })
+    .catch(error => {
+      alert("Submission failed. Please check your network and try again.");
+      console.error("Error:", error);
+    });
+  });
+});
+</script>
+
+  
 </body>
 </html>
