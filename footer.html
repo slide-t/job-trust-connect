@@ -1,10 +1,3 @@
-<!-- Scroll to Top Button -->
-<button id="scrollTopBtn" title="Go to top">↑</button>
-
-
-
-
-
 
 
 
@@ -130,9 +123,16 @@
     }
   }
 
-  /* Scroll to Top Button Styles */
+  
+
+  
+</style>
+<!-- Scroll to Top Button -->
+<button id="scrollTopBtn" title="Go to top">↑</button>
+
+<style>
   #scrollTopBtn {
-    display: none; /* Hidden by default */
+    display: none;
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -140,37 +140,36 @@
     font-size: 18px;
     border: none;
     outline: none;
-    background: rgba(255, 255, 255, 0.2); /* Transparent background */
+    background: rgba(255, 255, 255, 0.2);
     color: #fff;
     cursor: pointer;
     padding: 12px 15px;
     border-radius: 50%;
-    backdrop-filter: blur(5px); /* Glass effect */
+    backdrop-filter: blur(5px);
     transition: background 0.3s, transform 0.3s;
   }
-
   #scrollTopBtn:hover {
     background: rgba(255, 255, 255, 0.4);
     transform: scale(1.1);
   }
-
-  
 </style>
-  <script>
-  // Get the button
-  let scrollTopBtn = document.getElementById("scrollTopBtn");
 
-  // Show button when scrolling down 200px
-  window.onscroll = function() {
-    if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
-      scrollTopBtn.style.display = "block";
-    } else {
-      scrollTopBtn.style.display = "none";
-    }
-  };
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
 
-  // Scroll to top smoothly
-  scrollTopBtn.addEventListener("click", function() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
+    window.addEventListener("scroll", function () {
+        if (document.documentElement.scrollTop > 200) {
+            scrollTopBtn.style.display = "block";
+        } else {
+            scrollTopBtn.style.display = "none";
+        }
+    });
+
+    scrollTopBtn.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+});
 </script>
+
+
