@@ -6,6 +6,7 @@ const urlsToCache = [
   '/jobs-available.html',
   '/faqs.html',
   '/footer.html',
+  '/blog.html',
   '/style.css',
   '/script.js',
   '/manifest.json',
