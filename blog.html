@@ -18,7 +18,7 @@ header {
   padding: 10px 20px;
 }
 
-.navbar {
+/*.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -47,7 +47,7 @@ header {
 .nav-links a.active,
 .nav-links a:hover {
   color: #ffb703;
-}
+}*/
 
 /* Blog Layout */
 .blog-section {
@@ -113,6 +113,116 @@ header {
 .read-more:hover {
   background: #ffb703;
   }
+
+    
+  /* Base Navbar Style */
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #222;
+    color: #fff;
+    padding: 12px 20px;
+    position: relative;
+    z-index: 1000;
+  }
+
+  .logo {
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .menu-toggle {
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: none;
+  }
+
+  /* Nav Links */
+  nav {
+    display: flex;
+    gap: 15px;
+  }
+
+  nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: 500;
+    position: relative;
+  }
+
+  nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 0%;
+    height: 2px;
+    background: yellow;
+    transition: width 0.3s ease;
+  }
+
+  nav a:hover::after {
+    width: 100%;
+  }
+
+  /* Responsive - Flip Down */
+  @media (max-width: 768px) {
+    .menu-toggle {
+      display: block;
+    }
+
+    nav {
+      flex-direction: column;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: #222;
+      transform: rotateX(-90deg);
+      transform-origin: top;
+      transition: transform 0.4s ease-in-out;
+      overflow: hidden;
+      display: none;
+    }
+
+    nav.show {
+      display: flex;
+      animation: flipDown 0.4s forwards ease-in-out;
+    }
+
+    /* Link Animation */
+    nav.show a {
+      opacity: 0;
+      transform: translateY(-10px);
+      animation: slideIn 0.4s forwards ease-in-out;
+    }
+
+    nav.show a:nth-child(1) { animation-delay: 0.1s; }
+    nav.show a:nth-child(2) { animation-delay: 0.2s; }
+    nav.show a:nth-child(3) { animation-delay: 0.3s; }
+    nav.show a:nth-child(4) { animation-delay: 0.4s; }
+    nav.show a:nth-child(5) { animation-delay: 0.5s; }
+  }
+
+  /* Animations */
+  @keyframes flipDown {
+    0% { transform: rotateX(-90deg); }
+    100% { transform: rotateX(0deg); }
+  }
+
+  @keyframes slideIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+
+
     
   </style>
 </head>
@@ -174,5 +284,12 @@ blogPosts.forEach(post => {
   `;
 }); 
   </script>
+  <!-- JavaScript -->
+<script>
+  function toggleMenu() {
+    const nav = document.getElementById("navLinks");
+    nav.classList.toggle("show");
+  }
+</script>
 </body>
     </html>
