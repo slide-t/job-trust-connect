@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JobTrust Connect — Featured Jobs</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: #333;
+    }
+    header {
+      padding: 15px;
+      background: #0073e6;
+      color: white;
+      text-align: center;
+    }
+    main {
+      padding: 20px;
+    }
+    section.jobs {
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+    section.jobs h2 {
+      text-align: center;
+      color: #222;
+      margin-bottom: 15px;
+    }
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #f1f1f1;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>JobTrust Connect</h1>
+    <p>Your trusted partner in career opportunities</p>
+  </header>
+
+  <main>
+    <h2>Welcome to JobTrust Connect</h2>
+    <p>Explore the latest job openings from our trusted partners and grow your career today.</p>
+
+    <!-- Featured Jobs Section -->
+    <section class="jobs">
+      <h2>💼 Featured Jobs</h2>
+      <div id="zip-jobs" style="min-height:500px; text-align:center;">
+        <p>Loading jobs from our partners...</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    &copy; 2025 JobTrust Connect. All rights reserved.
+  </footer>
+
+  <!-- Load ZipRecruiter Widget Inside Container -->
+  <script>
+  window.addEventListener('load', function() {
+    let script = document.createElement('script');
+    script.src = "https://zqrjvlx.one/bc/b0d10d98fb4d9a68.js?force_https=1"; // Your provided script
+    document.getElementById('zip-jobs').appendChild(script);
+  });
+  </script>
+</body>
+</html>
