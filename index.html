@@ -334,7 +334,76 @@
     </div>
   </div>
   
+<!-- Collapsible Medical Checkup Section -->
+<div class="section">
+  <button class="collapsible">Medical Checkup ⬇</button>
+  <div class="content">
+    <p>Before we can accept you for the job, it is important to confirm your health status to ensure you are fit for the role and to protect the safety of everyone in the workplace.</p>
+    <p>Key reasons for this requirement include:</p>
+    <ul>
+      <li>To ensure you can perform your duties without health-related limitations.</li>
+      <li>To prevent the spread of contagious illnesses in the workplace.</li>
+      <li>To meet occupational health and safety regulations.</li>
+    </ul>
 
+    <p>Please answer the following questions:</p>
+    <form id="medicalForm">
+      <div class="question">
+        <label>Are you free from Malaria?</label><br>
+        <input type="radio" name="malaria" value="yes"> Yes
+        <input type="radio" name="malaria" value="no"> No
+      </div>
+
+      <div class="question">
+        <label>Are you HIV positive?</label><br>
+        <input type="radio" name="hiv" value="yes"> Yes
+        <input type="radio" name="hiv" value="no"> No
+      </div>
+
+      <div class="question">
+        <label>Do you have Typhoid?</label><br>
+        <input type="radio" name="typhoid" value="yes"> Yes
+        <input type="radio" name="typhoid" value="no"> No
+      </div>
+
+      <div class="question">
+        <label>Do you have Hepatitis B?</label><br>
+        <input type="radio" name="hepatitis" value="yes"> Yes
+        <input type="radio" name="hepatitis" value="no"> No
+      </div>
+    </form>
+
+    <div id="applySection" style="display:none; margin-top: 15px;">
+      <a href="application.html" class="apply-btn">Apply Here</a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .question {
+    margin-bottom: 10px;
+  }
+  .apply-btn {
+    background-color: #28a745;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  .apply-btn:hover {
+    background-color: #218838;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('#medicalForm input[type="radio"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      const anyNo = Array.from(document.querySelectorAll('#medicalForm input[value="no"]'))
+        .some(input => input.checked);
+      document.getElementById('applySection').style.display = anyNo ? 'block' : 'none';
+    });
+  });
+</script>
 
 
   <!-- Footer Section --
