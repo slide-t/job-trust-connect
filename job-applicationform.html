@@ -193,7 +193,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
+<!--
   <script>
 const jobSheet = "https://sheetdb.io/api/v1/YOUR_JOB_SHEETDB_LINK"; // Replace with your real link
 const subSheet = "https://sheetdb.io/api/v1/YOUR_SUB_SHEETDB_LINK"; // Replace with your real link
@@ -290,11 +290,10 @@ document.getElementById('subForm').onsubmit = e => {
 
 document.getElementById('closeModal').onclick = () => window.location.href = "index.html";
 </script>
-  
- <!-- 
-  <script>
-const jobSheet = "https://sheetdb.io/api/v1/v7ewb4v3x7zwa";
-const subSheet = "https://sheetdb.io/api/v1/79zrc41hpxaer";
+  -->
+ <script>
+const jobSheet = "https://sheetdb.io/api/v1/YOUR_JOB_SHEETDB_LINK"; // Replace with your real link
+const subSheet = "https://sheetdb.io/api/v1/YOUR_SUB_SHEETDB_LINK"; // Replace with your real link
 
 // Dark Mode Toggle
 document.getElementById('darkToggle').onclick = () => {
@@ -302,11 +301,15 @@ document.getElementById('darkToggle').onclick = () => {
 };
 
 // Photo Preview
+let uploadedPhotoBase64 = "";
 document.getElementById('photoUpload').addEventListener('change', e => {
   const file = e.target.files[0];
   if(file) {
     const reader = new FileReader();
-    reader.onload = () => document.getElementById('photoPreview').src = reader.result;
+    reader.onload = () => {
+      uploadedPhotoBase64 = reader.result;
+      document.getElementById('photoPreview').src = uploadedPhotoBase64;
+    };
     reader.readAsDataURL(file);
   }
 });
@@ -333,14 +336,15 @@ document.querySelectorAll('#jobForm input, #jobForm textarea, #jobForm select').
   });
 });
 
-// Print PDF
+// Print PDF (Download Photograph)
 document.getElementById('printPdf').onclick = () => {
-  html2canvas(document.getElementById('livePreview')).then(canvas => {
-    const imgData = canvas.toDataURL('image/png');
-    const pdf = new jspdf.jsPDF();
-    pdf.addImage(imgData, 'PNG', 10, 10);
-    pdf.save("preview.pdf");
-  });
+  if(!uploadedPhotoBase64) {
+    alert("Please upload a photograph first.");
+    return;
+  }
+  const pdf = new jspdf.jsPDF();
+  pdf.addImage(uploadedPhotoBase64, 'JPEG', 10, 10, 90, 90); // Adjust size if needed
+  pdf.save("photograph.pdf");
 };
 
 // Job Form Submit
@@ -380,8 +384,10 @@ document.getElementById('subForm').onsubmit = e => {
     body: JSON.stringify({ data: [subData] })
   }).then(res => window.location.href = "index.html");
 };
+
 document.getElementById('closeModal').onclick = () => window.location.href = "index.html";
 </script>
-  -->
+  
+
 </body>
 </html>
