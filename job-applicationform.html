@@ -129,10 +129,7 @@
 
     <label>Parent Phone</label>
     <input type="tel" name="parentPhone" required>
-
-    <label>Parent Relationship</label>
-    <input type="text" name="parentRelationship" required>
-
+    
     <label>Parent Address</label>
     <textarea name="parentAddress" required></textarea>
 
@@ -145,6 +142,20 @@
     <label>Guarantor Address</label>
     <textarea name="guarantorAddress" required></textarea>
 
+    <label for="parentRelationship">Relationship with Guarantor</label>
+<select name="parentRelationship" id="parentRelationship" required>
+  <option value="">-- Select Relationship --</option>
+  <option value="Father">Father</option>
+  <option value="Mother">Mother</option>
+  <option value="Elder Sister">Elder Sister</option>
+  <option value="Elder Brother">Elder Brother</option>
+  <option value="Aunt">Aunt</option>
+  <option value="Cousin">Cousin</option>
+  <option value="Uncle">Uncle</option>
+</select>
+    <label> Guarantor Age</label>
+    <input type="text" name="parentRelationship" required>
+    
     <label>Position Applied For</label>
     <select id="position" required>
       <option value="">Select...</option>
