@@ -193,7 +193,106 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-<script>
+
+  <script>
+const jobSheet = "https://sheetdb.io/api/v1/YOUR_JOB_SHEETDB_LINK"; // Replace with your real link
+const subSheet = "https://sheetdb.io/api/v1/YOUR_SUB_SHEETDB_LINK"; // Replace with your real link
+
+// Dark Mode Toggle
+document.getElementById('darkToggle').onclick = () => {
+  document.body.classList.toggle('light-mode');
+};
+
+// Photo Preview
+let uploadedPhotoBase64 = "";
+document.getElementById('photoUpload').addEventListener('change', e => {
+  const file = e.target.files[0];
+  if(file) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      uploadedPhotoBase64 = reader.result;
+      document.getElementById('photoPreview').src = uploadedPhotoBase64;
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+// Age Calculation
+document.getElementById('dob').addEventListener('change', e => {
+  const dob = new Date(e.target.value);
+  const age = new Date().getFullYear() - dob.getFullYear();
+  document.getElementById('age').value = age;
+});
+
+// Position Other Field
+document.getElementById('position').addEventListener('change', e => {
+  document.getElementById('otherPosition').style.display = e.target.value === "Other" ? "block" : "none";
+});
+
+// Live Preview
+document.querySelectorAll('#jobForm input, #jobForm textarea, #jobForm select').forEach(el => {
+  el.addEventListener('input', () => {
+    const data = new FormData(document.getElementById('jobForm'));
+    let html = "<h4>Live Preview</h4>";
+    for (let [key, val] of data.entries()) { html += `<p><strong>${key}:</strong> ${val}</p>`; }
+    document.getElementById('livePreview').innerHTML = html;
+  });
+});
+
+// Print PDF (Download Photograph)
+document.getElementById('printPdf').onclick = () => {
+  if(!uploadedPhotoBase64) {
+    alert("Please upload a photograph first.");
+    return;
+  }
+  const pdf = new jspdf.jsPDF();
+  pdf.addImage(uploadedPhotoBase64, 'JPEG', 10, 10, 90, 90); // Adjust size/position as needed
+  pdf.save("photograph.pdf");
+};
+
+// Job Form Submit
+document.getElementById('jobForm').onsubmit = e => {
+  e.preventDefault();
+  const data = {
+    fullName: e.target.fullName.value,
+    email: e.target.email.value,
+    phone: e.target.phone.value,
+    address: e.target.address.value,
+    dob: e.target.dob.value,
+    age: document.getElementById('age').value,
+    gender: e.target.gender.value,
+    maritalStatus: e.target.maritalStatus.value,
+    parentName: e.target.parentName.value,
+    parentPhone: e.target.parentPhone.value,
+    parentRelationship: e.target.parentRelationship.value,
+    parentAddress: e.target.parentAddress.value,
+    guarantorName: e.target.guarantorName.value,
+    guarantorPhone: e.target.guarantorPhone.value,
+    guarantorAddress: e.target.guarantorAddress.value
+  };
+  fetch(jobSheet, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: [data] })
+  }).then(res => {
+    if(res.ok) document.getElementById('subModal').style.display = 'flex';
+  });
+};
+
+// Subscription Form Submit
+document.getElementById('subForm').onsubmit = e => {
+  e.preventDefault();
+  const subData = Object.fromEntries(new FormData(e.target).entries());
+  fetch(subSheet, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ data: [subData] })
+  }).then(res => window.location.href = "index.html");
+};
+
+document.getElementById('closeModal').onclick = () => window.location.href = "index.html";
+</script>
+  
+ <!-- 
+  <script>
 const jobSheet = "https://sheetdb.io/api/v1/v7ewb4v3x7zwa";
 const subSheet = "https://sheetdb.io/api/v1/79zrc41hpxaer";
 
@@ -283,5 +382,6 @@ document.getElementById('subForm').onsubmit = e => {
 };
 document.getElementById('closeModal').onclick = () => window.location.href = "index.html";
 </script>
+  -->
 </body>
 </html>
