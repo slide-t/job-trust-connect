@@ -27,6 +27,14 @@
       document.getElementById("post").innerHTML = `<p>No post found. Go back to <a href="index.html">home</a>.</p>`;
     }
   </script>
+  <div id="footer"></div>
+<script>
+  fetch("footer.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("footer").innerHTML = data;
+    });
+</script>
 </body>
 </html>
   
