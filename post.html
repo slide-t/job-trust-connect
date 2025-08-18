@@ -3,85 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post</title>
+  <title>Blog Post</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    .post img { max-width: 100%; border-radius: 8px; margin: 15px 0; }
-    .post h1 { font-size: 28px; color: #333; }
-    .post p { line-height: 1.6; font-size: 16px; }
-  </style>
-</head>
-<body>
-  <div id="post" class="post"></div>
-
-  <script>
-    const postData = JSON.parse(localStorage.getItem("selectedPost"));
-
-    if (postData) {
-      document.getElementById("post").innerHTML = `
-        <h1>${postData.title}</h1>
-        <img src="${postData.image}" alt="${postData.title}">
-        <p>${postData.content}</p>
-      `;
-    } else {
-      document.getElementById("post").innerHTML = `<p>No post found. Go back to <a href="index.html">home</a>.</p>`;
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0; padding: 0;
+      background: #f9f9f9;
+      color: #333;
     }
-  </script>
-  <div id="footer"></div>
-<script>
-  fetch("footer.html")
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById("footer").innerHTML = data;
-    });
-</script>
-</body>
-</html>
-  
-
-
-
-
-
-
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Post</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin:0; background:#fff; line-height:1.6; }
-    .container { width:90%; max-width:900px; margin:auto; padding:20px; }
-    .post-image { width:100%; height:350px; object-fit:cover; border-radius:10px; margin-bottom:20px; }
-    h1 { font-size:28px; margin-bottom:10px; }
-    p { color:#444; }
-    a.back { display:inline-block; margin-top:20px; padding:10px 15px; background:#000; color:#fff; text-decoration:none; border-radius:6px; }
+    header {
+      background: #001219;
+      color: #fff;
+      padding: 15px;
+      text-align: center;
+    }
+    .post-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+    .post-container img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+    h1 {
+      margin-top: 0;
+    }
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 15px;
+      background: #fff;
+      border: 1px solid #000;
+      border-radius: 5px;
+      text-decoration: none;
+      color: #000;
+    }
+    .back-link:hover {
+      background: #ddd;
+    }
   </style>
 </head>
 <body>
-  <div class="container" id="post-container"></div>
+  <header>
+    <h1>Blog Post</h1>
+  </header>
+
+  <div class="post-container" id="post-content"></div>
 
   <script>
-    // Get post ID from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const postId = urlParams.get('id');
+    async function loadPost() {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+      const res = await fetch("posts.json");
+      const posts = await res.json();
+      const post = posts[id];
 
-    fetch('posts.json')
-      .then(res => res.json())
-      .then(posts => {
-        if (postId !== null && posts[postId]) {
-          const post = posts[postId];
-          document.getElementById('post-container').innerHTML = `
-            <img src="${post.image}" alt="${post.title}" class="post-image">
-            <h1>${post.title}</h1>
-            <p>${post.content}</p>
-            <a href="blog.html" class="back">⬅ Back to Blog</a>
-          `;
-        } else {
-          document.getElementById('post-container').innerHTML = `<p>Post not found.</p>`;
-        }
-      });
+      if (!post) {
+        document.getElementById("post-content").innerHTML = "<p>Post not found!</p>";
+        return;
+      }
+
+      document.getElementById("post-content").innerHTML = `
+        <img src="${post.image}" alt="${post.title}">
+        <h1>${post.title}</h1>
+        <p>${post.content}</p>
+        <a href="blog.html" class="back-link">⬅ Back to Blog</a>
+      `;
+    }
+    loadPost();
   </script>
 </body>
 </html>
