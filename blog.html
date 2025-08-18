@@ -1,61 +1,190 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JobTrust Connect Blog</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    body { font-family: Arial, sans-serif; margin:0; background:#f4f4f4; }
-    .container { width:90%; max-width:1200px; margin:auto; padding:20px; }
-    .card {
-      background:#fff;
-      border-radius:12px;
-      box-shadow:0 4px 10px rgba(0,0,0,0.15);
-      margin-bottom:20px;
-      overflow:hidden;
-      transition:transform 0.3s ease;
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
     }
-    .card:hover { transform:translateY(-5px); }
-    .card img { width:100%; height:250px; object-fit:cover; }
-    .card-content { padding:20px; }
-    .card-content h2 { margin:0 0 10px; font-size:22px; }
-    .card-content p { color:#555; }
-    .btn {
-      display:inline-block;
-      padding:10px 20px;
-      background:#000;
-      color:#fff;
-      text-decoration:none;
-      border-radius:8px;
-      transition:background 0.3s ease;
+
+    header {
+      background: #001219;
+      color: #fff;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    .btn:hover { background:#444; }
+
+    header h1 {
+      font-size: 22px;
+      margin: 0;
+    }
+
+    /* Search Section */
+    .search-container {
+      position: relative;
+    }
+
+    .search-input {
+      width: 0;
+      opacity: 0;
+      padding: 8px;
+      border: none;
+      border-radius: 20px;
+      transition: all 0.4s ease;
+      font-size: 14px;
+    }
+
+    .search-input.show {
+      width: 200px;
+      opacity: 1;
+      padding: 8px 12px;
+    }
+
+    .search-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      margin-left: 8px;
+    }
+
+    /* Blog Layout */
+    .blog-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .blog-card {
+      background: #fff;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+    }
+
+    .blog-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .blog-content {
+      padding: 15px;
+    }
+
+    .blog-content h2 {
+      margin: 0;
+      font-size: 20px;
+      color: #001219;
+    }
+
+    .blog-content p {
+      font-size: 14px;
+      color: #333;
+      margin: 10px 0;
+    }
+
+    .meta {
+      font-size: 12px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .read-more {
+      display: inline-block;
+      padding: 8px 14px;
+      background: #000;
+      color: #fff;
+      text-decoration: none;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .read-more:hover {
+      background: #333;
+    }
   </style>
 </head>
 <body>
-  <div class="container" id="blog-container"></div>
+  <header>
+    <h1>JobTrust Connect Blog</h1>
+    <div class="search-container">
+      <input type="text" id="searchInput" class="search-input" placeholder="search topics here">
+      <button class="search-btn" id="searchToggle"><i class="fas fa-search"></i></button>
+    </div>
+  </header>
+
+  <div class="blog-container" id="blogContainer">
+    <!-- Blog posts will load here -->
+  </div>
 
   <script>
-    // Load posts from JSON
+    // Expandable Search Input
+    const searchToggle = document.getElementById('searchToggle');
+    const searchInput = document.getElementById('searchInput');
+
+    searchToggle.addEventListener('click', () => {
+      searchInput.classList.toggle('show');
+      if (searchInput.classList.contains('show')) {
+        searchInput.focus();
+      }
+    });
+
+    // Load Posts
     fetch('posts.json')
       .then(res => res.json())
-      .then(posts => {
-        const container = document.getElementById('blog-container');
-        posts.forEach((post, index) => {
-          const card = `
-            <div class="card">
+      .then(data => {
+        const blogContainer = document.getElementById('blogContainer');
+        const today = new Date().toLocaleDateString();
+
+        function renderPosts(posts) {
+          blogContainer.innerHTML = '';
+          posts.forEach(post => {
+            const card = document.createElement('div');
+            card.classList.add('blog-card');
+            card.innerHTML = `
               <img src="${post.image}" alt="${post.title}">
-              <div class="card-content">
+              <div class="blog-content">
                 <h2>${post.title}</h2>
+                <div class="meta">By JobTrust Connect | ${today}</div>
                 <p>${post.intro}</p>
-                <a href="post.html?id=${index}" class="btn">Read More</a>
+                <a href="post.html?id=${post.id}" class="read-more">Read More</a>
               </div>
-            </div>`;
-          container.innerHTML += card;
+            `;
+            blogContainer.appendChild(card);
+          });
+        }
+
+        renderPosts(data);
+
+        // Search filter
+        searchInput.addEventListener('input', e => {
+          const keyword = e.target.value.toLowerCase();
+          const filtered = data.filter(post => post.title.toLowerCase().includes(keyword) || post.intro.toLowerCase().includes(keyword));
+          renderPosts(filtered);
         });
       });
   </script>
-
 <!-- Floating Home Button -->
 <a href="index.html" class="home-btn" title="Home">
   <i class="fas fa-home"></i>
@@ -135,6 +264,157 @@ setInterval(() => {
 </script>
 
 <!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobTrust Connect Blog</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin:0; background:#f4f4f4; }
+    .container { width:90%; max-width:1200px; margin:auto; padding:20px; }
+    .card {
+      background:#fff;
+      border-radius:12px;
+      box-shadow:0 4px 10px rgba(0,0,0,0.15);
+      margin-bottom:20px;
+      overflow:hidden;
+      transition:transform 0.3s ease;
+    }
+    .card:hover { transform:translateY(-5px); }
+    .card img { width:100%; height:250px; object-fit:cover; }
+    .card-content { padding:20px; }
+    .card-content h2 { margin:0 0 10px; font-size:22px; }
+    .card-content p { color:#555; }
+    .btn {
+      display:inline-block;
+      padding:10px 20px;
+      background:#000;
+      color:#fff;
+      text-decoration:none;
+      border-radius:8px;
+      transition:background 0.3s ease;
+    }
+    .btn:hover { background:#444; }
+  </style>
+</head>
+<body>
+  <div class="container" id="blog-container"></div>
+
+  <script>
+    // Load posts from JSON
+    fetch('posts.json')
+      .then(res => res.json())
+      .then(posts => {
+        const container = document.getElementById('blog-container');
+        posts.forEach((post, index) => {
+          const card = `
+            <div class="card">
+              <img src="${post.image}" alt="${post.title}">
+              <div class="card-content">
+                <h2>${post.title}</h2>
+                <p>${post.intro}</p>
+                <a href="post.html?id=${index}" class="btn">Read More</a>
+              </div>
+            </div>`;
+          container.innerHTML += card;
+        });
+      });
+  </script>
+
+<!-- Floating Home Button --
+<a href="index.html" class="home-btn" title="Home">
+  <i class="fas fa-home"></i>
+  <span class="tooltip">Go Home</span>
+</a>
+
+<style>
+/* Floating button */
+.home-btn {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%) translateX(150%);
+  background: #000;
+  color: #fff;
+  font-size: 22px;
+  padding: 15px;
+  border-radius: 50%;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.6s ease;
+  z-index: 999;
+}
+
+.home-btn i {
+  font-weight: bold;
+}
+
+.home-btn:hover {
+  background: #444;
+}
+
+/* Flip-in animation on page load */
+@keyframes flipInRight {
+  0% { transform: translateY(-50%) translateX(150%) rotateY(90deg); opacity: 0; }
+  100% { transform: translateY(-50%) translateX(0) rotateY(0deg); opacity: 1; }
+}
+
+.home-btn {
+  animation: flipInRight 0.8s ease forwards;
+}
+
+/* Tooltip (hidden by default) */
+.tooltip {
+  position: absolute;
+  right: 70px;
+  background: #000;
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+  pointer-events: none;
+}
+
+/* When tooltip is active */
+.tooltip.show {
+  opacity: 1;
+  transform: scale(1.2);
+}
+</style>
+
+<script>
+// Show tooltip every 10 seconds
+const tooltip = document.querySelector(".tooltip");
+
+setInterval(() => {
+  tooltip.classList.add("show");
+  setTimeout(() => tooltip.classList.remove("show"), 2000); // show for 2s then hide
+}, 10000);
+</script>
+
+<!-- Font Awesome --
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   
