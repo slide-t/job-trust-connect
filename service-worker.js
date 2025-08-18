@@ -7,6 +7,8 @@ const urlsToCache = [
   '/faqs.html',
   '/footer.html',
   '/blog.html',
+  'blogPosts.json',
+  'post.html',
   '/feedback.html',
   '/style.css',
   '/script.js',
