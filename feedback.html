@@ -149,6 +149,35 @@
   </div>
 </div>
 
+<!-- Form Submission Script -->
+<script>
+document.getElementById("clientForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  // Trigger the mailto link
+  const form = e.target;
+  const formData = new FormData(form);
+
+  let body = "";
+  formData.forEach((value, key) => {
+    body += `${key}: ${value}\n`;
+  });
+
+  // Replace with your email address
+  const mailtoLink = `mailto:jobtrustconnect@example.com?subject=Client Feedback Form&body=${encodeURIComponent(body)}`;
+
+  // Open mail client
+  window.location.href = mailtoLink;
+
+  // Show a success message (optional)
+  alert("Thank you for your submission! Redirecting...");
+
+  // Redirect to homepage after 3 seconds
+  setTimeout(() => {
+    window.location.href = "index.html";
+  }, 3000);
+});
+</script>
 <!-- Style -->
 <style>
 .modal {
