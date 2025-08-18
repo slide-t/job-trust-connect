@@ -10,12 +10,7 @@
       margin: 0; padding: 0;
       background: #f4f4f4;
     }
-    header {
-      background: #001219;
-      color: #fff;
-      padding: 15px;
-      text-align: center;
-    }
+    
     .container {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -59,7 +54,41 @@
     .read-more:hover {
       background: #003049;
     }
-  </style>
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f5f5f5;
+    padding: 15px 20px;
+    border-bottom: 2px solid #ddd;
+  }
+
+  header h1 {
+    margin: 0;
+    font-size: 24px;
+    color: #333;
+  }
+
+  .home-btn {
+    background: #00bfff; /* water blue */
+    color: white;
+    border: 2px solid white;
+    padding: 8px 16px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: transform 0.3s ease, background 0.3s ease;
+  }
+
+  .home-btn:hover {
+    transform: scale(0.95); /* zooms out slightly */
+    background: #009acd; /* darker water blue */
+  }
+</style>
+
+      
+  
 </head>
 <body>
   <header>
