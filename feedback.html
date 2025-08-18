@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobTrust Connect - Client Feedback Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 750px;
+      margin: 40px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #001219;
+      margin-bottom: 20px;
+    }
+    form label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: bold;
+      color: #333;
+    }
+    form input, form select, form textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+    form textarea {
+      resize: vertical;
+    }
+    .submit-btn {
+      margin-top: 20px;
+      background: #001219;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .submit-btn:hover {
+      background: #005f73;
+    }
+    .section-title {
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #005f73;
+      border-bottom: 2px solid #ccc;
+      padding-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>JobTrust Connect Client Feedback</h1>
+    <form action="mailto:jobtrustconnect@gmail.com" method="POST" enctype="text/plain">
+      
+      <!-- Client Personal Info -->
+      <div class="section-title">Your Information</div>
+      <label for="clientName">Your Full Name</label>
+      <input type="text" id="clientName" name="Client Name" required>
+      
+      <label for="clientPhone">Phone Number</label>
+      <input type="tel" id="clientPhone" name="Client Phone" required>
+      
+      <label for="clientEmail">Email Address</label>
+      <input type="email" id="clientEmail" name="Client Email">
+
+      <label for="relationship">Relationship with staff (Employer/Relative)</label>
+      <input type="text" id="relationship" name="Relationship">
+      
+      <!-- Staff Information -->
+      <div class="section-title">Staff Information</div>
+      <label for="staffName">Staff Full Name</label>
+      <input type="text" id="staffName" name="Staff Name" required>
+      
+      <label for="staffPhone">Staff Phone Number</label>
+      <input type="tel" id="staffPhone" name="Staff Phone">
+      
+      <label for="staffGender">Staff Gender</label>
+      <select id="staffGender" name="Staff Gender" required>
+        <option value="">-- Select --</option>
+        <option value="Female">Female</option>
+        <option value="Male">Male</option>
+      </select>
+      
+      <!-- Caregiver Details -->
+      <div class="section-title">Caregiver Details</div>
+      <label for="careType">Is this staff a Care-giver?</label>
+      <select id="careType" name="Caregiver">
+        <option value="No">No</option>
+        <option value="Yes">Yes</option>
+      </select>
+      
+      <label for="careFor">Who are they taking care of?</label>
+      <select id="careFor" name="Care For">
+        <option value="">-- Select --</option>
+        <option value="Mother">Mother</option>
+        <option value="Grandma">Grandma</option>
+        <option value="Wife">Wife</option>
+        <option value="Husband">Husband</option>
+        <option value="Daughter">Daughter</option>
+        <option value="Other">Other (please specify below)</option>
+      </select>
+      
+      <label for="careOther">If Other, please specify</label>
+      <input type="text" id="careOther" name="Other Care For">
+      
+      <!-- Feedback -->
+      <div class="section-title">Feedback on Staff</div>
+      <label for="feedback">How would you rate the staff’s performance and professionalism?</label>
+      <textarea id="feedback" name="Staff Feedback" rows="5" required></textarea>
+      
+      <label for="suggestion">Any suggestions for JobTrust Connect?</label>
+      <textarea id="suggestion" name="Suggestions" rows="3"></textarea>
+      
+      <button type="submit" class="submit-btn">Submit Feedback</button>
+    </form>
+  </div>
+  <!-- Modal -->
+<div id="infoModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>Important Notice</h2>
+    <p>
+      Dear Client, kindly be <strong>sincere</strong> with every information you provide in this form.  
+      Payment for our services is due <em>two weeks before the month end</em>.  
+    </p>
+    <p>
+      Please note that our official <strong>account details</strong> for payment are provided at the bottom of this page.  
+      Ensure all payments are made only to this account to avoid breach of our company policy.  
+    </p>
+    <p style="text-align:center; margin-top:15px;">
+      Thank you for your cooperation.  
+    </p>
+  </div>
+</div>
+
+<!-- Style -->
+<style>
+.modal {
+  display: none; 
+  position: fixed; 
+  z-index: 1000; 
+  left: 0; 
+  top: 0; 
+  width: 100%; 
+  height: 100%; 
+  overflow: auto; 
+  background-color: rgba(0,0,0,0.6); 
+}
+
+.modal-content {
+  background: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 500px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  font-family: Arial, sans-serif;
+}
+
+.close {
+  float: right;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+}
+.close:hover {
+  color: red;
+}
+</style>
+
+<!-- Script -->
+<script>
+window.onload = function() {
+  const modal = document.getElementById("infoModal");
+  const closeBtn = document.querySelector(".close");
+
+  // Show modal on page load
+  modal.style.display = "block";
+
+  // Close modal
+  closeBtn.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  // Close when clicking outside modal
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+}
+</script>
+
+<!-- Example Footer -->
+<footer style="text-align:center; padding:15px; background:#001219; color:#fff; margin-top:40px;">
+  <p>&copy; 2025 JobTrust Connect</p>
+  <p><a href="client-feedback-form.html" style="color:#FFD700;">Go to Client Feedback Form</a></p>
+</footer>
+</body>
+</html>
