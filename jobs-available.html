@@ -77,8 +77,50 @@
 
   <!-- Scroll to Top -->
   <button id="scrollTopBtn">↑</button>
+<script>
+  async function loadJobs() {
+    try {
+      // 👇 This fetches jobs from your JSON file in the same folder
+      const response = await fetch("jobs-available.json");
+      const jobs = await response.json();
 
-  <script>
+      const container = document.getElementById("jobList");
+      container.innerHTML = "";
+
+      jobs.forEach(job => {
+        const jobItem = document.createElement("div");
+        jobItem.className = "job-banner";
+        jobItem.innerHTML = `
+          <img src="${job.image}" alt="${job.title}" class="job-image">
+          <div class="job-content">
+            <h3>${job.title}</h3>
+            <p><b>Location:</b> ${job.location}</p>
+            <p><b>Resumption Date:</b> ${job.date}</p>
+            <a href="job-applicationform.html" class="apply-btn">Apply Now</a>
+            <button class="desc-toggle">Job Description</button>
+            <p class="desc" style="display:none;">${job.description}</p>
+          </div>
+        `;
+
+        // toggle description
+        jobItem.querySelector(".desc-toggle").addEventListener("click", function () {
+          const desc = jobItem.querySelector(".desc");
+          desc.style.display = desc.style.display === "none" ? "block" : "none";
+        });
+
+        container.appendChild(jobItem);
+      });
+    } catch (err) {
+      console.error("Error fetching jobs:", err);
+    }
+  }
+
+  // Load jobs when page loads
+  window.addEventListener("DOMContentLoaded", loadJobs);
+</script>
+
+  
+<!--  <script>
     // Load jobs from JSON
     async function loadJobs() {
       const res = await fetch("jobs.json");
@@ -151,7 +193,7 @@
     });
 
     loadJobs();
-  </script>
+  </script>-->
   <script src="jobs-available.json"></script>
 </body>
 </html>
