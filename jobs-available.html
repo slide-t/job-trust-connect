@@ -5,6 +5,311 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Jobs Post - JobTrust Connect</title>
   <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f4f4f9;
+      color: #333;
+    }
+
+    /* Header */
+    header {
+      background: #004080;
+      color: white;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    nav {
+      display: flex;
+      gap: 10px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: white;
+      padding: 8px 15px;
+      border: 1px solid white;
+      border-radius: 5px;
+      background: #004080;
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    nav a:hover {
+      transform: scale(1.1);
+      background: #0059b3;
+    }
+
+    /* Search bar */
+    .search-bar {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .search-bar input {
+      width: 60%;
+      padding: 10px;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    /* Jobs container */
+    .jobs-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .job-banner {
+      display: flex;
+      align-items: center;
+      background: white;
+      margin-bottom: 15px;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    .job-banner:hover {
+      transform: scale(1.02);
+    }
+
+    .job-banner img {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      margin-right: 15px;
+      border-radius: 10px;
+    }
+
+    .job-details {
+      flex: 1;
+    }
+
+    .job-details h3 {
+      margin: 0;
+      color: #004080;
+    }
+
+    .job-meta {
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .cta-buttons {
+      margin-top: 10px;
+    }
+
+    .cta-buttons button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 5px;
+      margin-right: 8px;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .cta-buttons .apply-btn {
+      background: #28a745;
+      color: white;
+    }
+
+    .cta-buttons .apply-btn:hover {
+      transform: scale(1.1);
+      background: #218838;
+    }
+
+    .cta-buttons .whatsapp-btn {
+      background: #25d366;
+      color: white;
+    }
+
+    .cta-buttons .whatsapp-btn:hover {
+      transform: scale(1.1);
+      background: #1ebe5b;
+    }
+
+    /* Scroll to top */
+    #scrollTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 80px;
+      right: 20px;
+      z-index: 100;
+      background: #004080;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 45px;
+      height: 45px;
+      cursor: pointer;
+      font-size: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    #scrollTopBtn:hover {
+      transform: scale(1.2);
+    }
+
+    /* Floating WhatsApp */
+    #whatsappFloat {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25d366;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 30px;
+      text-decoration: none;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      z-index: 101;
+      transition: transform 0.3s ease;
+    }
+
+    #whatsappFloat:hover {
+      transform: scale(1.2);
+    }
+
+    #whatsappTooltip {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      background: #333;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-size: 0.85rem;
+      display: none;
+      z-index: 102;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <h1>New Jobs Post</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+  </header>
+
+  <!-- Search -->
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search job by location">
+  </div>
+
+  <!-- Jobs container -->
+  <div class="jobs-container" id="jobsContainer">
+    <p>Loading jobs...</p>
+  </div>
+
+  <!-- Scroll Top -->
+  <button id="scrollTopBtn">↑</button>
+
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/2348012345678" target="_blank" id="whatsappFloat">💬</a>
+  <div id="whatsappTooltip">Quick Apply</div>
+
+  <script>
+    // Scroll To Top
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    window.addEventListener("scroll", () => {
+      scrollTopBtn.style.display = window.scrollY > 200 ? "block" : "none";
+    });
+    scrollTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    // WhatsApp tooltip every 10s
+    setInterval(() => {
+      const tooltip = document.getElementById("whatsappTooltip");
+      tooltip.style.display = "block";
+      setTimeout(() => tooltip.style.display = "none", 3000);
+    }, 10000);
+
+    // Load Jobs from JSON
+    async function loadJobs() {
+      try {
+        const res = await fetch("jobs-available.json");
+        const jobs = await res.json();
+        const container = document.getElementById("jobsContainer");
+        container.innerHTML = "";
+
+        jobs.reverse().forEach(job => {
+          const jobEl = document.createElement("div");
+          jobEl.className = "job-banner";
+          jobEl.innerHTML = `
+            <img src="${job.image}" alt="${job.title}">
+            <div class="job-details">
+              <h3>${job.title}</h3>
+              <p class="job-meta">📍 ${job.location} | 🗓️ ${job.date}</p>
+              <p><a href="#" onclick="toggleDetails(this)">View Details</a></p>
+              <div class="details" style="display:none;">${job.description}</div>
+              <div class="cta-buttons">
+                <button class="apply-btn" onclick="window.location.href='job-applicationform.html'">Apply Now</button>
+                <button class="whatsapp-btn" onclick="window.open('https://wa.me/2348012345678?text=I%20am%20interested%20in%20the%20${job.title}%20job','_blank')">WhatsApp</button>
+              </div>
+            </div>
+          `;
+          container.appendChild(jobEl);
+        });
+      } catch (err) {
+        console.error(err);
+        document.getElementById("jobsContainer").innerHTML = "<p>Failed to load jobs.</p>";
+      }
+    }
+
+    function toggleDetails(el) {
+      const details = el.parentElement.nextElementSibling;
+      details.style.display = details.style.display === "none" ? "block" : "none";
+    }
+
+    // Search jobs by location
+    document.getElementById("searchInput").addEventListener("input", function() {
+      const filter = this.value.toLowerCase();
+      document.querySelectorAll(".job-banner").forEach(job => {
+        const location = job.querySelector(".job-meta").innerText.toLowerCase();
+        job.style.display = location.includes(filter) ? "flex" : "none";
+      });
+    });
+
+    loadJobs();
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+<!--<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Jobs Post - JobTrust Connect</title>
+  <style>
     body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
     header { background: #004080; color: white; text-align: center; padding: 1rem; }
     h1 { margin: 0; }
@@ -55,7 +360,7 @@
     <h1>New Jobs Post</h1>
   </header>
 
-  <!-- Search & Filter -->
+  <!-- Search & Filter --
   <div class="controls">
     <input type="text" id="searchInput" placeholder="Search job by location...">
     <select id="filterSelect">
@@ -69,13 +374,13 @@
 
   <div class="job-list" id="jobList"></div>
 
-  <!-- Floating WhatsApp -->
+  <!-- Floating WhatsApp --
   <div class="floating-whatsapp" id="floatWhatsApp">
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
     <div class="tooltip" id="tooltip">Quick Apply</div>
   </div>
 
-  <!-- Scroll to Top -->
+  <!-- Scroll to Top --
   <button id="scrollTopBtn">↑</button>
 <script>
   async function loadJobs() {
@@ -194,6 +499,7 @@
 
     loadJobs();
   </script>-->
-  <script src="jobs-available.json"></script>
+
+<!--
 </body>
 </html>
