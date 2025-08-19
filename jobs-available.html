@@ -266,7 +266,7 @@
       setTimeout(() => tooltip.style.display = "none", 3000);
     }, 10000);
 
-document.addEventListener("DOMContentLoaded", () => {
+/*document.addEventListener("DOMContentLoaded", () => {
   fetch("jobs-available.json")
     .then(response => response.json())
     .then(jobs => {
@@ -304,47 +304,54 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       });
     });
-});
+});*/
 
+// Load Jobs from JSON
+async function loadJobs() {
+  try {
+    const res = await fetch("jobs-available.json");
+    const jobs = await res.json();
+    const container = document.getElementById("jobsContainer");
+    container.innerHTML = "";
+
+    // Default banner image
+    const defaultImage = "A_logo_for_JobTrust_Connect_is_displayed_in_the_.png";
+
+    jobs.reverse().forEach(job => {
+      const jobEl = document.createElement("div");
+      jobEl.className = "job-banner";
+      jobEl.innerHTML = `
+        <img src="${defaultImage}" alt="JobTrust Connect Banner">
+        <div class="job-details">
+          <h3>${job.title}</h3>
+          <p class="job-meta">📍 ${job.location} | 🗓️ ${job.date}</p>
+          <p><a href="#" onclick="toggleDetails(this)">View Details</a></p>
+          <div class="details" style="display:none;">${job.description}</div>
+          <div class="cta-buttons">
+            <button class="apply-btn" onclick="window.location.href='job-applicationform.html'">Apply Now</button>
+            <button class="whatsapp-btn" onclick="window.open('https://wa.me/2348012345678?text=I%20am%20interested%20in%20the%20${encodeURIComponent(job.title)}%20job','_blank')">WhatsApp</button>
+          </div>
+        </div>
+      `;
+      container.appendChild(jobEl);
+    });
+  } catch (err) {
+    console.error(err);
+    document.getElementById("jobsContainer").innerHTML = "<p>Failed to load jobs.</p>";
+  }
+}
+
+function toggleDetails(el) {
+  const details = el.parentElement.nextElementSibling;
+  details.style.display = details.style.display === "none" ? "block" : "none";
+}
 
 
     
-    // Load Jobs from JSON
-    /*async function loadJobs() {
-      try {
-        const res = await fetch("jobs-available.json");
-        const jobs = await res.json();
-        const container = document.getElementById("jobsContainer");
-        container.innerHTML = "";
-
-        jobs.reverse().forEach(job => {
-          const jobEl = document.createElement("div");
-          jobEl.className = "job-banner";
-          jobEl.innerHTML = `
-            <img src="${job.image}" alt="${job.title}">
-            <div class="job-details">
-              <h3>${job.title}</h3>
-              <p class="job-meta">📍 ${job.location} | 🗓️ ${job.date}</p>
-              <p><a href="#" onclick="toggleDetails(this)">View Details</a></p>
-              <div class="details" style="display:none;">${job.description}</div>
-              <div class="cta-buttons">
-                <button class="apply-btn" onclick="window.location.href='job-applicationform.html'">Apply Now</button>
-                <button class="whatsapp-btn" onclick="window.open('https://wa.me/2348012345678?text=I%20am%20interested%20in%20the%20${job.title}%20job','_blank')">WhatsApp</button>
-              </div>
-            </div>
-          `;
-          container.appendChild(jobEl);
-        });
-      } catch (err) {
-        console.error(err);
-        document.getElementById("jobsContainer").innerHTML = "<p>Failed to load jobs.</p>";
-      }
-    }
-
-    function toggleDetails(el) {
-      const details = el.parentElement.nextElementSibling;
-      details.style.display = details.style.display === "none" ? "block" : "none";
-    }*/
+    
+          
+    
+    
 
     // Search jobs by location
     document.getElementById("searchInput").addEventListener("input", function() {
