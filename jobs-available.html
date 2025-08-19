@@ -266,8 +266,51 @@
       setTimeout(() => tooltip.style.display = "none", 3000);
     }, 10000);
 
+document.addEventListener("DOMContentLoaded", () => {
+  fetch("jobs-available.json")
+    .then(response => response.json())
+    .then(jobs => {
+      const container = document.getElementById("jobsContainer");
+
+      // Default banner image
+      const defaultImage = "A_logo_for_JobTrust_Connect_is_displayed_in_the_.png";
+
+      jobs.forEach(job => {
+        const jobCard = document.createElement("div");
+        jobCard.classList.add("job-banner");
+
+        jobCard.innerHTML = `
+          <div class="job-image">
+            <img src="${defaultImage}" alt="Job Banner">
+          </div>
+          <div class="job-details">
+            <h2>${job.title}</h2>
+            <p><strong>Location:</strong> ${job.location}</p>
+            <p><strong>Resumption Date:</strong> ${job.date}</p>
+            <a href="job-applicationform.html" class="apply-btn">Apply Now</a>
+            <a href="https://wa.me/2348012345678?text=I%20want%20to%20apply%20for%20${encodeURIComponent(job.title)}" class="whatsapp-btn">WhatsApp</a>
+            <div class="job-desc-toggle">View Details</div>
+            <div class="job-desc">${job.description}</div>
+          </div>
+        `;
+
+        container.appendChild(jobCard);
+      });
+
+      // Toggle job description
+      document.querySelectorAll(".job-desc-toggle").forEach(btn => {
+        btn.addEventListener("click", () => {
+          btn.nextElementSibling.classList.toggle("show");
+        });
+      });
+    });
+});
+
+
+
+    
     // Load Jobs from JSON
-    async function loadJobs() {
+    /*async function loadJobs() {
       try {
         const res = await fetch("jobs-available.json");
         const jobs = await res.json();
@@ -301,7 +344,7 @@
     function toggleDetails(el) {
       const details = el.parentElement.nextElementSibling;
       details.style.display = details.style.display === "none" ? "block" : "none";
-    }
+    }*/
 
     // Search jobs by location
     document.getElementById("searchInput").addEventListener("input", function() {
