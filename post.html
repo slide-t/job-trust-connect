@@ -52,8 +52,56 @@
     .back-link:hover {
       background: #ddd;
     }
+    header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: #001219;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-right {
+  position: relative;
+}
+
+.search-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.search-btn:hover {
+  transform: scale(1.2);
+}
+
+#searchInput {
+  position: absolute;
+  right: 0;
+  top: 120%;
+  width: 0;
+  opacity: 0;
+  padding: 8px;
+  border: 1px solid white;
+  border-radius: 5px;
+  outline: none;
+  background: #fff;
+  color: #000;
+  transition: all 0.4s ease-in-out;
+}
+
+#searchInput.active {
+  width: 220px;
+  opacity: 1;
+}
     
-  header {
+ /* header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -66,7 +114,7 @@
     margin: 0;
     font-size: 24px;
     color: #333;
-  }
+  }*/
 
   .home-btn {
     background: #00bfff; /* water blue */
@@ -90,7 +138,12 @@
 <body>
   <header>
   <h1>JobTrust Connect Blog</h1>
-  <!--<a href="index.html" class="home-btn">Home</a>-->
+  <div class="header-right">
+    <button id="searchToggle" class="search-btn">
+      🔍
+    </button>
+    <input type="text" id="searchInput" placeholder="Search articles...">
+  </div>
 </header>
 
 
