@@ -1,75 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>JobTrust Connect — Featured Jobs</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Jobs - JobTrust Connect</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #fff;
+      margin: 0; padding: 0;
+      background: #f4f4f4;
       color: #333;
     }
     header {
-      padding: 15px;
-      background: #0073e6;
+      background: #007bff;
       color: white;
+      padding: 1rem;
       text-align: center;
     }
-    main {
-      padding: 20px;
+    .container {
+      max-width: 900px;
+      margin: 2rem auto;
+      padding: 0 1rem;
     }
-    section.jobs {
-      padding: 20px;
-      background: #f9f9f9;
-      border-radius: 10px;
-      margin: 20px 0;
-    }
-    section.jobs h2 {
+    h1 {
       text-align: center;
-      color: #222;
-      margin-bottom: 15px;
+      margin-bottom: 2rem;
     }
-    footer {
+    .job-card {
+      background: white;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .job-card h2 {
+      margin: 0 0 1rem;
+      font-size: 1.5rem;
+      color: #007bff;
+    }
+    .job-details {
+      margin-bottom: 1rem;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .btn {
+      display: block;
+      width: 100%;
+      padding: 0.8rem;
+      margin-top: 0.6rem;
       text-align: center;
-      padding: 15px;
-      background: #f1f1f1;
-      margin-top: 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+    .apply-btn {
+      background: #007bff;
+      color: white;
+    }
+    .apply-btn:hover {
+      background: #0056b3;
+    }
+    .whatsapp-btn {
+      background: #25D366;
+      color: white;
+    }
+    .whatsapp-btn:hover {
+      background: #1da851;
+    }
+    /* Scroll to top button */
+    #scrollTopBtn {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      z-index: 1000;
+      font-size: 22px;
+      border: none;
+      outline: none;
+      background: #007bff;
+      color: white;
+      cursor: pointer;
+      padding: 12px;
+      border-radius: 50%;
+      transition: 0.3s;
+    }
+    #scrollTopBtn:hover {
+      background: #0056b3;
+    }
+    /* Floating WhatsApp */
+    #floatWhatsApp {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: #25D366;
+      color: white;
+      border-radius: 50%;
+      width: 55px;
+      height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      z-index: 1000;
+    }
+    /* Tooltip */
+    .tooltip {
+      position: absolute;
+      bottom: 70px;
+      right: 0;
+      background: #333;
+      color: white;
+      padding: 6px 10px;
+      border-radius: 5px;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: opacity 0.5s;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .tooltip.show {
+      opacity: 1;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>JobTrust Connect</h1>
-    <p>Your trusted partner in career opportunities</p>
+    <h1>New Jobs Post</h1>
   </header>
 
-  <main>
-    <h2>Welcome to JobTrust Connect</h2>
-    <p>Explore the latest job openings from our trusted partners and grow your career today.</p>
-
-    <!-- Featured Jobs Section -->
-    <section class="jobs">
-      <h2>💼 Featured Jobs</h2>
-      <div id="zip-jobs" style="min-height:500px; text-align:center;">
-        <p>Loading jobs from our partners...</p>
+  <div class="container">
+    <!-- Job 1 -->
+    <div class="job-card">
+      <h2>Care-Giver</h2>
+      <div class="job-details">
+        <p><strong>Location:</strong> Ogun State</p>
+        <p><strong>Resumption Date:</strong> 09/15/2025</p>
       </div>
-    </section>
-  </main>
+      <a href="job-applicationform.html" class="btn apply-btn">Apply Now</a>
+      <a href="https://wa.me/2348012345678?text=Hello,%20I%20am%20interested%20in%20the%20Care-Giver%20job." 
+         target="_blank" class="btn whatsapp-btn">Apply via WhatsApp</a>
+    </div>
 
-  <footer>
-    &copy; 2025 JobTrust Connect. All rights reserved.
-  </footer>
+    <!-- Job 2 -->
+    <div class="job-card">
+      <h2>Personal Nurse</h2>
+      <div class="job-details">
+        <p><strong>Location:</strong> Lagos State</p>
+        <p><strong>Resumption Date:</strong> 09/25/2025</p>
+      </div>
+      <a href="job-applicationform.html" class="btn apply-btn">Apply Now</a>
+      <a href="https://wa.me/2348012345678?text=Hello,%20I%20am%20interested%20in%20the%20Personal%20Nurse%20job." 
+         target="_blank" class="btn whatsapp-btn">Apply via WhatsApp</a>
+    </div>
 
-  <!-- Load ZipRecruiter Widget Inside Container -->
+    <!-- Job 3 -->
+    <div class="job-card">
+      <h2>Home Assistant</h2>
+      <div class="job-details">
+        <p><strong>Location:</strong> Abuja</p>
+        <p><strong>Resumption Date:</strong> 10/01/2025</p>
+      </div>
+      <a href="job-applicationform.html" class="btn apply-btn">Apply Now</a>
+      <a href="https://wa.me/2348012345678?text=Hello,%20I%20am%20interested%20in%20the%20Home%20Assistant%20job." 
+         target="_blank" class="btn whatsapp-btn">Apply via WhatsApp</a>
+    </div>
+  </div>
+
+  <!-- Scroll to top -->
+  <button id="scrollTopBtn">↑</button>
+
+  <!-- Floating WhatsApp -->
+  <div id="floatWhatsApp">
+    <span>💬</span>
+    <div class="tooltip" id="tooltip">Quick Apply</div>
+  </div>
+
   <script>
-  window.addEventListener('load', function() {
-    let script = document.createElement('script');
-    script.src = "https://zqrjvlx.one/bc/b0d10d98fb4d9a68.js?force_https=1"; // Your provided script
-    document.getElementById('zip-jobs').appendChild(script);
-  });
+    // Scroll to Top
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    window.addEventListener("scroll", () => {
+      if (document.documentElement.scrollTop > 200) {
+        scrollTopBtn.style.display = "block";
+      } else {
+        scrollTopBtn.style.display = "none";
+      }
+    });
+    scrollTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+
+    // Floating WhatsApp Tooltip
+    const floatBtn = document.getElementById("floatWhatsApp");
+    const tooltip = document.getElementById("tooltip");
+
+    setInterval(() => {
+      tooltip.classList.add("show");
+      setTimeout(() => tooltip.classList.remove("show"), 2500);
+    }, 10000);
+
+    // WhatsApp direct link
+    floatBtn.addEventListener("click", () => {
+      window.open("https://wa.me/2348012345678?text=Hello,%20I%20am%20interested%20in%20applying%20for%20a%20job.", "_blank");
+    });
   </script>
 </body>
 </html>
