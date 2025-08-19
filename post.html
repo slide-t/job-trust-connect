@@ -252,7 +252,7 @@ setInterval(() => {
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   
-</body>
+
   <div id="footer"></div>
 <script>
   fetch("footer.html")
@@ -261,5 +261,33 @@ setInterval(() => {
       document.getElementById("footer").innerHTML = data;
     });
 </script>
+<script>
+  const searchToggle = document.getElementById("searchToggle");
+  const searchInput = document.getElementById("searchInput");
+
+  // Toggle search input
+  searchToggle.addEventListener("click", () => {
+    searchInput.classList.toggle("active");
+    if (searchInput.classList.contains("active")) {
+      searchInput.focus();
+    }
+  });
+
+  // Filter articles (for blog.html with cards)
+  searchInput.addEventListener("keyup", function () {
+    let filter = this.value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+      let text = card.textContent.toLowerCase();
+      if (text.includes(filter)) {
+        card.style.display = "";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+</script>
   
+</body>
 </html>
