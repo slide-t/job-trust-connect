@@ -5,126 +5,49 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Jobs Post - JobTrust Connect</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0; padding: 0;
-      background: #f4f4f4;
-    }
-    header {
-      background: #2a6ebb;
-      color: white;
-      padding: 15px;
-      text-align: center;
-    }
+    body { font-family: Arial, sans-serif; margin: 0; background: #f4f4f4; }
+    header { background: #004080; color: white; text-align: center; padding: 1rem; }
     h1 { margin: 0; }
-
-    .controls {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px;
-      background: #fff;
-      border-bottom: 1px solid #ddd;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
+    .controls { display: flex; gap: 10px; justify-content: center; padding: 15px; background: #fff; }
     .controls input, .controls select {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      flex: 1;
-      margin-right: 10px;
+      padding: 8px; font-size: 14px; border: 1px solid #ccc; border-radius: 5px;
     }
-    .controls select { flex: 0.5; }
-
-    .job-list { padding: 15px; }
-
+    .job-list { max-width: 900px; margin: 20px auto; padding: 0 15px; }
     .job-banner {
-      display: flex;
-      background: white;
-      border-radius: 10px;
-      margin-bottom: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      display: flex; align-items: center; background: #fff; margin-bottom: 15px; 
+      border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
       overflow: hidden;
-      transition: all 0.3s ease;
     }
-    .job-banner img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
+    .job-banner img { width: 120px; height: 120px; object-fit: cover; }
+    .job-info { flex: 1; padding: 10px 15px; }
+    .job-info h2 { margin: 0 0 5px; font-size: 18px; color: #333; }
+    .job-info p { margin: 4px 0; font-size: 14px; color: #555; }
+    .job-details { display: none; margin-top: 5px; font-size: 13px; color: #444; }
+    .job-actions { display: flex; gap: 10px; margin-top: 8px; }
+    .btn {
+      padding: 8px 12px; border: none; border-radius: 5px;
+      cursor: pointer; font-size: 14px;
     }
-    .job-info {
-      padding: 15px;
-      flex: 1;
-    }
-    .job-info h2 {
-      margin: 0;
-      font-size: 18px;
-      color: #2a6ebb;
-    }
-    .meta {
-      font-size: 14px;
-      margin: 5px 0;
-      color: #555;
-    }
-    .desc-link {
-      color: #2a6ebb;
-      font-size: 14px;
-      cursor: pointer;
-      display: inline-block;
-      margin-top: 8px;
-    }
-    .description {
-      display: none;
-      font-size: 14px;
-      margin-top: 8px;
-      color: #333;
-    }
-    .btn-stack {
-      margin-top: 10px;
-    }
-    .btn-stack a {
-      display: block;
-      padding: 10px;
-      text-align: center;
-      border-radius: 6px;
-      text-decoration: none;
-      margin-bottom: 8px;
-      color: white;
-    }
-    .apply-btn { background: #28a745; }
-    .whatsapp-btn { background: #25D366; }
-
-    /* Floating WhatsApp quick apply */
+    .btn-apply { background: #004080; color: white; }
+    .btn-whatsapp { background: #25D366; color: white; }
+    .toggle-desc { color: #0073e6; cursor: pointer; font-size: 13px; display: inline-block; margin-top: 6px; }
+    /* Floating WhatsApp */
     .floating-whatsapp {
-      position: fixed;
-      bottom: 20px; right: 20px;
-      background: #25D366;
-      border-radius: 50%;
-      width: 60px; height: 60px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-      cursor: pointer;
-      z-index: 1000;
+      position: fixed; bottom: 90px; right: 20px; background: #25D366; 
+      width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.3); cursor: pointer;
     }
-    .floating-whatsapp img {
-      width: 35px; height: 35px;
-    }
+    .floating-whatsapp img { width: 30px; height: 30px; }
     .tooltip {
-      position: absolute;
-      bottom: 80px; right: 0;
-      background: #333;
-      color: white;
-      padding: 5px 10px;
-      border-radius: 6px;
-      font-size: 12px;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-      pointer-events: none;
+      position: absolute; bottom: 70px; right: 80px; background: #333; color: white; 
+      padding: 5px 10px; border-radius: 5px; font-size: 12px; display: none;
     }
-    .tooltip.show { opacity: 1; }
+    /* Scroll-to-top */
+    #scrollTopBtn {
+      position: fixed; bottom: 20px; right: 20px; padding: 10px;
+      background: #004080; color: white; border: none; border-radius: 50%;
+      cursor: pointer; font-size: 18px; display: none;
+    }
   </style>
 </head>
 <body>
@@ -132,104 +55,103 @@
     <h1>New Jobs Post</h1>
   </header>
 
+  <!-- Search & Filter -->
   <div class="controls">
-    <input type="text" id="searchInput" placeholder="Search job by location">
+    <input type="text" id="searchInput" placeholder="Search job by location...">
     <select id="filterSelect">
-      <option value="">Filter by role</option>
+      <option value="all">All Jobs</option>
       <option value="Care-Giver">Care-Giver</option>
-      <option value="Nurse">Nurse</option>
+      <option value="Driver">Driver</option>
       <option value="Cleaner">Cleaner</option>
+      <option value="Sales Rep">Sales Rep</option>
     </select>
   </div>
 
-  <div class="job-list" id="jobList">
-    <!-- Jobs will load dynamically here -->
-  </div>
+  <div class="job-list" id="jobList"></div>
 
   <!-- Floating WhatsApp -->
-  <div class="floating-whatsapp" id="floatingWhatsapp">
-    <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp">
+  <div class="floating-whatsapp" id="floatWhatsApp">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
     <div class="tooltip" id="tooltip">Quick Apply</div>
   </div>
 
+  <!-- Scroll to Top -->
+  <button id="scrollTopBtn">↑</button>
+
   <script>
-    const SHEETDB_URL = "https://sheetdb.io/api/v1/YOUR_SHEETDB_ID"; // replace with your SheetDB URL
-
-    async function fetchJobs() {
-      try {
-        const res = await fetch(SHEETDB_URL);
-        let jobs = await res.json();
-
-        // Sort latest first (assuming you have a "date" field)
-        jobs.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        renderJobs(jobs);
-      } catch (err) {
-        console.error("Error loading jobs:", err);
-      }
+    // Load jobs from JSON
+    async function loadJobs() {
+      const res = await fetch("jobs.json");
+      const jobs = await res.json();
+      renderJobs(jobs);
     }
 
     function renderJobs(jobs) {
       const list = document.getElementById("jobList");
       list.innerHTML = "";
-
       jobs.forEach(job => {
-        const banner = document.createElement("div");
-        banner.className = "job-banner";
-
-        banner.innerHTML = `
-          <img src="${job.image || 'https://via.placeholder.com/100'}" alt="${job.role}">
+        const jobCard = document.createElement("div");
+        jobCard.className = "job-banner";
+        jobCard.innerHTML = `
+          <img src="${job.image}" alt="${job.title}">
           <div class="job-info">
-            <h2>${job.role}</h2>
-            <div class="meta">📍 ${job.location || 'N/A'} | 🗓 Resumption: ${job.date || 'TBA'}</div>
-            <span class="desc-link">View Job Details</span>
-            <div class="description">${job.description || "No description available."}</div>
-            <div class="btn-stack">
-              <a href="job-applicationform.html" class="apply-btn">Apply Now</a>
-              <a href="https://wa.me/${job.whatsapp || '2348012345678'}" target="_blank" class="whatsapp-btn">Apply via WhatsApp</a>
+            <h2>${job.title}</h2>
+            <p><strong>Location:</strong> ${job.location}</p>
+            <p><strong>Resumption:</strong> ${job.date}</p>
+            <span class="toggle-desc">View Details</span>
+            <div class="job-details">${job.description}</div>
+            <div class="job-actions">
+              <a href="job-applicationform.html" class="btn btn-apply">Apply Now</a>
+              <a href="https://wa.me/2348012345678?text=I want to apply for ${job.title} in ${job.location}" target="_blank" class="btn btn-whatsapp">WhatsApp Apply</a>
             </div>
-          </div>
-        `;
+          </div>`;
+        list.appendChild(jobCard);
 
         // Toggle description
-        banner.querySelector(".desc-link").addEventListener("click", () => {
-          const desc = banner.querySelector(".description");
-          desc.style.display = desc.style.display === "block" ? "none" : "block";
+        jobCard.querySelector(".toggle-desc").addEventListener("click", e => {
+          const details = jobCard.querySelector(".job-details");
+          details.style.display = details.style.display === "block" ? "none" : "block";
+          e.target.textContent = details.style.display === "block" ? "Hide Details" : "View Details";
         });
-
-        list.appendChild(banner);
       });
     }
 
-    // Search + filter
+    // Search & Filter
     document.getElementById("searchInput").addEventListener("input", filterJobs);
     document.getElementById("filterSelect").addEventListener("change", filterJobs);
 
     async function filterJobs() {
-      const query = document.getElementById("searchInput").value.toLowerCase();
-      const roleFilter = document.getElementById("filterSelect").value;
-
-      const res = await fetch(SHEETDB_URL);
+      const res = await fetch("jobs.json");
       let jobs = await res.json();
+      const search = document.getElementById("searchInput").value.toLowerCase();
+      const filter = document.getElementById("filterSelect").value;
 
-      jobs = jobs.filter(job => {
-        return (!query || job.location?.toLowerCase().includes(query)) &&
-               (!roleFilter || job.role === roleFilter);
-      });
+      jobs = jobs.filter(job => 
+        job.location.toLowerCase().includes(search) && 
+        (filter === "all" || job.title === filter)
+      );
 
-      jobs.sort((a, b) => new Date(b.date) - new Date(a.date));
       renderJobs(jobs);
     }
 
-    // Floating WhatsApp tooltip every 10s
-    const tooltip = document.getElementById("tooltip");
+    // Floating WhatsApp tooltip
     setInterval(() => {
-      tooltip.classList.add("show");
-      setTimeout(() => tooltip.classList.remove("show"), 2000);
+      const tooltip = document.getElementById("tooltip");
+      tooltip.style.display = "block";
+      setTimeout(() => tooltip.style.display = "none", 2000);
     }, 10000);
 
-    // Init
-    fetchJobs();
+    // Scroll to top
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    window.addEventListener("scroll", () => {
+      scrollTopBtn.style.display = window.scrollY > 200 ? "block" : "none";
+    });
+    scrollTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    loadJobs();
   </script>
+  <script src="jobs-available.json></script>
 </body>
 </html>
