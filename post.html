@@ -254,59 +254,51 @@ document.addEventListener("DOMContentLoaded", () => {
   const shareBtn = document.getElementById("shareBtn");
 
   shareBtn.addEventListener("click", async () => {
-    const imageUrl = "post-image.jpg"; // replace with your post image path
-
     try {
-      // Fetch the image as a Blob
-      const response = await fetch(imageUrl);
-      const blob = await response.blob();
-      const file = new File([blob], "post-image.jpg", { type: blob.type });
+      // Detect post title (or fallback to document title)
+      const title = document.querySelector("h1, h2, .post-title")?.innerText || document.title;
 
-      // Check if browser supports file sharing
-      if (navigator.canShare && navigator.canShare({ files: [file] })) {
-        await navigator.share({
-          title: document.title,
-          text: "📢 At JobTrust Connect we provide top-notch care services to individuals in need. We value our caregivers and strive to create a supportive work environment that fosters growth and development.",
-          url: window.location.href,
-          files: [file]   // 👈 include image file
-        });
-      } else if (navigator.share) {
-        // fallback without image
-        await navigator.share({
-          title: document.title,
-          text: "📢 At JobTrust Connect we provide top-notch care services to individuals in need. We value our caregivers and strive to create a supportive work environment that fosters growth and development.",
-          url: window.location.href
-        });
-      } else {
-        alert("Your browser does not support Web Share API with files.");
+      // Detect first image
+      const imgElement = document.querySelector(".post img, article img, img");
+      let file = null;
+
+      if (imgElement) {
+        const response = await fetch(imgElement.src);
+        const blob = await response.blob();
+        file = new File([blob], "post-image.jpg", { type: blob.type });
       }
+
+      // Custom text, trimmed to ~200 characters
+      let textContent = `📢 ${title}\nAt JobTrust Connect, we provide top-notch care services.`;
+      if (textContent.length > 200) {
+        textContent = textContent.slice(0, 197) + "...";
+      }
+
+      // Build share data
+      const shareData = {
+        title: title,
+        text: textContent,
+        url: window.location.href
+      };
+
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+        shareData.files = [file];
+      }
+
+      // Share API call
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        alert("Your browser does not support Web Share API.");
+      }
+
     } catch (err) {
       console.log("Share failed:", err.message);
     }
   });
 });
 </script>
- <!--<script>
-document.addEventListener("DOMContentLoaded", () => {
-  const shareBtn = document.getElementById("shareBtn");
-
-  shareBtn.addEventListener("click", async () => {
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: document.title,  // grabs page title
-          text: ".  At JobTrust Connect We provide top-notch care services to individuals in need. We value our caregivers and strive to create a supportive work environment that fosters growth and development.site!", // custom post message
-          url: window.location.href  // current page link
-        });
-      } catch (err) {
-        console.log("Share failed:", err.message);
-      }
-    } else {
-      alert("Your browser does not support Web Share API.");
-    }
-  });
-});
-</script> -->
+ 
   <style>
 #shareBtn {
   position: fixed;
