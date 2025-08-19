@@ -42,7 +42,7 @@
 
 <!-- Floating Share Button -->
 <button id="shareBtn" title="Share"><i class="fas fa-share-alt"></i></button>
-
+<!--<button id="shareBtn">Share</button>-->
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
@@ -197,7 +197,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Share API
-  shareBtn.addEventListener("click", async () => {
+/*  shareBtn.addEventListener("click", async () => {
     if (navigator.share) {
       try {
         await navigator.share({
@@ -211,5 +211,25 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Your browser does not support Web Share API.");
     }
   });
+});
+</script>
+
+
+<script>
+document.getElementById("shareBtn").addEventListener("click", async () => {
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: "Member Registration",
+        text: "Check out this registration form.",
+        url: window.location.href
+      });
+      console.log("Shared successfully");
+    } catch (err) {
+      console.error("Error sharing:", err);
+    }
+  } else {
+    alert("Sharing is not supported on this browser. Please copy the link manually.");
+  }
 });
 </script>
