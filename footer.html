@@ -197,39 +197,24 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // Share API
-/*  shareBtn.addEventListener("click", async () => {
+  shareBtn.addEventListener("click", async () => {
     if (navigator.share) {
       try {
         await navigator.share({
           title: document.title,
+          text: "Check out this registration page!",
           url: window.location.href
         });
+        console.log("Shared successfully");
       } catch (err) {
         console.log("Share failed:", err.message);
       }
     } else {
-      alert("Your browser does not support Web Share API.");
+      // Fallback: copy link
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        alert("Link copied! You can paste it to share.");
+      });
     }
   });
-});
-</script>
-
-
-<script>
-document.getElementById("shareBtn").addEventListener("click", async () => {
-  if (navigator.share) {
-    try {
-      await navigator.share({
-        title: "Member Registration",
-        text: "Check out this registration form.",
-        url: window.location.href
-      });
-      console.log("Shared successfully");
-    } catch (err) {
-      console.error("Error sharing:", err);
-    }
-  } else {
-    alert("Sharing is not supported on this browser. Please copy the link manually.");
-  }
 });
 </script>
