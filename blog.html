@@ -54,7 +54,7 @@
     .read-more:hover {
       background: #003049;
     }
-
+/*
   header {
     display: flex;
     justify-content: space-between;
@@ -68,7 +68,56 @@
     margin: 0;
     font-size: 24px;
     color: #333;
-  }
+  }*/
+
+    header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  background: #001219;
+  color: white;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.header-right {
+  position: relative;
+}
+
+.search-btn {
+  background: transparent;
+  border: none;
+  font-size: 1.3rem;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.3s ease;
+}
+
+.search-btn:hover {
+  transform: scale(1.2);
+}
+
+#searchInput {
+  position: absolute;
+  right: 0;
+  top: 120%;
+  width: 0;
+  opacity: 0;
+  padding: 8px;
+  border: 1px solid white;
+  border-radius: 5px;
+  outline: none;
+  background: #fff;
+  color: #000;
+  transition: all 0.4s ease-in-out;
+}
+
+#searchInput.active {
+  width: 220px;
+  opacity: 1;
+}
 
   .home-btn {
     background: #00bfff; /* water blue */
@@ -212,5 +261,33 @@ setInterval(() => {
       document.getElementById("footer").innerHTML = data;
     });
 </script>
+<script>
+  const searchToggle = document.getElementById("searchToggle");
+  const searchInput = document.getElementById("searchInput");
+
+  // Toggle search input
+  searchToggle.addEventListener("click", () => {
+    searchInput.classList.toggle("active");
+    if (searchInput.classList.contains("active")) {
+      searchInput.focus();
+    }
+  });
+
+  // Filter articles (for blog.html with cards)
+  searchInput.addEventListener("keyup", function () {
+    let filter = this.value.toLowerCase();
+    let cards = document.querySelectorAll(".card");
+
+    cards.forEach(card => {
+      let text = card.textContent.toLowerCase();
+      if (text.includes(filter)) {
+        card.style.display = "";
+      } else {
+        card.style.display = "none";
+      }
+    });
+  });
+</script>
+  
 </body>
 </html>
