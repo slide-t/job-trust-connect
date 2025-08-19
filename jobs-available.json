@@ -1,86 +1,17 @@
 [
-  {
-    "title": "Care-Giver",
-    "location": "Ogun",
-    "date": "09/01/2025",
-    "description": "Assist patients with daily care, provide companionship and monitor health.",
-    "image": "https://via.placeholder.com/120?text=Care+Giver"
-  },
-  {
-    "title": "Care-Giver",
-    "location": "Lagos",
-    "date": "09/05/2025",
-    "description": "Provide support for elderly clients including personal care and light housekeeping.",
-    "image": "https://via.placeholder.com/120?text=Care+Giver"
-  },
-  {
-    "title": "Care-Giver",
-    "location": "Abuja",
-    "date": "09/10/2025",
-    "description": "Support special needs children with daily learning and care activities.",
-    "image": "https://via.placeholder.com/120?text=Care+Giver"
-  },
-  {
-    "title": "Driver",
-    "location": "Ogun",
-    "date": "09/02/2025",
-    "description": "Safely drive clients to appointments and errands. Must have valid license.",
-    "image": "https://via.placeholder.com/120?text=Driver"
-  },
-  {
-    "title": "Driver",
-    "location": "Lagos",
-    "date": "09/06/2025",
-    "description": "Transport goods and assist with loading/unloading at job sites.",
-    "image": "https://via.placeholder.com/120?text=Driver"
-  },
-  {
-    "title": "Driver",
-    "location": "Abuja",
-    "date": "09/12/2025",
-    "description": "Provide shuttle services for staff and clients within the city.",
-    "image": "https://via.placeholder.com/120?text=Driver"
-  },
-  {
-    "title": "Cleaner",
-    "location": "Ogun",
-    "date": "09/03/2025",
-    "description": "Maintain cleanliness of offices and staff quarters.",
-    "image": "https://via.placeholder.com/120?text=Cleaner"
-  },
-  {
-    "title": "Cleaner",
-    "location": "Lagos",
-    "date": "09/07/2025",
-    "description": "Perform cleaning duties in residential and office spaces.",
-    "image": "https://via.placeholder.com/120?text=Cleaner"
-  },
-  {
-    "title": "Cleaner",
-    "location": "Abuja",
-    "date": "09/13/2025",
-    "description": "Assist with sanitation services in healthcare facilities.",
-    "image": "https://via.placeholder.com/120?text=Cleaner"
-  },
-  {
-    "title": "Sales Rep",
-    "location": "Ogun",
-    "date": "09/04/2025",
-    "description": "Promote products, handle customer inquiries, and drive sales growth.",
-    "image": "https://via.placeholder.com/120?text=Sales+Rep"
-  },
-  {
-    "title": "Sales Rep",
-    "location": "Lagos",
-    "date": "09/08/2025",
-    "description": "Manage retail sales and expand client base in Lagos.",
-    "image": "https://via.placeholder.com/120?text=Sales+Rep"
-  },
-  {
-    "title": "Sales Rep",
-    "location": "Abuja",
-    "date": "09/14/2025",
-    "description": "Engage in B2B marketing and corporate sales development.",
-    "image": "https://via.placeholder.com/120?text=Sales+Rep"
-  }
+  { "title": "Care-Giver", "location": "Ogun", "date": "09/10/2025", "image": "https://via.placeholder.com/80", "description": "Provide professional care and support to elderly patients." },
+  { "title": "Care-Giver", "location": "Lagos", "date": "09/12/2025", "image": "https://via.placeholder.com/80", "description": "Assist with personal care and household activities." },
+  { "title": "Care-Giver", "location": "Abuja", "date": "09/15/2025", "image": "https://via.placeholder.com/80", "description": "Deliver quality care and companionship services." },
+
+  { "title": "Driver", "location": "Oyo", "date": "09/11/2025", "image": "https://via.placeholder.com/80", "description": "Transport staff and goods safely." },
+  { "title": "Driver", "location": "Kano", "date": "09/13/2025", "image": "https://via.placeholder.com/80", "description": "Responsible for company vehicle maintenance and driving." },
+  { "title": "Driver", "location": "Ogun", "date": "09/14/2025", "image": "https://via.placeholder.com/80", "description": "Ensure safe transportation for clients and staff." },
+
+  { "title": "Cleaner", "location": "Lagos", "date": "09/16/2025", "image": "https://via.placeholder.com/80", "description": "Maintain a clean and hygienic workspace." },
+  { "title": "Cleaner", "location": "Abuja", "date": "09/17/2025", "image": "https://via.placeholder.com/80", "description": "Ensure cleanliness in office and client spaces." },
+  { "title": "Cleaner", "location": "Kano", "date": "09/18/2025", "image": "https://via.placeholder.com/80", "description": "Assist with sanitation and cleaning duties." },
+
+  { "title": "Sales Rep", "location": "Oyo", "date": "09/19/2025", "image": "https://via.placeholder.com/80", "description": "Promote and sell company products to clients." },
+  { "title": "Sales Rep", "location": "Ogun", "date": "09/20/2025", "image": "https://via.placeholder.com/80", "description": "Meet clients and hit monthly sales targets." },
+  { "title": "Sales Rep", "location": "Lagos", "date": "09/21/2025", "image": "https://via.placeholder.com/80", "description": "Engage new clients and maintain existing accounts." }
 ]
