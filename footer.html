@@ -1,59 +1,3 @@
-
-
-<style>
-  #scrollTopBtn {
-    display: none;
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    z-index: 99;
-    font-size: 18px;
-    border: none;
-    outline: none;
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    cursor: pointer;
-    padding: 12px 15px;
-    border-radius: 50%;
-    backdrop-filter: blur(5px);
-    transition: background 0.3s, transform 0.3s;
-  }
-  #scrollTopBtn:hover {
-    background: rgba(255, 255, 255, 0.4);
-    transform: scale(1.1);
-  }
-</style>
-
-<script>
-(function(){
-  function initScrollTop() {
-    const scrollTopBtn = document.getElementById("scrollTopBtn");
-    if (!scrollTopBtn) return;
-
-    window.addEventListener("scroll", function () {
-      if (document.documentElement.scrollTop > 200) {
-        scrollTopBtn.style.display = "block";
-      } else {
-        scrollTopBtn.style.display = "none";
-      }
-    });
-
-    scrollTopBtn.addEventListener("click", function () {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-  }
-
-  // If footer is injected dynamically, delay init
-  if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initScrollTop);
-  } else {
-    initScrollTop();
-  }
-})();
-</script>
-<!-- Inside footer.html -->
-<button id="scrollTopBtn" title="Go to top">↑</button>
-
 <!-- Footer -->
 <footer class="site-footer">
   <div class="footer-container">
@@ -82,149 +26,190 @@
       </ul>
     </div>
   </div>
+
   <!-- Bottom Section -->
   <div class="footer-bottom">
-    
     <a href="index.html">Home</a> |
     <a href="privacy.html">Privacy Policy</a> |
-    <a href="terms.html">Term & Conditions</a> |
-    <a href="company-policy">Company Policies</a>
+    <a href="terms.html">Terms & Conditions</a> |
+    <a href="company-policy.html">Company Policies</a>
     <p>&copy; 2025 JobTrust Connect. All Rights Reserved.</p>
-    
   </div>
 </footer>
 
+<!-- Scroll to Top Button -->
+<button id="scrollTopBtn" title="Go to top">↑</button>
+
+<!-- Floating Share Button -->
+<button id="shareBtn" title="Share"><i class="fas fa-share-alt"></i></button>
 
 <!-- Font Awesome -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
-<!-- Footer Styles -->
 <style>
-  .site-footer {
-    background-color: #001219;
-    color: white;
-    padding: 2rem 1rem;
-    font-family: Arial, sans-serif;
-  }
+/* Footer */
+.site-footer {
+  background-color: #001219;
+  color: white;
+  padding: 2rem 1rem;
+  font-family: Arial, sans-serif;
+}
 
-  .footer-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 2rem;
-    max-width: 1200px;
-    margin: auto;
-  }
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
 
-  .footer-social h3,
-  .footer-links h3 {
-    color: #ff69b4;
-    margin-bottom: 0.8rem;
-  }
+.footer-social h3,
+.footer-links h3 {
+  color: #ff69b4;
+  margin-bottom: 0.8rem;
+}
 
-  .social-icons a {
-    color: white;
-    font-size: 1.2rem;
-    margin-right: 20px;
-    transition: color 0.3s;
-  }
+/* Social Icons */
+.social-icons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
 
-  .social-icons a:hover {
-    color: #ff69b4;
-  }
+.social-icons a {
+  color: white;
+  font-size: 1.4rem;
+  transition: transform 0.3s, color 0.3s;
+}
 
-  .footerlinks ul {
-    list-style: none;
-    padding: 0;
-  }
+.social-icons a:hover {
+  color: #ff69b4;
+  transform: scale(1.2);
+}
 
-  .footer-links ul li {
-    margin: 0.75rem 0;
-  }
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
 
-  .footer-links ul li a {
-    color: white;
-    text-decoration: none;
-    transition: color 0.3s;
-  }
+.footer-links ul li {
+  margin: 0.75rem 0;
+}
 
-  .footer-links ul li a:hover {
-    color: #ff69b4;
-  }
+.footer-links ul li a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s;
+}
 
-  .footer-bottom {
-    text-align: center;
-    margin-top: 2rem;
-    border-top: 1px solid #333;
-    padding-top: 1rem;
-    font-size: 0.9rem;
-  }
+.footer-links ul li a:hover {
+  color: #ff69b4;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 2rem;
+  border-top: 1px solid #333;
+  padding-top: 1rem;
+  font-size: 0.9rem;
+}
+
 .footer-bottom a {
   text-decoration: none;
   color: #eee;
-  
-
+  margin: 0 5px;
 }
-  /* Mobile Layout */
-  @media (max-width: 768px) {
-    .footer-container {
-      flex-direction: column;
-      text-align: center;
-    }
 
-    .social-icons {
-      justify-content: center;
-      display: flex;
-    }
+/* Scroll to Top */
+#scrollTopBtn {
+  display: none;
+  position: fixed;
+  bottom: 50px;
+  right: 30px;
+  z-index: 9999;
+  font-size: 18px;
+  border: 2px solid grey;
+  outline: none;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  padding: 12px 15px;
+  border-radius: 50%;
+  transition: background 0.3s, transform 0.3s;
+}
+
+#scrollTopBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: scale(1.1);
+}
+
+/* Floating Share Button */
+#shareBtn {
+  position: fixed;
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
+  z-index: 10000;
+  border: 2px solid grey;
+  background: transparent;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 12px;
+  border-radius: 50%;
+  transition: transform 0.3s, background 0.3s;
+}
+
+#shareBtn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-50%) scale(1.1);
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+  .footer-container {
+    flex-direction: column;
+    text-align: center;
   }
-
-  
-
-  
-</style>
-<!-- Scroll to Top Button -->
-<button id="scrollTopBtn" title="Go to top">↑</button>
-
-<style>
-  #scrollTopBtn {
-    display: none;
-    position: fixed;
-    bottom: 50px;
-    right: 30px;
-    z-index: 9999;
-    font-size: 18px;
-    border: none;
-    outline: none;
-    background: rgba(255, 255, 255, 0.2);
-    color: #fff;
-    cursor: pointer;
-    padding: 12px 15px;
-    border-radius: 50%;
-    backdrop-filter: blur(5px);
-    transition: background 0.3s, transform 0.3s;
+  .social-icons {
+    justify-content: center;
   }
-  #scrollTopBtn:hover {
-    background: rgba(255, 255, 255, 0.4);
-    transform: scale(1.1);
-  }
+}
 </style>
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
-    const scrollTopBtn = document.getElementById("scrollTopBtn");
+  const scrollTopBtn = document.getElementById("scrollTopBtn");
+  const shareBtn = document.getElementById("shareBtn");
 
-    window.addEventListener("scroll", function () {
-        if (document.documentElement.scrollTop > 200) {
-            scrollTopBtn.style.display = "block";
-        } else {
-            scrollTopBtn.style.display = "none";
-        }
-    });
+  // Scroll Top
+  window.addEventListener("scroll", function () {
+    if (document.documentElement.scrollTop > 200) {
+      scrollTopBtn.style.display = "block";
+    } else {
+      scrollTopBtn.style.display = "none";
+    }
+  });
 
-    scrollTopBtn.addEventListener("click", function () {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  scrollTopBtn.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Share API
+  shareBtn.addEventListener("click", async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: document.title,
+          url: window.location.href
+        });
+      } catch (err) {
+        console.log("Share failed:", err.message);
+      }
+    } else {
+      alert("Your browser does not support Web Share API.");
+    }
+  });
 });
 </script>
-
-
