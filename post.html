@@ -243,6 +243,29 @@
       });
     });
   </script>
+  <button id="shareBtn">Share 📤</button>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const shareBtn = document.getElementById("shareBtn");
+
+  shareBtn.addEventListener("click", async () => {
+    alert("Button clicked!"); // Test if the button responds
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Registration Page",
+          text: "Check this out!",
+          url: window.location.href
+        });
+      } catch (err) {
+        alert("Share failed: " + err.message);
+      }
+    } else {
+      alert("Your browser does not support Web Share API.");
+    }
+  });
+});
+</script>  
 </body>
 </html>
 
