@@ -243,7 +243,12 @@
       });
     });
   </script>
-  <button id="shareBtn">Share 📤</button>
+  <button id="shareBtn" aria-label="Share this post">
+  <!-- SVG Share Icon -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="white" viewBox="0 0 24 24">
+    <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.05-4.11a2.5 2.5 0 1 0-.91-1.45L8 9.91a2.5 2.5 0 1 0 0 4.18l7.14 4.12c.43.26.94.39 1.46.39a2.5 2.5 0 1 0 1.4-4.52z"/>
+  </svg>
+  </button>
  <script>
 document.addEventListener("DOMContentLoaded", () => {
   const shareBtn = document.getElementById("shareBtn");
@@ -265,3 +270,28 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 </script> 
+  <style>
+#shareBtn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #0077ff;
+  border: none;
+  border-radius: 50%;
+  padding: 15px;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: background 0.3s ease;
+  z-index: 1000;
+}
+
+#shareBtn:hover {
+  background: #005fcc;
+}
+
+#shareBtn svg {
+  display: block;
+}
+  </style>
+</body>
+</html>
