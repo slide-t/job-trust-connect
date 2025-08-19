@@ -249,8 +249,44 @@
   </svg>
 </button>
 
-  
- <script>
+  <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const shareBtn = document.getElementById("shareBtn");
+
+  shareBtn.addEventListener("click", async () => {
+    const imageUrl = "post-image.jpg"; // replace with your post image path
+
+    try {
+      // Fetch the image as a Blob
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      const file = new File([blob], "post-image.jpg", { type: blob.type });
+
+      // Check if browser supports file sharing
+      if (navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          title: document.title,
+          text: "📢 At JobTrust Connect we provide top-notch care services to individuals in need. We value our caregivers and strive to create a supportive work environment that fosters growth and development.",
+          url: window.location.href,
+          files: [file]   // 👈 include image file
+        });
+      } else if (navigator.share) {
+        // fallback without image
+        await navigator.share({
+          title: document.title,
+          text: "📢 At JobTrust Connect we provide top-notch care services to individuals in need. We value our caregivers and strive to create a supportive work environment that fosters growth and development.",
+          url: window.location.href
+        });
+      } else {
+        alert("Your browser does not support Web Share API with files.");
+      }
+    } catch (err) {
+      console.log("Share failed:", err.message);
+    }
+  });
+});
+</script>
+ <!--<script>
 document.addEventListener("DOMContentLoaded", () => {
   const shareBtn = document.getElementById("shareBtn");
 
@@ -270,7 +306,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
-</script> 
+</script> -->
   <style>
 #shareBtn {
   position: fixed;
