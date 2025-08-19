@@ -92,60 +92,7 @@
     <p>&copy; 2025 JobTrust Connect. All Rights Reserved.</p>
     
   </div>
-  <!-- Share Buttons -->
-<div class="share-buttons">
-  <p>Share this post:</p>
-  <button onclick="shareOnWhatsApp()">WhatsApp</button>
-  <button onclick="shareOnFacebook()">Facebook</button>
-  <button onclick="shareOnTwitter()">Twitter</button>
-  <button onclick="copyPostLink()">Copy Link</button>
-</div>
 </footer>
-<style>
-.share-buttons {
-  margin-top: 20px;
-  padding: 10px;
-  border-top: 1px solid #ddd;
-}
-.share-buttons p {
-  margin-bottom: 10px;
-  font-weight: bold;
-}
-.share-buttons button {
-  margin: 5px;
-  padding: 8px 12px;
-  border: none;
-  background: #001219;
-  color: #fff;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.share-buttons button:hover {
-  background: #005f73;
-}
-</style>
-<script>
-function shareOnWhatsApp() {
-  const url = window.location.href;
-  window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank');
-}
-
-function shareOnFacebook() {
-  const url = window.location.href;
-  window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
-}
-
-function shareOnTwitter() {
-  const url = window.location.href;
-  window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=Check this out!`, '_blank');
-}
-
-function copyPostLink() {
-  navigator.clipboard.writeText(window.location.href)
-    .then(() => alert("Post link copied to clipboard!"))
-    .catch(err => console.error("Error copying link", err));
-}
-    </script>
 
 
 <!-- Font Awesome -->
@@ -186,7 +133,7 @@ function copyPostLink() {
     color: #ff69b4;
   }
 
-  .footer-links ul {
+  .footerlinks ul {
     list-style: none;
     padding: 0;
   }
