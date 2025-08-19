@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Job Application Form</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -12,7 +13,6 @@
       margin: 0;
       padding: 20px;
     }
-
     .container {
       background: #222;
       max-width: 750px;
@@ -21,32 +21,16 @@
       border-radius: 10px;
       box-shadow: 0 0 20px rgba(0,0,0,0.6);
     }
-
-    h1, h2 {
-      color: #fff;
-      text-align: center;
-    }
-
-    label {
-      display: block;
-      margin-bottom: 15px;
-    }
-
+    h1, h2 { color: #fff; text-align: center; }
+    label { display: block; margin-bottom: 15px; }
     input, select, textarea {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border-radius: 6px;
-      border: 1px solid #444;
-      background: #111;
-      color: #eee;
+      width: 100%; padding: 10px; margin-top: 5px;
+      border-radius: 6px; border: 1px solid #444;
+      background: #111; color: #eee;
     }
-
     input:focus, select:focus, textarea:focus {
-      border-color: #4da6ff;
-      outline: none;
+      border-color: #4da6ff; outline: none;
     }
-
     button {
       padding: 12px 25px;
       background-color: #4da6ff;
@@ -57,118 +41,64 @@
       margin: 10px 5px 0 0;
       font-weight: bold;
     }
-
-    button:hover {
-      background-color: #1e90ff;
-    }
-
-    .form-section {
-      display: none;
-    }
-    .form-section.active {
-      display: block;
-      animation: fadeIn 0.5s ease-in-out;
-    }
+    button:hover { background-color: #1e90ff; }
+    .form-section { display: none; }
+    .form-section.active { display: block; animation: fadeIn 0.5s ease-in-out; }
     @keyframes fadeIn {
       from {opacity: 0; transform: translateY(10px);}
       to {opacity: 1; transform: translateY(0);}
     }
-
-    .photo-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 1rem;
-    }
-    .photo-preview img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-      border-radius: 8px;
-      border: 1px solid #555;
-    }
-
     .success-message {
-      display: none;
-      background: #1f6f3a;
-      padding: 20px;
-      border-radius: 8px;
-      margin-top: 20px;
-      color: #fff;
-      text-align: center;
+      display: none; background: #1f6f3a; padding: 20px;
+      border-radius: 8px; margin-top: 20px; color: #fff; text-align: center;
     }
+  .share-container {
+  margin-top: 20px;
+  position: relative;
+}
 
-    /* Bridge of Contract Modal */
-    .modal {
-      position: fixed;
-      top:0; left:0;
-      width:100%; height:100%;
-      background: rgba(0,0,0,0.9);
-      display:flex; align-items:center; justify-content:center;
-      z-index:1000;
-    }
-    .modal-content {
-      background: rgba(255,255,255,0.05);
-      border: 2px solid red;
-      padding: 20px;
-      max-width: 500px;
-      text-align:center;
-      line-height:1.6;
-      border-radius:10px;
-      color: red;
-    }
-    .modal-content a {
-      color: #ff4d4d;
-      text-decoration: underline;
-      font-weight: bold;
-    }
-    .modal button {
-      background: transparent;
-      border: 2px solid red;
-      color: red;
-      font-weight: bold;
-      margin-top: 20px;
-      padding: 10px 20px;
-    }
+.share-btn {
+  background: #0077cc;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.share-options {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.share-options a {
+  text-decoration: none;
+  background: #f4f4f4;
+  padding: 6px 12px;
+  border-radius: 5px;
+  font-size: 13px;
+  color: #333;
+  border: 1px solid #ddd;
+}
+
+.hidden {
+  display: none;
+}
   </style>
 </head>
 <body>
-
-  <!-- Bridge of Contract Modal -->
-  <div id="contractModal" class="modal">
-    <div class="modal-content">
-      <h2>Bridge of Contract</h2>
-      <p>
-  Dear Job Seekers, our clients are like family and deserve to be treated with the utmost respect. However, your role <em>must</em> remain strictly professional. Please avoid any personal or business <strong>relationships</strong> that could result in a 
-  <a href="company-policy.html" target="_blank"><u>breach of our company policies</u></a>.  
-  At JobTrust Connect, we uphold fairness, integrity, and professionalism as our core values.
-</p>
-      <button onclick="closeModal()">I Understand</button>
-    </div>
-  </div>
-
   <main class="container">
     <h1>Job Application Form</h1>
 
-    <form id="jobForm" action="https://formspree.io/f/mgvzpoge" method="POST" enctype="multipart/form-data">
-      
-      <!-- Photo Upload -->
-      <div class="photo-container">
-        <div>
-          <label for="photo">Upload Passport Photo (Required):</label>
-          <input type="file" id="photo" name="photo" accept="image/*" onchange="previewPhoto(event)" required>
-        </div>
-        <div class="photo-preview">
-          <img id="photoDisplay" src="" alt="Passport Photo" />
-        </div>
-      </div>
-
-      <!-- Section 1: Personal Info -->
+    <form id="jobForm">
+      <!-- Section 1 -->
       <section class="form-section active" id="section1">
         <h2>Personal Information</h2>
-        <label>Full Name <input type="text" name="fullName" required></label>
-        <label>Email <input type="email" name="email" required></label>
-        <label>Phone Number <input type="tel" name="phone" required></label>
+        <label>Full Name <input type="text" name="fullname" required></label>
+        <label>Phone Number <input type="tel" name="phoneNumber" required></label>
         <label>Gender
           <select name="gender" required>
             <option value="">Select</option>
@@ -176,74 +106,18 @@
             <option>Female</option>
           </select>
         </label>
-        <label>Home Address <textarea name="address" required></textarea></label>
-        <button type="button" onclick="nextSection(1)">Next</button>
-      </section>
-
-      <!-- Section 2: BioData -->
-      <section class="form-section" id="section2">
-        <h2>BioData</h2>
-        <label>Date of Birth <input type="date" name="dob" required></label>
-        <label>State of Origin
-          <select name="state" required>
-            <option value="">Select State</option>
-            <option>Abia</option><option>Adamawa</option><option>Akwa Ibom</option>
-            <option>Anambra</option><option>Bauchi</option><option>Bayelsa</option>
-            <option>Benue</option><option>Borno</option><option>Cross River</option>
-            <option>Delta</option><option>Ebonyi</option><option>Edo</option>
-            <option>Ekiti</option><option>Enugu</option><option>FCT</option>
-            <option>Gombe</option><option>Imo</option><option>Jigawa</option>
-            <option>Kaduna</option><option>Kano</option><option>Katsina</option>
-            <option>Kebbi</option><option>Kogi</option><option>Kwara</option>
-            <option>Lagos</option><option>Nasarawa</option><option>Niger</option>
-            <option>Ogun</option><option>Ondo</option><option>Osun</option>
-            <option>Oyo</option><option>Plateau</option><option>Rivers</option>
-            <option>Sokoto</option><option>Taraba</option><option>Yobe</option>
-            <option>Zamfara</option>
+        <label>Age <input type="number" name="age" min="18" required></label>
+        <label>Marital Status
+          <select name="marital_status" required>
+            <option value="">Select</option>
+            <option>Single</option>
+            <option>Married</option>
+            <option>Divorced</option>
+            <option>Widowed</option>
           </select>
         </label>
-        <label>Local Government Area
-          <input type="text" name="lga" required>
-        </label>
-        <div>
-          <button type="button" onclick="prevSection(2)">Back</button>
-          <button type="button" onclick="nextSection(2)">Next</button>
-        </div>
-      </section>
-
-      <!-- Section 3: Guarantor -->
-      <section class="form-section" id="section3">
-        <h2>Guarantor Information</h2>
-        <label>Full Name <input type="text" name="guarantorName" required></label>
-        <label>Relationship <input type="text" name="guarantorRelationship" required></label>
-        <label>Contact Number (+234 prefilled)
-          <input type="tel" name="guarantorPhone" value="+234" required>
-        </label>
-        <label>Address <textarea name="guarantorAddress" required></textarea></label>
-        <div>
-          <button type="button" onclick="prevSection(3)">Back</button>
-          <button type="button" onclick="nextSection(3)">Next</button>
-        </div>
-      </section>
-
-      <!-- Section 4: Resume Upload -->
-      <section class="form-section" id="section4">
-        <h2>Resume Upload (Optional)</h2>
-        <label>Upload Resume <input type="file" name="resume" accept=".pdf,.doc,.docx"></label>
-        <div>
-          <button type="button" onclick="prevSection(4)">Back</button>
-          <button type="button" onclick="nextSection(4)">Next</button>
-        </div>
-      </section>
-
-      <!-- Section 5: Review -->
-      <section class="form-section" id="section5">
-        <h2>Review & Submit</h2>
-        <p>Please confirm all your details are correct.</p>
-        <div>
-          <button type="button" onclick="prevSection(5)">Back</button>
-          <button type="submit">Submit</button>
-        </div>
+        <label>Home Address <textarea name="address" required></textarea></label>
+        <button type="button" onclick="previewPDF()">Preview</button>
       </section>
     </form>
 
@@ -252,55 +126,88 @@
     </div>
   </main>
 
+<script>
+  // ✅ Preview PDF before submit
+  function previewPDF() {
+    const form = document.getElementById("jobForm");
+    if (!form.checkValidity()) {
+      alert("Please fill all required fields.");
+      return;
+    }
+
+    const data = Object.fromEntries(new FormData(form));
+
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(16);
+    doc.text("Job Application Preview", 20, 20);
+
+    let y = 40;
+    for (const [key, value] of Object.entries(data)) {
+      doc.text(`${key}: ${value}`, 20, y);
+      y += 10;
+    }
+
+    // Save preview locally
+    doc.save("Job_Application_Preview.pdf");
+
+    if (confirm("Do you want to submit this application?")) {
+      submitToSheetDB(data);
+    }
+  }
+
+  // ✅ Submit to SheetDB
+  function submitToSheetDB(data) {
+    fetch("https://sheetdb.io/api/v1/YOUR_SHEETDB_API_ID", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ data: [data] })
+    })
+    .then(res => res.json())
+    .then(() => {
+      document.getElementById("jobForm").style.display = "none";
+      document.getElementById("successMessage").style.display = "block";
+    })
+    .catch(err => alert("Submission failed: " + err));
+  }
+</script>
+  <!-- Share Button -->
+<div class="share-container">
+  <button class="share-btn">Share This Post</button>
+  <div class="share-options hidden">
+    <a id="share-facebook" target="_blank">Facebook</a>
+    <a id="share-twitter" target="_blank">Twitter</a>
+    <a id="share-whatsapp" target="_blank">WhatsApp</a>
+    <a id="share-email" target="_blank">Email</a>
+  </div>
+</div>
   <script>
-    function closeModal() {
-      document.getElementById('contractModal').style.display = 'none';
-    }
+document.addEventListener("DOMContentLoaded", function() {
+  const shareBtn = document.querySelector(".share-btn");
+  const shareOptions = document.querySelector(".share-options");
 
-    function previewPhoto(event) {
-      const file = event.target.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        document.getElementById('photoDisplay').src = reader.result;
-      }
-      if (file) reader.readAsDataURL(file);
-    }
+  // Toggle options on button click
+  shareBtn.addEventListener("click", () => {
+    shareOptions.classList.toggle("hidden");
+  });
 
-    function nextSection(step) {
-      const current = document.getElementById('section' + step);
-      const inputs = current.querySelectorAll("input[required], select[required], textarea[required]");
-      for (let i of inputs) {
-        if (!i.value) {
-          alert("Please fill all required fields before continuing.");
-          return;
-        }
-      }
-      current.classList.remove('active');
-      document.getElementById('section' + (step + 1)).classList.add('active');
-    }
+  // Build share URLs dynamically
+  const postTitle = document.querySelector("h1")?.innerText || "Read this post";
+  const postUrl = window.location.href;
 
-    function prevSection(step) {
-      document.getElementById('section' + step).classList.remove('active');
-      document.getElementById('section' + (step - 1)).classList.add('active');
-    }
+  document.getElementById("share-facebook").href =
+    `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(postUrl)}`;
 
-    document.getElementById('jobForm').addEventListener('submit', function (e) {
-      e.preventDefault();
-      const form = e.target;
+  document.getElementById("share-twitter").href =
+    `https://twitter.com/intent/tweet?text=${encodeURIComponent(postTitle)}&url=${encodeURIComponent(postUrl)}`;
 
-      fetch(form.action, {
-        method: 'POST',
-        body: new FormData(form),
-        headers: { 'Accept': 'application/json' }
-      }).then(response => {
-        if (response.ok) {
-          document.getElementById('jobForm').style.display = 'none';
-          document.getElementById('successMessage').style.display = 'block';
-        } else {
-          alert("Form submission failed. Try again.");
-        }
-      }).catch(() => alert("Network error. Please try again."));
-    });
-  </script>
+  document.getElementById("share-whatsapp").href =
+    `https://wa.me/?text=${encodeURIComponent(postTitle + " " + postUrl)}`;
+
+  document.getElementById("share-email").href =
+    `mailto:?subject=${encodeURIComponent(postTitle)}&body=${encodeURIComponent(postUrl)}`;
+});
+</script>
 </body>
 </html>
