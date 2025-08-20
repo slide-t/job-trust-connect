@@ -1,4 +1,5 @@
-// app.js
+
+
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("appForm");
   const sections = document.querySelectorAll(".form-section");
@@ -67,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 🔹 Step navigation
   function showStep(index) {
     sections.forEach((sec, i) => {
-      sec.classList.toggle("active", i === index);   // show only active section
+      sec.classList.toggle("active", i === index);
       progressBars[i].style.width = i <= index ? "100%" : "0%";
     });
 
@@ -83,17 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
     previewBtn.classList.toggle("hidden", index !== sections.length - 1);
   }
 
-  // Initialize form (🔥 THIS PART WAS MISSING)
-  sections.forEach((sec, i) => {
-    if (i === 0) {
-      sec.classList.add("active"); // show only first section
-    } else {
-      sec.classList.remove("active");
-    }
-  });
-  showStep(0);
-
-  // 🔹 Next/Back Buttons
   nextBtns.forEach(btn => {
     btn.addEventListener("click", () => {
       if (currentStep < totalSteps - 1) {
@@ -149,4 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
       reader.readAsDataURL(file);
     }
   });
+
+  // ✅ Initialize first step
+  showStep(0);
 });
