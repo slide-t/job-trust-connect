@@ -1,38 +1,205 @@
-<DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>JobTrust Connect — Application</title>
 
-  <!-- EmailJS (browser SDK) -->
+  <!-- EmailJS -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<style>
-  .exit-container {
-    display: flex;
-    justify-content: center;
-    margin: 20px 0;
-  }
 
-  .exit-btn {
-    background: #007BFF;  /* blue button */
-    color: #fff;
-    border: none;
-    padding: 12px 25px;
-    border-radius: 8px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s ease;
-  }
+  <style>
+    /* ===== Dark Theme Base ===== */
+    body {
+      font-family: Arial, sans-serif;
+      background: #121212;
+      color: #e0e0e0;
+      margin: 0;
+      padding: 0;
+    }
 
-  .exit-btn:hover {
-    background: #0056b3; /* darker blue hover */
-    transform: scale(1.05);
-  }
-</style>
+    .wrap {
+      max-width: 800px;
+      margin: 20px auto;
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0px 0px 12px rgba(0,0,0,0.6);
+    }
 
-  
+    header h1 {
+      margin: 0 0 10px;
+      font-size: 1.6rem;
+      color: #4da3ff;
+    }
+    header p {
+      margin-bottom: 20px;
+      color: #bbb;
+    }
+
+    /* ===== Progress Bar ===== */
+    #progressbar {
+      display: flex;
+      justify-content: space-between;
+      margin: 20px 0 30px;
+      counter-reset: step;
+    }
+
+    .progress-step {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #444;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: bold;
+      position: relative;
+      transition: 0.3s;
+    }
+
+    .progress-step.active {
+      background: #007bff;
+    }
+
+    .progress-step::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 100%;
+      transform: translateY(-50%);
+      width: 60px;
+      height: 3px;
+      background: #444;
+    }
+    .progress-step:last-child::after {
+      display: none;
+    }
+    .progress-step.active + .progress-step::after {
+      background: #007bff;
+    }
+
+    /* ===== Form Inputs ===== */
+    .form-step {
+      display: none;
+    }
+    .form-step.active {
+      display: block;
+      animation: fadeIn 0.4s ease-in;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #444;
+      border-radius: 6px;
+      background: #2a2a2a;
+      color: #fff;
+      font-size: 14px;
+      transition: 0.3s;
+    }
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #007bff;
+      box-shadow: 0 0 5px #007bff55;
+    }
+
+    /* ===== Buttons ===== */
+    .form-navigation {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .form-navigation button {
+      padding: 12px 25px;
+      font-size: 15px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    #prevBtn {
+      background: #444;
+      color: #fff;
+    }
+    #prevBtn:hover {
+      background: #666;
+    }
+
+    #nextBtn, #submitBtn, #previewBtn {
+      background: #007bff;
+      color: #fff;
+    }
+    #nextBtn:hover, #submitBtn:hover, #previewBtn:hover {
+      background: #0056b3;
+    }
+
+    #spinner {
+      font-size: 18px;
+      color: #4da3ff;
+      align-self: center;
+    }
+
+    /* ===== Preview Section ===== */
+    #previewSection {
+      background: #1e1e1e;
+      padding: 15px;
+      border: 1px solid #333;
+      border-radius: 8px;
+      margin-top: 20px;
+    }
+
+    #previewSection h3 {
+      color: #4da3ff;
+    }
+
+    #previewSection button {
+      margin-top: 10px;
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    #previewSection button:hover {
+      background: #0056b3;
+    }
+
+    /* ===== Exit Button ===== */
+    .exit-container {
+      display: flex;
+      justify-content: center;
+      margin: 25px 0;
+    }
+
+    .exit-btn {
+      background: #007BFF;
+      color: #fff;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .exit-btn:hover {
+      background: #0056b3;
+      transform: scale(1.05);
+    }
+  </style>
 </head>
 <body>
   <div class="wrap" id="printArea">
@@ -42,106 +209,101 @@
     </header>
 
     <form id="regForm">
-  <!-- Progress Bar -->
-  <div id="progressbar">
-    <div class="progress-step active">1</div>
-    <div class="progress-step">2</div>
-    <div class="progress-step">3</div>
-    <div class="progress-step">4</div>
-    <div class="progress-step">5</div>
-    <div class="progress-step">6</div>
-    <div class="progress-step">7</div>
-  </div>
+      <!-- Progress Bar -->
+      <div id="progressbar">
+        <div class="progress-step active">1</div>
+        <div class="progress-step">2</div>
+        <div class="progress-step">3</div>
+        <div class="progress-step">4</div>
+        <div class="progress-step">5</div>
+        <div class="progress-step">6</div>
+        <div class="progress-step">7</div>
+      </div>
 
-  <!-- Step 1 -->
-  <div class="form-step">
-    <h3>Personal Information</h3>
-    <input type="text" name="fullname" placeholder="Full Name" required>
-    <input type="text" name="address" placeholder="Address" required>
-  </div>
+      <!-- Step 1 -->
+      <div class="form-step active">
+        <h3>Personal Information</h3>
+        <input type="text" name="fullname" placeholder="Full Name" required>
+        <input type="text" name="address" placeholder="Address" required>
+      </div>
 
-  <!-- Step 2 -->
-  <div class="form-step">
-    <h3>Gender</h3>
-    <select name="gender" required>
-      <option value="">Select Gender</option>
-      <option>Male</option>
-      <option>Female</option>
-    </select>
-  </div>
+      <!-- Step 2 -->
+      <div class="form-step">
+        <h3>Gender</h3>
+        <select name="gender" required>
+          <option value="">Select Gender</option>
+          <option>Male</option>
+          <option>Female</option>
+        </select>
+      </div>
 
-  <!-- Step 3 -->
-  <div class="form-step">
-    <h3>Contact</h3>
-    <input type="tel" name="phoneNumber" placeholder="Phone Number" required>
-  </div>
+      <!-- Step 3 -->
+      <div class="form-step">
+        <h3>Contact</h3>
+        <input type="tel" name="phoneNumber" placeholder="Phone Number" required>
+      </div>
 
-  <!-- Step 4 -->
-  <div class="form-step">
-    <h3>Guarantor</h3>
-    <input type="text" name="guarantorName" placeholder="Guarantor Name" required>
-    <input type="tel" name="guarantorPhone" placeholder="Guarantor Phone" required>
-  </div>
+      <!-- Step 4 -->
+      <div class="form-step">
+        <h3>Guarantor</h3>
+        <input type="text" name="guarantorName" placeholder="Guarantor Name" required>
+        <input type="tel" name="guarantorPhone" placeholder="Guarantor Phone" required>
+      </div>
 
-  <!-- Step 5 -->
-  <div class="form-step">
-    <h3>State & LGA</h3>
-    <label>State of Origin</label>
-    <select id="stateOrigin" name="stateOrigin" required></select>
+      <!-- Step 5 -->
+      <div class="form-step">
+        <h3>State & LGA</h3>
+        <label>State of Origin</label>
+        <select id="stateOrigin" name="stateOrigin" required></select>
 
-    <div id="lgaCol" style="display:none;">
-      <label>LGA of Origin</label>
-      <select id="lgaOrigin" name="lgaOrigin" required></select>
+        <div id="lgaCol" style="display:none;">
+          <label>LGA of Origin</label>
+          <select id="lgaOrigin" name="lgaOrigin" required></select>
+        </div>
+      </div>
+
+      <!-- Step 6 -->
+      <div class="form-step">
+        <h3>Education</h3>
+        <input type="text" name="highestQualification" placeholder="Highest Qualification" required>
+        <input type="text" name="schoolAttended" placeholder="School Attended" required>
+      </div>
+
+      <!-- Step 7 -->
+      <div class="form-step">
+        <h3>Work Experience / Additional Info</h3>
+        <textarea name="experience" placeholder="Brief Work Experience"></textarea>
+        <textarea name="otherInfo" placeholder="Any Additional Information"></textarea>
+      </div>
+
+      <!-- Navigation Buttons -->
+      <div class="form-navigation">
+        <button id="prevBtn" type="button">⬅ Previous</button>
+        <button id="nextBtn" type="button">Next ➡</button>
+        <button id="previewBtn" type="button">🔍 Preview</button>
+        <button id="submitBtn" type="button">✅ Submit</button>
+        <span id="spinner" style="display:none;">⏳</span>
+      </div>
+    </form>
+
+    <!-- Preview PDF Section -->
+    <div id="previewSection" style="display:none; margin-top:20px;">
+      <h3>Preview Your Information</h3>
+      <div id="previewContent"></div>
+      <button type="button" onclick="downloadPDF()">📥 Download PDF</button>
+    </div>
+    
+    <!-- Exit Container -->
+    <div class="exit-container">
+      <button onclick="goHome()" class="exit-btn">🏠 Exit to Home</button>
     </div>
   </div>
 
-  <!-- Step 6 -->
-  <div class="form-step">
-    <h3>Education</h3>
-    <input type="text" name="highestQualification" placeholder="Highest Qualification" required>
-    <input type="text" name="schoolAttended" placeholder="School Attended" required>
-  </div>
-
-  <!-- Step 7 -->
-  <div class="form-step">
-    <h3>Work Experience / Additional Info</h3>
-    <textarea name="experience" placeholder="Brief Work Experience"></textarea>
-    <textarea name="otherInfo" placeholder="Any Additional Information"></textarea>
-  </div>
-
-  <!-- Navigation Buttons -->
-  <div class="form-navigation">
-    <button id="prevBtn" type="button">Previous</button>
-    <button id="nextBtn" type="button">Next</button>
-    <button id="previewBtn" type="button">Preview</button>
-    <button id="submitBtn" type="button">Submit</button>
-    <span id="spinner" style="display:none;">⏳</span>
-  </div>
-</form>
-
-<!-- Preview PDF Section (keep yours if already added) -->
-<div id="previewSection" style="display:none; margin-top:20px;">
-  <h3>Preview Your Information</h3>
-  <div id="previewContent"></div>
-  <button type="button" onclick="downloadPDF()">Download PDF</button>
-</div>
-  
-<!-- Exit Container -->
-<div class="exit-container">
-  <button onclick="goHome()" class="exit-btn">🏠 Exit to Home</button>
-</div>
-
-<script>
-  function goHome() {
-    window.location.href = "index.html"; // change to your homepage file/link
-  }
-</script>
-
-
-
-  
- 
-  
+  <script>
+    function goHome() {
+      window.location.href = "index.html"; // adjust as needed
+    }
+  </script>
 
   <script src="job-applicationform.js"></script>
 </body>
