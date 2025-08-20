@@ -655,78 +655,78 @@
       withSpinner(printBtn, ()=> { window.print(); });
     });
 
-    // submit (SheetDB + EmailJS)
-    const submitBtn = qs('#submitFinal');
-    submitBtn.addEventListener('click', async ()=>{
-      await withSpinner(submitBtn, async ()=>{
-        if(!validateAll()) return;
+// submit (SheetDB + EmailJS)
+const submitBtn = qs('#submitFinal');
+submitBtn.addEventListener('click', async ()=>{
+  await withSpinner(submitBtn, async ()=>{
+    if(!validateAll()) return;
 
-        const payload = {
-          fullName: qs('#fullName').value.trim(),
-          email: qs('#email').value.trim(),
-          phoneNumber: qs('#phoneNumber').value.trim(),
-          address: qs('#address').value.trim(),
-          bank: qs('#bank').value,
-          accountNumber: qs('#accountNumber').value.trim(),
-          dob: qs('#dob').value,
-          age: qs('#age').value,
-          gender: qs('#gender').value,
-          maritalStatus: qs('#maritalStatus').value,
-          childrenCount: qs('#childrenCount').value || '0',
-          stateOrigin: qs('#stateOrigin').value,
-          lgaOrigin: qs('#lgaOrigin').value,
-          parentName: qs('#parentName').value,
-          parentPhone: qs('#parentPhone').value,
-          parentRelationship: qs('#parentRelationship').value,
-          parentAddress: qs('#parentAddress').value,
-          prevWorkplace: qs('#prevWorkplace').value,
-          positionHeld: qs('#positionHeld').value,
-          workFrom: qs('#workFrom').value,
-          workTo: qs('#workTo').value,
-          workContact: qs('#workContact').value,
-          reasonLeaving: qs('#reasonLeaving').value,
-          education: qs('#education').value,
-          institution: qs('#institution').value,
-          gradYear: qs('#gradYear').value,
-          photoDataURL // base64 image for record keeping
-        };
+    const payload = {
+      fullName: qs('#fullName').value.trim(),
+      email: qs('#email').value.trim(),
+      phoneNumber: qs('#phoneNumber').value.trim(),
+      address: qs('#address').value.trim(),
+      bank: qs('#bank').value,
+      accountNumber: qs('#accountNumber').value.trim(),
+      dob: qs('#dob').value,
+      age: qs('#age').value,
+      gender: qs('#gender').value,
+      maritalStatus: qs('#maritalStatus').value,
+      childrenCount: qs('#childrenCount').value || '0',
+      stateOrigin: qs('#stateOrigin').value,
+      lgaOrigin: qs('#lgaOrigin').value,
+      parentName: qs('#parentName').value,
+      parentPhone: qs('#parentPhone').value,
+      parentRelationship: qs('#parentRelationship').value,
+      parentAddress: qs('#parentAddress').value,
+      prevWorkplace: qs('#prevWorkplace').value,
+      positionHeld: qs('#positionHeld').value,
+      workFrom: qs('#workFrom').value,
+      workTo: qs('#workTo').value,
+      workContact: qs('#workContact').value,
+      reasonLeaving: qs('#reasonLeaving').value,
+      education: qs('#education').value,
+      institution: qs('#institution').value,
+      gradYear: qs('#gradYear').value,
+      photoDataURL
+    };
 
-        // 1) SheetDB
-        const sheetdbReq = fetch(SHEETDB_URL, {
-          method:'POST',
-          headers:{ 'Content-Type':'application/json' },
-          body: JSON.stringify({ data: [ payload ] })
-        });
-
-        // 2) EmailJS (send key fields — adjust your template to match)
-        const emailParams = {
-          fullName: payload.fullName,
-          email: payload.email,
-          phoneNumber: payload.phoneNumber,
-          bank: payload.bank,
-          accountNumber: payload.accountNumber,
-          stateOrigin: payload.stateOrigin,
-          lgaOrigin: payload.lgaOrigin,
-          maritalStatus: payload.maritalStatus,
-          childrenCount: payload.childrenCount,
-          prevWorkplace: payload.prevWorkplace,
-          positionHeld: payload.positionHeld
-        };
-        const emailReq = window.emailjs
-          ? emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailParams)
-          : Promise.resolve();
-
-        const [sheetRes] = await Promise.allSettled([sheetdbReq, emailReq]);
-        if(sheetRes.status==='fulfilled'){
-          alert('Submitted successfully! You will be redirected.');
-          // optional redirect:
-          // window.location.href = 'thank-you.html';
-          submitBtn.disabled = true;
-        }else{
-          alert('Submission failed. Please check your connection and try again.');
-        }
-      });
+    // 1) SheetDB
+    const sheetdbReq = fetch(SHEETDB_URL, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ data: [ payload ] })
     });
+
+    // 2) EmailJS
+    const emailParams = {
+      fullName: payload.fullName,
+      email: payload.email,
+      phoneNumber: payload.phoneNumber,
+      bank: payload.bank,
+      accountNumber: payload.accountNumber,
+      stateOrigin: payload.stateOrigin,
+      lgaOrigin: payload.lgaOrigin,
+      maritalStatus: payload.maritalStatus,
+      childrenCount: payload.childrenCount,
+      prevWorkplace: payload.prevWorkplace,
+      positionHeld: payload.positionHeld
+    };
+    const emailReq = window.emailjs
+      ? emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailParams)
+      : Promise.resolve();
+
+    const [sheetRes] = await Promise.allSettled([sheetdbReq, emailReq]);
+    if(sheetRes.status==='fulfilled'){
+      alert('Submitted successfully! Redirecting to home...');
+      window.location.href = 'index.html';  // 👈 redirect to home page
+    }else{
+      alert('Submission failed. Please check your connection and try again.');
+    }
+  });
+});
+    
+    
 
     /******** Accessibility niceties ********/
     // Enter key on text inputs should not accidentally submit/skip steps
