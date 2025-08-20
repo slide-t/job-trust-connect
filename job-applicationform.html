@@ -438,7 +438,41 @@
       </div>
     </div>
   </div>
+<!-- Exit Container -->
+<div class="exit-container">
+  <button onclick="goHome()" class="exit-btn">🏠 Exit to Home</button>
+</div>
 
+<script>
+  function goHome() {
+    window.location.href = "index.html"; // change to your homepage file/link
+  }
+</script>
+
+<style>
+  .exit-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+
+  .exit-btn {
+    background: #007BFF;  /* blue button */
+    color: #fff;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+
+  .exit-btn:hover {
+    background: #0056b3; /* darker blue hover */
+    transform: scale(1.05);
+  }
+</style>
 
   
  <script>
