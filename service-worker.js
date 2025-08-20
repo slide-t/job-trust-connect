@@ -3,6 +3,8 @@ const urlsToCache = [
   '/',
   '/index.html',
   '/job-apllicationform.html',
+  '/job-apllicationform.js',
+  '/job-apllicationform.json',
   '/jobs-available.html',
   '/jobs-available.json',
   '/faqs.html',
