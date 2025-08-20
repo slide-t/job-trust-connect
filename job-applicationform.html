@@ -44,6 +44,22 @@
 .form-section.active {
   display: block;
 }
+  /* Base state: hidden */
+.form-section {
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  overflow: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease, height 0.4s ease;
+}
+
+/* Active state: visible */
+.form-section.active {
+  opacity: 1;
+  visibility: visible;
+  height: auto;
+  overflow: visible;
+  }
 </style>
 </head>
 <body>
