@@ -36,9 +36,50 @@ document.addEventListener("DOMContentLoaded", () => {
     "FCT - Abuja": ["Abaji","Bwari","Gwagwalada","Kuje","Kwali","Municipal Area Council"]
     // Add all other states and LGAs here
   };
+// Show/Hide LGA based on state
+stateSelect.addEventListener("change", () => {
+  const lgas = statesLgas[stateSelect.value];
+  if (lgas) {
+    lgaWrap.classList.remove("hidden");
+    lgaInput.innerHTML = '<option value="">Select LGA</option>';
+    lgas.forEach(lga => {
+      const option = document.createElement("option");
+      option.value = lga;
+      option.textContent = lga;
+      lgaInput.appendChild(option);
+    });
+  } else {
+    lgaWrap.classList.add("hidden");
+    lgaInput.innerHTML = "";
+  }
+});
 
-  // Show/Hide LGA based on state
-  stateSelect.addEventListener("change", () => {
+// Show Step with fade transition
+function showStep(index) {
+  sections.forEach((sec, i) => {
+    if (i === index) {
+      sec.classList.add("fade-in");
+      sec.classList.remove("fade-out");
+      sec.classList.add("active");
+    } else {
+      if (sec.classList.contains("active")) {
+        sec.classList.remove("fade-in");
+        sec.classList.add("fade-out");
+        setTimeout(() => sec.classList.remove("active"), 300); // match CSS duration
+      }
+    }
+    progressBars[i].style.width = i <= index ? "100%" : "0%";
+  });
+  currentStep = index;
+}
+
+
+
+
+
+
+  
+  /*stateSelect.addEventListener("change", () => {
     const lgas = statesLgas[stateSelect.value];
     if(lgas){
       lgaWrap.classList.remove("hidden");
@@ -59,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       lgaWrap.classList.add("hidden");
     }
-  });
+  });*/
 
   // Age calculation
   dobInput.addEventListener("change", () => {
