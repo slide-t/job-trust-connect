@@ -141,6 +141,26 @@
   input:checked + .slider:before {
     transform: translateX(24px);
   }
+/* Base state: all sections hidden */
+.form-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(20px);
+  transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+}
+
+/* Only active section shows */
+.form-section.active {
+  position: relative;
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0);
+}
+  
 </style>
 
 <script>
