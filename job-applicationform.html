@@ -439,7 +439,180 @@
     </div>
   </div>
 
-  <script>
+ <script>
+// =============================
+// Utility
+// =============================
+const qs = (sel, ctx=document) => ctx.querySelector(sel);
+const qsa = (sel, ctx=document) => [...ctx.querySelectorAll(sel)];
+
+// =============================
+// Nigeria States + LGA Loader
+// =============================
+async function loadLGAs() {
+  const stateSel = qs('#stateOrigin'),
+        lgaSel   = qs('#lgaOrigin'),
+        lgaCol   = qs('#lgaCol');
+
+  try {
+    const res = await fetch('nigeria-lgas.json'); // <-- must exist in same dir
+    const data = await res.json();
+
+    // Populate states
+    stateSel.innerHTML = '<option value="">Select State</option>' +
+      Object.keys(data).map(st => `<option value="${st}">${st}</option>`).join('');
+
+    // On state change, load LGAs
+    stateSel.addEventListener('change', ()=>{
+      const st = stateSel.value;
+      if(!st){ 
+        lgaCol.style.display='none'; 
+        lgaSel.innerHTML=''; 
+        return; 
+      }
+      const lgas = data[st] || [];
+      lgaSel.innerHTML = '<option value="">Select LGA</option>' +
+        lgas.map(l=>`<option>${l}</option>`).join('');
+      lgaCol.style.display = 'block';
+    });
+  } catch(e){
+    console.error('Error loading LGAs:', e);
+  }
+}
+document.addEventListener('DOMContentLoaded', loadLGAs);
+
+// =============================
+// Wizard Navigation
+// =============================
+let currentStep = 0;
+const steps = qsa('.form-step');
+
+function showStep(i){
+  steps.forEach((st,idx)=>{
+    st.style.display = (idx===i)?'block':'none';
+  });
+}
+showStep(currentStep);
+
+qsa('.next-btn').forEach(btn => {
+  btn.addEventListener('click', ()=>{
+    if(validateStep(currentStep)){
+      currentStep++;
+      if(currentStep >= steps.length) currentStep = steps.length-1;
+      showStep(currentStep);
+    }
+  });
+});
+qsa('.prev-btn').forEach(btn => {
+  btn.addEventListener('click', ()=>{
+    currentStep--;
+    if(currentStep < 0) currentStep = 0;
+    showStep(currentStep);
+  });
+});
+
+// =============================
+// Validation
+// =============================
+function validateStep(stepIndex){
+  const inputs = steps[stepIndex].querySelectorAll('input, select, textarea');
+  for(let inp of inputs){
+    if(!inp.checkValidity()){
+      inp.reportValidity();
+      return false;
+    }
+  }
+  return true;
+}
+function validateForm(){
+  return steps.every((st,idx)=> validateStep(idx));
+}
+
+// =============================
+// Spinner Helper
+// =============================
+function showSpinner(btn){
+  btn.disabled = true;
+  const sp = document.createElement('span');
+  sp.className = 'spinner';
+  sp.innerHTML = '⏳';
+  btn.appendChild(sp);
+}
+function hideSpinner(btn){
+  btn.disabled = false;
+  const sp = btn.querySelector('.spinner');
+  if(sp) sp.remove();
+}
+
+// =============================
+// Preview as PDF
+// =============================
+qs('#previewBtn').addEventListener('click', ()=>{
+  if(!validateForm()) return;
+  showSpinner(qs('#previewBtn'));
+  setTimeout(()=>{
+    window.print();
+    hideSpinner(qs('#previewBtn'));
+  },1000);
+});
+
+// =============================
+// Submit Handler
+// =============================
+// Replace with your real keys
+const SHEETDB_URL = "https://sheetdb.io/api/v1/XXXXXXXX"; 
+const EMAILJS_SERVICE_ID = "service_xxxxxx";
+const EMAILJS_TEMPLATE_ID = "template_xxxxxx";
+const EMAILJS_PUBLIC_KEY  = "your_public_key_here";
+
+qs('#regForm').addEventListener('submit', async e=>{
+  e.preventDefault();
+  if(!validateForm()) return;
+
+  const submitBtn = qs('#submitBtn');
+  showSpinner(submitBtn);
+
+  // Collect form data
+  const fd = new FormData(e.target);
+  const data = Object.fromEntries(fd.entries());
+
+  // Payload for SheetDB
+  const payload = {
+    fullname: data.fullname,
+    address: data.address,
+    gender: data.gender,
+    phoneNumber: data.phoneNumber,
+    guarantorName: data.guarantorName,
+    guarantorPhone: data.guarantorPhone
+  };
+
+  try {
+    // 1. Send to SheetDB
+    const res = await fetch(SHEETDB_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({data:[payload]})
+    });
+    if(!res.ok) throw new Error('SheetDB error');
+
+    // 2. Send email via EmailJS
+    emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, data);
+
+    alert('Form submitted successfully!');
+    window.location.href = 'index.html'; // redirect
+
+  } catch(err){
+    console.error(err);
+    alert('Submission failed: ' + err.message);
+  } finally {
+    hideSpinner(submitBtn);
+  }
+});
+</script>
+  
+  
+  <!--<script>
     /********** CONFIG **********/
     const SHEETDB_URL = 'https://sheetdb.io/api/v1/v7ewb4v3x7zwa'; // your SheetDB endpoint
     const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
@@ -750,6 +923,6 @@ submitBtn.addEventListener('click', async ()=>{
         if(e.key==='Enter' && el.tagName!=='TEXTAREA'){ e.preventDefault(); }
       });
     });
-  </script>
+  </script>-->
 </body>
 </html>
