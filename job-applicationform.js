@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
       statesLgas = data;
 
       // Populate states dropdown
-     /* Object.keys(statesLgas).forEach(state => {
+      Object.keys(statesLgas).forEach(state => {
         const option = document.createElement("option");
         option.value = state;
         option.textContent = state;
@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
       lgaWrap.classList.add("hidden");
       lgaInput.innerHTML = "";
     }
-  });*/
+  });
 
   // 🔹 Step navigation
   function showStep(index) {
