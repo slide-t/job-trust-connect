@@ -541,7 +541,65 @@ document.addEventListener('DOMContentLoaded', loadLGAs);
 // =============================
 // Wizard Navigation
 // =============================
+
+   // =============================
+// Wizard Navigation
+// =============================
+
+// shortcuts
+const qs  = (sel, par=document) => par.querySelector(sel);
+const qsa = (sel, par=document) => [...par.querySelectorAll(sel)];
+
 let currentStep = 0;
+const steps = qsa('.form-step');
+
+function showStep(i){
+  steps.forEach((st,idx)=>{
+    st.style.display = (idx===i)?'block':'none';
+  });
+}
+showStep(currentStep);
+
+// validate each step
+function validateStep(stepIndex) {
+  const step = steps[stepIndex];
+  const inputs = step.querySelectorAll("[required]");
+  let valid = true;
+
+  inputs.forEach(input => {
+    if (!input.value.trim()) {
+      valid = false;
+      input.classList.add("error");
+    } else {
+      input.classList.remove("error");
+    }
+  });
+
+  return valid;
+}
+
+// next step
+qsa('.next-btn').forEach(btn => {
+  btn.addEventListener('click', ()=>{
+    if(validateStep(currentStep)){
+      currentStep++;
+      if(currentStep >= steps.length) currentStep = steps.length-1;
+      showStep(currentStep);
+    }
+  });
+});
+
+// prev step
+qsa('.prev-btn').forEach(btn => {
+  btn.addEventListener('click', ()=>{
+    currentStep--;
+    if(currentStep < 0) currentStep = 0;
+    showStep(currentStep);
+  });
+});
+   
+   
+   /*let currentStep = 0;
 const steps = qsa('.form-step');
 
 function showStep(i){
@@ -567,7 +625,7 @@ qsa('.prev-btn').forEach(btn => {
     showStep(currentStep);
   });
 });
-
+*/
 // =============================
 // Validation
 // =============================
