@@ -1,173 +1,183 @@
-// ===============================
-// CONFIG
-// ===============================
-const SHEETDB_URL = "https://sheetdb.io/api/v1/YOUR_CODES_SHEET_ID"; // Replace
-const EMAILJS_SERVICE_ID = "your_service_id"; // Replace
-const EMAILJS_TEMPLATE_ID = "your_template_id"; // Replace
-const EMAILJS_PUBLIC_KEY = "your_public_key"; // Replace
-
-// ===============================
-// FORM NAVIGATION
-// ===============================
-const form = document.getElementById("jobForm");
-const sections = document.querySelectorAll(".form-section");
-const progressBars = document.querySelectorAll(".progress .bar");
-let currentStep = 0;
-
-function showStep(index) {
-  sections.forEach((sec, i) => {
-    if (i === index) {
-      sec.classList.add("active");
-    } else {
-      sec.classList.remove("active");
-    }
-    progressBars[i].style.width = i <= index ? "100%" : "0%";
-  });
-  currentStep = index;
-}
-
-// Next / Prev Buttons
-form.addEventListener("click", (e) => {
-  if (e.target.classList.contains("next")) {
-    if (form.checkValidity()) {
-      if (currentStep < sections.length - 1) {
-        showStep(currentStep + 1);
-      }
-    } else {
-      form.reportValidity();
-    }
-  }
-  if (e.target.classList.contains("prev")) {
-    if (currentStep > 0) {
-      showStep(currentStep - 1);
-    }
-  }
-});
-
-// ===============================
-// STATE & LGA (External JSON)
-// ===============================
+// app.js
 document.addEventListener("DOMContentLoaded", () => {
-  if (typeof statesAndLgas !== "undefined") {
-    const stateSelect = document.getElementById("state");
-    const lgaSelect = document.getElementById("lga");
+  const form = document.getElementById("appForm");
+  const sections = document.querySelectorAll(".form-section");
+  const progressBars = document.querySelectorAll(".step .bar");
+  const totalSteps = sections.length;
 
-    // Populate States
-    Object.keys(statesAndLgas).forEach((state) => {
-      const opt = document.createElement("option");
-      opt.value = state;
-      opt.textContent = state;
-      stateSelect.appendChild(opt);
+  let currentStep = 0;
+  let statesLgas = {};
+  let photoBase64 = "";
+
+  // Buttons
+  const nextBtns = document.querySelectorAll("[id^=nextBtn]");
+  const backBtns = document.querySelectorAll("[id^=backBtn]");
+  const previewBtn = document.getElementById("previewBtn");
+  const previewModal = document.getElementById("previewModal");
+  const closePreview = document.getElementById("closePreview");
+  const previewContent = document.getElementById("previewContent");
+  const submitFinal = document.getElementById("submitFinal");
+
+  // Inputs
+  const stateSelect = document.getElementById("stateOfOrigin");
+  const lgaWrap = document.getElementById("lgaWrap");
+  const lgaInput = document.getElementById("lga");
+  const dobInput = document.getElementById("dob");
+  const ageInput = document.getElementById("age");
+  const photoInput = document.getElementById("photo");
+  const photoPreview = document.getElementById("photoPreview");
+
+  // 🔹 Load states & LGAs from external JSON
+  fetch("states.json")
+    .then(res => res.json())
+    .then(data => {
+      statesLgas = data;
+      Object.keys(statesLgas).forEach(state => {
+        const option = document.createElement("option");
+        option.value = state;
+        option.textContent = state;
+        stateSelect.appendChild(option);
+      });
+    })
+    .catch(err => console.error("Error loading states.json:", err));
+
+  // 🔹 Show LGAs dynamically
+  stateSelect.addEventListener("change", () => {
+    const lgas = statesLgas[stateSelect.value];
+    if (lgas) {
+      lgaWrap.classList.remove("hidden");
+      lgaInput.innerHTML = '<option value="">Select LGA</option>';
+      lgas.forEach(lga => {
+        const option = document.createElement("option");
+        option.value = lga;
+        option.textContent = lga;
+        lgaInput.appendChild(option);
+      });
+    } else {
+      lgaWrap.classList.add("hidden");
+      lgaInput.innerHTML = "";
+    }
+  });
+
+  // 🔹 Navigation
+  function showStep(index) {
+    sections.forEach((sec, i) => {
+      sec.classList.toggle("active", i === index);
+      progressBars[i].style.width = i <= index ? "100%" : "0%";
     });
 
-    // Populate LGAs on state change
-    stateSelect.addEventListener("change", () => {
-      lgaSelect.innerHTML = "<option value=''>-- Select LGA --</option>";
-      const selected = stateSelect.value;
-      if (statesAndLgas[selected]) {
-        statesAndLgas[selected].forEach((lga) => {
-          const opt = document.createElement("option");
-          opt.value = lga;
-          opt.textContent = lga;
-          lgaSelect.appendChild(opt);
-        });
+    currentStep = index;
+    backBtns.forEach(btn => btn.classList.toggle("hidden", index === 0));
+    nextBtns.forEach(btn => btn.classList.toggle("hidden", index === totalSteps - 1));
+    previewBtn.classList.toggle("hidden", index !== totalSteps - 1);
+  }
+
+  nextBtns.forEach(btn =>
+    btn.addEventListener("click", () => {
+      if (currentStep < totalSteps - 1) {
+        currentStep++;
+        showStep(currentStep);
+      }
+    })
+  );
+
+  backBtns.forEach(btn =>
+    btn.addEventListener("click", () => {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    })
+  );
+
+  // 🔹 Preview Modal
+  previewBtn.addEventListener("click", () => {
+    previewModal.classList.add("show");
+    const fd = new FormData(form);
+    let html = "";
+    fd.forEach((val, key) => {
+      if (key !== "photo") {
+        html += `<p><strong>${key}:</strong> ${val}</p>`;
       }
     });
-  }
-});
+    if (photoBase64) {
+      html += `<p><strong>Photograph:</strong><br><img src="${photoBase64}" style="max-width:150px;border-radius:6px"/></p>`;
+    }
+    previewContent.innerHTML = html;
+  });
 
-// ===============================
-// PHOTO PREVIEW
-// ===============================
-document.getElementById("photo").addEventListener("change", (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      document.getElementById("photoPreview").src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
-  }
-});
+  closePreview.addEventListener("click", () => {
+    previewModal.classList.remove("show");
+  });
 
-// ===============================
-// PREVIEW MODAL
-// ===============================
-const previewModal = document.getElementById("previewModal");
-const previewContent = document.getElementById("previewContent");
+  // 🔹 Dark Mode Toggle
+  document.getElementById("themeToggle").addEventListener("change", function () {
+    document.body.classList.toggle("dark-mode", this.checked);
+  });
 
-document.getElementById("openPreview").addEventListener("click", () => {
-  previewContent.innerHTML = `
-    <p><strong>Name:</strong> ${form.fullname.value}</p>
-    <p><strong>Email:</strong> ${form.email.value}</p>
-    <p><strong>Phone:</strong> ${form.phone.value}</p>
-    <p><strong>State:</strong> ${form.state.value}</p>
-    <p><strong>LGA:</strong> ${form.lga.value}</p>
-    <p><strong>Address:</strong> ${form.address.value}</p>
-    <p><strong>Photo:</strong><br><img src="${document.getElementById("photoPreview").src}" width="120"/></p>
-  `;
-  previewModal.classList.add("show");
-});
+  // 🔹 Age auto-calc
+  dobInput.addEventListener("change", () => {
+    const dob = new Date(dobInput.value);
+    const diff = Date.now() - dob.getTime();
+    const age = new Date(diff).getUTCFullYear() - 1970;
+    ageInput.value = age >= 0 ? age : "";
+  });
 
-document.getElementById("closePreview").addEventListener("click", () => {
-  previewModal.classList.remove("show");
-});
+  // 🔹 Photo preview & Base64 conversion
+  photoInput.addEventListener("change", () => {
+    const file = photoInput.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = e => {
+        photoBase64 = e.target.result;
+        photoPreview.src = photoBase64;
+        photoPreview.style.display = "block";
+      };
+      reader.readAsDataURL(file);
+    }
+  });
 
-// ===============================
-// SUBMIT FORM (SheetDB + EmailJS)
-// ===============================
-document.getElementById("submitFinal").addEventListener("click", async () => {
-  if (!form.checkValidity()) {
-    form.reportValidity();
-    return;
-  }
+  // 🔹 Final submission → SheetDB + EmailJS
+  submitFinal.addEventListener("click", e => {
+    e.preventDefault();
+    const fd = new FormData(form);
+    const data = {};
+    fd.forEach((val, key) => {
+      if (key === "photo") {
+        data[key] = photoBase64;
+      } else {
+        data[key] = val;
+      }
+    });
 
-  const formData = {
-    fullname: form.fullname.value,
-    email: form.email.value,
-    phone: form.phone.value,
-    state: form.state.value,
-    lga: form.lga.value,
-    address: form.address.value,
-    photo: document.getElementById("photoPreview").src,
-  };
-
-  try {
-    // Submit to SheetDB
-    await fetch(SHEETDB_URL, {
+    // ✅ Send to SheetDB
+    fetch("https://sheetdb.io/api/v1/YOUR_SHEETDB_ID", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: [formData] }),
-    });
+      body: JSON.stringify({ data: [data] }),
+    })
+      .then(res => res.json())
+      .then(() => {
+        // ✅ Send via EmailJS
+        emailjs
+          .send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", data)
+          .then(() => {
+            alert("Application submitted successfully!");
+            form.reset();
+            previewModal.classList.remove("show");
+            showStep(0); // reset to first step
+          })
+          .catch(err => {
+            console.error("EmailJS error:", err);
+            alert("Error sending email. Please try again.");
+          });
+      })
+      .catch(err => {
+        console.error("SheetDB error:", err);
+        alert("Error submitting form. Please try again.");
+      });
+  });
 
-    // Send confirmation Email
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, formData);
-
-    alert("Application submitted successfully!");
-    previewModal.classList.remove("show");
-    form.reset();
-    showStep(0);
-    document.getElementById("photoPreview").src = "";
-  } catch (err) {
-    console.error(err);
-    alert("Error submitting application. Try again.");
-  }
-});
-
-// ===============================
-// PDF EXPORT
-// ===============================
-document.getElementById("printPdf").addEventListener("click", () => {
-  window.print(); // simple version; can replace with html2pdf/jsPDF if needed
-});
-
-// ===============================
-// DARK / LIGHT TOGGLE
-// ===============================
-const themeToggle = document.getElementById("themeToggle");
-document.body.classList.add("dark"); // default dark
-
-themeToggle.addEventListener("change", () => {
-  document.body.classList.toggle("dark", themeToggle.checked);
+  // 🔹 Start at step 0
+  showStep(0);
 });
