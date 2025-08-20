@@ -662,34 +662,33 @@ input:checked + .slider:before {
 
 <!-- Preview Modal -->
 <div class="modal" id="previewModal" aria-hidden="true">
-  <div class="card" role="dialog" aria-modal="true" aria-label="Preview application">
-    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-      <strong style="color:var(--accent)">Application Preview</strong>
-      <div>
-        <button class="ghost" id="closePreview">Close</button>
-        <button class="btn" id="printPdf">Print / Save PDF</button>
-        <button class="btn" id="submitFinal" style="background:#2ed573">Submit</button>
+  <div class="card" role="dialog" aria-modal="true" aria-labelledby="previewTitle">
+    <div class="modal-header">
+      <h2 id="previewTitle" class="modal-title">Application Preview</h2>
+      <div class="modal-actions">
+        <button type="button" class="ghost" id="closePreview">Close</button>
+        <button type="button" class="btn" id="printPdf">Print / Save PDF</button>
+        <button type="button" class="btn btn-success" id="submitFinal">Submit</button>
       </div>
     </div>
-    <div id="previewContent" style="max-height:400px; overflow:auto;">
+    <div id="previewContent" class="modal-body">
       <!-- JS will populate this with form data -->
     </div>
   </div>
-</div>
-
-</div>
 </div>
 
 <!-- Exit Home button (always visible) -->
 <div class="exit-home">
   <button type="button" class="exit-btn" onclick="location.href='index.html'">Exit Home</button>
 </div>
-</div>
+
 <!-- Dark Mode Toggle -->
-<label class="switch">
-  <input type="checkbox" id="themeToggle">
-  <span class="slider"></span>
-</label>
+<div class="theme-toggle">
+  <label class="switch" for="themeToggle">
+    <input type="checkbox" id="themeToggle" />
+    <span class="slider round"></span>
+  </label>
+</div>
 
 <script src="job-applicationform.js"></script>
 </body>
