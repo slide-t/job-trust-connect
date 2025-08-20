@@ -1,358 +1,181 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JobTrust Connect — Application</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-/* ===== Reset & Base ===== */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-:root {
-  --bg-dark: #121212;
-  --text-dark: #f1f1f1;
-  --accent: #2ed573;
-
-  --bg-light: #f7f9fc;
-  --text-light: #222;
-  --border-light: #ddd;
-
-  --transition: 0.3s ease;
-}
-
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-  background: var(--bg-dark);
-  color: var(--text-dark);
-  transition: background var(--transition), color var(--transition);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
-}
-
-/* Light Mode */
-body.light-mode {
-  background: var(--bg-light);
-  color: var(--text-light);
-}
-
-/* ===== Form Sections ===== */
-.form-section {
-  display: none;
-  flex-direction: column;
-  gap: 15px;
-  max-width: 600px;
-  width: 100%;
-  padding: 20px;
-  border-radius: 10px;
-  background: rgba(255,255,255,0.05);
-  backdrop-filter: blur(6px);
-  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
-  animation: fadeIn var(--transition);
-}
-
-body.light-mode .form-section {
-  background: #fff;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
-
-.form-section.active {
-  display: flex;
-}
-
-label {
-  font-weight: bold;
-  margin-bottom: 5px;
-}
-
-input, select, textarea {
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #444;
-  outline: none;
-  width: 100%;
-  transition: border var(--transition);
-  background: #1e1e1e;
-  color: var(--text-dark);
-}
-
-input:focus, select:focus, textarea:focus {
-  border-color: var(--accent);
-}
-
-body.light-mode input,
-body.light-mode select,
-body.light-mode textarea {
-  background: #fff;
-  border: 1px solid var(--border-light);
-  color: var(--text-light);
-}
-
-/* ===== Buttons ===== */
-button {
-  padding: 10px 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background var(--transition), transform var(--transition);
-}
-
-button:hover {
-  transform: translateY(-2px);
-}
-
-.btn {
-  background: var(--accent);
-  color: #fff;
-}
-
-.ghost {
-  background: transparent;
-  color: inherit;
-  border: 1px solid currentColor;
-}
-
-.exit-btn {
-  background: #e74c3c;
-  color: #fff;
-}
-
-.hidden {
-  display: none !important;
-}
-
-/* ===== Progress Bar ===== */
-.progress {
-  display: flex;
-  gap: 8px;
-  margin: 20px 0;
-  max-width: 600px;
-  width: 100%;
-}
-
-.step {
-  flex: 1;
-  height: 6px;
-  background: #333;
-  border-radius: 4px;
-  overflow: hidden;
-}
-
-.step .bar {
-  height: 100%;
-  width: 0;
-  background: var(--accent);
-  transition: width var(--transition);
-}
-
-body.light-mode .step {
-  background: var(--border-light);
-}
-
-/* ===== Modal ===== */
-.modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal.show {
-  display: flex;
-}
-
-.modal .card {
-  background: #1e1e1e;
-  color: var(--text-dark);
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 600px;
-  width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
-}
-
-body.light-mode .modal .card {
-  background: #fff;
-  color: var(--text-light);
-}
-
-/* ===== Dark Mode Switch ===== */
-.switch {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  display: inline-block;
-  width: 50px;
-  height: 28px;
-}
-
-.switch input {
-  display: none;
-}
-
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #444;
-  transition: var(--transition);
-  border-radius: 34px;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 22px;
-  width: 22px;
-  left: 3px;
-  bottom: 3px;
-  background-color: white;
-  transition: var(--transition);
-  border-radius: 50%;
-}
-
-input:checked + .slider {
-  background-color: var(--accent);
-}
-
-input:checked + .slider:before {
-  transform: translateX(22px);
-}
-
-/* ===== Animations ===== */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* ===== Photo Preview ===== */
-#photoPreview {
-  display: none;
-  max-width: 150px;
-  margin-top: 10px;
-  border-radius: 8px;
-  border: 2px solid var(--accent);
-}
-    
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <!-- Progress Bar -->
-  <div class="progress">
-    <div class="step"><div class="bar"></div></div>
-    <div class="step"><div class="bar"></div></div>
-    <div class="step"><div class="bar"></div></div>
-    <div class="step"><div class="bar"></div></div>
-  </div>
+<body class="dark-mode">
 
-  <!-- Multi-step Form -->
-  <form id="jobForm" novalidate>
-
-    <!-- Section 1 -->
-    <section class="form-section active">
-      <h2>Personal Information</h2>
-      <label for="fullname">Full Name</label>
-      <input type="text" id="fullname" name="fullname" required />
-
-      <label for="email">Email</label>
-      <input type="email" id="email" name="email" required />
-
-      <label for="phone">Phone</label>
-      <input type="tel" id="phone" name="phone" required />
-
-      <div style="display:flex;justify-content:space-between;">
-        <button type="button" class="btn next">Next</button>
-      </div>
-    </section>
-
-    <!-- Section 2 -->
-    <section class="form-section">
-      <h2>Address</h2>
-      <label for="state">State</label>
-      <select id="state" name="state" required></select>
-
-      <label for="lga">LGA</label>
-      <select id="lga" name="lga" required></select>
-
-      <label for="address">Home Address</label>
-      <textarea id="address" name="address" required></textarea>
-
-      <div style="display:flex;justify-content:space-between;">
-        <button type="button" class="ghost prev">Back</button>
-        <button type="button" class="btn next">Next</button>
-      </div>
-    </section>
-
-    <!-- Section 3 -->
-    <section class="form-section">
-      <h2>Upload</h2>
-      <label for="photo">Passport Photograph</label>
-      <input type="file" id="photo" name="photo" accept="image/*" required />
-      <img id="photoPreview" alt="Photo preview" />
-
-      <div style="display:flex;justify-content:space-between;">
-        <button type="button" class="ghost prev">Back</button>
-        <button type="button" class="btn next">Next</button>
-      </div>
-    </section>
-
-    <!-- Section 4 -->
-    <section class="form-section">
-      <h2>Review & Submit</h2>
-      <p>Please review your information before submission.</p>
-
-      <div style="display:flex;justify-content:space-between;">
-        <button type="button" class="ghost prev">Back</button>
-        <button type="button" class="btn" id="openPreview">Preview</button>
-      </div>
-    </section>
-  </form>
-
-  <!-- Preview Modal -->
-  <div class="modal" id="previewModal" aria-hidden="true">
-    <div class="card" role="dialog" aria-modal="true" aria-label="Preview application">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <strong style="color:var(--accent)">Application Preview</strong>
-        <div>
-          <button class="ghost" id="closePreview">Close</button>
-          <button class="btn" id="printPdf">Print / Save PDF</button>
-          <button class="btn" id="submitFinal" style="background:#2ed573">Submit</button>
-        </div>
-      </div>
-      <div id="previewContent" style="max-height:400px; overflow:auto;">
-        <!-- JS will populate this -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Exit Home button (always visible) -->
+  <!-- Exit Home -->
   <div class="exit-home">
     <button type="button" class="exit-btn" onclick="location.href='index.html'">Exit Home</button>
   </div>
 
   <!-- Dark Mode Toggle -->
   <label class="switch">
-    <input type="checkbox" id="themeToggle" />
+    <input type="checkbox" id="themeToggle" checked>
     <span class="slider"></span>
   </label>
 
-  <script src="job-applicationform.js"></script> <!-- external JSON loader -->
-  <script src="job-applicationform.json"></script> <!-- your main JS -->
+  <!-- Instructions -->
+  <section class="instructions">
+    <p>
+      Please fill in all required fields below to complete your application. 
+      Ensure that your photograph is uploaded and all details are correct before submitting. 
+      You can navigate through the steps using the Next and Back buttons.  
+    </p>
+  </section>
+
+  <!-- Form Header -->
+  <header>
+    <h1>JobTrust Connect Application Form</h1>
+  </header>
+
+  <!-- Progress Tracker -->
+  <div class="progress">
+    <div class="step"><div class="bar"></div></div>
+    <div class="step"><div class="bar"></div></div>
+    <div class="step"><div class="bar"></div></div>
+    <div class="step"><div class="bar"></div></div>
+    <div class="step"><div class="bar"></div></div>
+    <div class="step"><div class="bar"></div></div>
+  </div>
+
+  <!-- Application Form -->
+  <form id="appForm">
+
+    <!-- Step 1: Personal Information -->
+    <section class="form-section active">
+      <h2>Personal Information</h2>
+      <label>Full Name <input type="text" name="fullName" required></label>
+      <label>Date of Birth <input type="date" id="dob" name="dob" required></label>
+      <label>Age <input type="number" id="age" name="age" readonly required></label>
+      <label>Gender 
+        <select name="gender" required>
+          <option value="">Select</option>
+          <option>Male</option>
+          <option>Female</option>
+        </select>
+      </label>
+      <label>State of Origin
+        <select id="stateOfOrigin" name="stateOfOrigin" required>
+          <option value="">Select State</option>
+        </select>
+      </label>
+      <div id="lgaWrap" class="hidden">
+        <label>LGA
+          <select id="lga" name="lga" required></select>
+        </label>
+      </div>
+      <label>Upload Photograph 
+        <input type="file" id="photo" name="photo" accept="image/*" required>
+      </label>
+      <img id="photoPreview" class="hidden" alt="Photo Preview">
+
+      <div class="form-nav">
+        <button type="button" id="nextBtn1">Next</button>
+      </div>
+    </section>
+
+    <!-- Step 2: Education -->
+    <section class="form-section hidden">
+      <h2>Education</h2>
+      <label>Highest Qualification <input type="text" name="qualification" required></label>
+      <label>Institution Attended <input type="text" name="institution" required></label>
+
+      <div class="form-nav">
+        <button type="button" id="backBtn1">Back</button>
+        <button type="button" id="nextBtn2">Next</button>
+      </div>
+    </section>
+
+    <!-- Step 3: Next of Kin -->
+    <section class="form-section hidden">
+      <h2>Next of Kin</h2>
+      <label>Full Name <input type="text" name="nokName" required></label>
+      <label>Relationship <input type="text" name="nokRelation" required></label>
+      <label>Phone <input type="tel" name="nokPhone" required></label>
+
+      <div class="form-nav">
+        <button type="button" id="backBtn2">Back</button>
+        <button type="button" id="nextBtn3">Next</button>
+      </div>
+    </section>
+
+    <!-- Step 4: Guarantor Information -->
+    <section class="form-section hidden">
+      <h2>Guarantor Information</h2>
+      <label>Full Name <input type="text" name="guarantorName" required></label>
+      <label>Occupation <input type="text" name="guarantorOccupation" required></label>
+      <label>Phone <input type="tel" name="guarantorPhone" required></label>
+      <label>Address <textarea name="guarantorAddress" rows="3" required></textarea></label>
+
+      <div class="form-nav">
+        <button type="button" id="backBtn3">Back</button>
+        <button type="button" id="nextBtn4">Next</button>
+      </div>
+    </section>
+
+    <!-- Step 5: Bank Details -->
+    <section class="form-section hidden">
+      <h2>Bank Details</h2>
+      <label>Bank Name 
+        <select name="bankName" required>
+          <option value="">Select Bank</option>
+          <option>Access Bank</option>
+          <option>First Bank</option>
+          <option>GTBank</option>
+          <option>UBA</option>
+          <option>Zenith Bank</option>
+          <option>Union Bank</option>
+          <option>Fidelity Bank</option>
+          <option>Ecobank</option>
+          <option>Polaris Bank</option>
+          <option>Stanbic IBTC</option>
+          <option>Sterling Bank</option>
+          <option>Wema Bank</option>
+          <option>Others</option>
+        </select>
+      </label>
+      <label>Account Name <input type="text" name="accountName" required></label>
+      <label>Account Number <input type="text" name="accountNumber" maxlength="10" pattern="\d{10}" required></label>
+
+      <div class="form-nav">
+        <button type="button" id="backBtn4">Back</button>
+        <button type="button" id="nextBtn5">Next</button>
+      </div>
+    </section>
+
+    <!-- Step 6: Review & Submit -->
+    <section class="form-section hidden">
+      <h2>Final Step</h2>
+      <p>Click Preview to review your application before final submission.</p>
+      <div class="form-nav">
+        <button type="button" id="backBtn5">Back</button>
+        <button type="button" id="previewBtn">Preview</button>
+      </div>
+    </section>
+  </form>
+
+  <!-- Preview Modal -->
+  <div class="modal hidden" id="previewModal" aria-hidden="true">
+    <div class="card" role="dialog" aria-modal="true" aria-label="Preview application">
+      <div class="modal-header">
+        <strong>Application Preview</strong>
+        <div class="modal-actions">
+          <button class="ghost" id="closePreview">Close</button>
+          <button class="btn" id="printPdf">Print / Save PDF</button>
+          <button class="btn submit-btn" id="submitFinal">Submit</button>
+        </div>
+      </div>
+      <div id="previewContent" class="modal-body">
+        <!-- JS populates preview -->
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
