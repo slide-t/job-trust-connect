@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>JobTrust Connect — Application</title>
+
+  <!-- EmailJS (browser SDK) -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#0b0f12; --card:#111419; --muted:#9aa4ad; --accent:#4da6ff; --danger:#ff6b6b; --glass: rgba(255,255,255,0.04);
+      --spin-blue:#4da6ff; --spin-green:#2ed573; --spin-orange:#ffa502; --spin-pink:#ff6bcb;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:linear-gradient(180deg,#071018 0%, #07121a 100%); color:#e6eef6; -webkit-font-smoothing:antialiased;
+      padding:28px 18px;
+    }
+    .wrap{
+      max-width:980px; margin:0 auto; background:linear-gradient(180deg,var(--card), #0d1317);
+      border-radius:14px; padding:22px; box-shadow:0 8px 30px rgba(2,6,23,0.6);
+      border:1px solid rgba(255,255,255,0.06);
+    }
+    header h1{margin:0 0 6px;font-size:22px;color:var(--accent)}
+    header p{margin:0 0 18px;color:var(--muted);font-size:13px}
+
+    /* progress */
+    .progress{display:flex;gap:8px;margin-bottom:18px}
+    .step{flex:1;height:8px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;position:relative}
+    .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent), #2bb8ff);border-radius:4px;transition:width .35s ease}
+
+    form .section{display:none}
+    form .section.active{display:block;animation:fade .35s ease}
+    @keyframes fade{from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:none}}
+
+    label{display:block;font-size:13px;color:var(--muted); margin:12px 0 6px}
+    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], input[type="number"],
+    select, textarea{
+      background:var(--glass); border:1px solid rgba(255,255,255,0.08); color:#eaf4ff; padding:11px 12px;
+      border-radius:9px; width:100%; font-size:14px; outline:none;
+    }
+    textarea{min-height:96px; resize:vertical}
+    .row{display:flex;gap:12px}
+    .col{flex:1}
+    .small{width:160px}
+    .photo-preview{width:110px;height:110px;border-radius:10px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);background:#081018; display:flex;align-items:center;justify-content:center}
+    .photo-preview img{width:100%;height:100%;object-fit:cover}
+
+    .actions{display:flex;justify-content:space-between;align-items:center;margin-top:18px;gap:12px}
+    .left-info{font-size:13px;color:var(--muted)}
+    button.btn{
+      background:linear-gradient(180deg,var(--accent),#2bb8ff); color:#07121a; border:none; padding:10px 16px; border-radius:10px; font-weight:800; cursor:pointer;
+      box-shadow:0 6px 18px rgba(77,166,255,0.18); display:inline-flex; align-items:center; gap:10px; position:relative;
+    }
+    button.ghost{
+      background:transparent;border:1px solid rgba(255,255,255,0.12);color:#c7d3de;padding:10px 14px;border-radius:10px;cursor:pointer;
+    }
+
+    .error{color:var(--danger);font-size:12px;margin-top:6px;display:none}
+    .note{font-size:12px;color:var(--muted)}
+
+    /* spinners */
+    .spinner{display:none;width:18px;height:18px;border:3px solid transparent;border-top-color:currentColor;border-radius:50%;animation:spin 0.9s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .ring-blue{color:var(--spin-blue)} .ring-green{color:var(--spin-green)} .ring-orange{color:var(--spin-orange)} .ring-pink{color:var(--spin-pink)}
+    .btn.loading .spinner{display:inline-block}
+    .btn.loading .btn-text{opacity:0.0}
+    .btn[disabled]{opacity:.6;cursor:not-allowed}
+
+    /* Modal Preview */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.6);z-index:60;padding:20px}
+    .modal.open{display:flex}
+    .card{width:100%;max-width:840px;background:#07131a;border-radius:12px;padding:18px;border:1px solid rgba(255,255,255,0.08);box-shadow:0 8px 30px rgba(0,0,0,0.6)}
+    .preview-grid{display:grid;grid-template-columns:160px 1fr;gap:12px}
+    .preview-row{margin-bottom:8px}
+    .preview-row b{display:inline-block;width:180px;color:var(--muted)}
+    .preview-photo{width:140px;height:140px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.08);background:#07111a}
+
+    /* print: only preview content */
+    @media print{
+      body>*:not(#printArea){display:none !important}
+      #printArea{display:block !important}
+      .card{box-shadow:none;border:none}
+    }
+
+    /* responsive */
+    @media (max-width:760px){
+      .row{flex-direction:column}
+      .small{width:100%}
+      .preview-grid{grid-template-columns:1fr}
+      .preview-photo{width:100%;height:220px}
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap" id="printArea">
+    <header>
+      <h1>JobTrust Connect — Interview Registration</h1>
+      <p>Complete this registration. All fields are required. Preview and print before final submit.</p>
+    </header>
+
+    <div class="progress" aria-hidden="true">
+      <div class="step"><div class="bar" id="bar0"></div></div>
+      <div class="step"><div class="bar" id="bar1"></div></div>
+      <div class="step"><div class="bar" id="bar2"></div></div>
+      <div class="step"><div class="bar" id="bar3"></div></div>
+      <div class="step"><div class="bar" id="bar4"></div></div>
+      <div class="step"><div class="bar" id="bar5"></div></div>
+      <div class="step"><div class="bar" id="bar6"></div></div>
+    </div>
+
+    <form id="appForm" novalidate>
+      <!-- STEP 0: Personal -->
+      <section class="section active" data-step="0">
+        <label for="fullName">Full name *</label>
+        <input id="fullName" name="fullName" type="text" required />
+        <div class="error" id="err-fullName">Please enter your full name.</div>
+
+        <div class="row">
+          <div class="col">
+            <label for="email">Email *</label>
+            <input id="email" name="email" type="email" required />
+            <div class="error" id="err-email">Enter a valid email.</div>
+          </div>
+          <div class="col small">
+            <label for="phoneNumber">Phone *</label>
+            <input id="phoneNumber" name="phoneNumber" type="tel" required />
+            <div class="error" id="err-phoneNumber">Enter phone number.</div>
+          </div>
+        </div>
+
+        <label for="address">Home Address *</label>
+        <textarea id="address" name="address" required></textarea>
+        <div class="error" id="err-address">Enter address.</div>
+
+        <div class="row" style="align-items:flex-end">
+          <div class="col">
+            <label for="bank">Bank Name *</label>
+            <select id="bank" name="bank" required>
+              <option value="">Select Bank</option>
+              <option>Access Bank</option><option>Citibank</option><option>Ecobank</option><option>FCMB</option>
+              <option>Fidelity Bank</option><option>First Bank</option><option>GTBank</option><option>Heritage Bank</option>
+              <option>Keystone Bank</option><option>Polaris Bank</option><option>PremiumTrust Bank</option><option>ProvidusBank</option>
+              <option>Stanbic IBTC</option><option>Standard Chartered</option><option>Sterling Bank</option><option>TajBank</option>
+              <option>UBA</option><option>Union Bank</option><option>Unity Bank</option><option>Wema Bank</option><option>Zenith Bank</option>
+              <option>Opay</option><option>Palmpay</option><option>Kuda</option><option>Moniepoint</option>
+            </select>
+            <div class="error" id="err-bank">Select a bank.</div>
+          </div>
+          <div class="col small">
+            <label for="accountNumber">Account Number (10 digits) *</label>
+            <input id="accountNumber" name="accountNumber" type="text" inputmode="numeric" pattern="\d{10}" maxlength="10" required />
+            <div class="error" id="err-accountNumber">Enter a 10-digit account number.</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <div class="left-info">Step 1 of 7</div>
+          <div>
+            <button type="button" class="btn" id="next0"><span class="btn-text">Next →</span><span class="spinner ring-blue"></span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 1: Biodata (with State → LGA) -->
+      <section class="section" data-step="1">
+        <div class="row">
+          <div class="col">
+            <label for="dob">Date of Birth *</label>
+            <input id="dob" name="dob" type="date" required />
+            <div class="error" id="err-dob">Select a valid date.</div>
+          </div>
+          <div class="col small">
+            <label for="age">Age</label>
+            <input id="age" name="age" type="number" readonly />
+          </div>
+          <div class="col">
+            <label for="gender">Gender *</label>
+            <select id="gender" name="gender" required>
+              <option value="">Select</option><option>Male</option><option>Female</option><option>Other</option>
+            </select>
+            <div class="error" id="err-gender">Select gender.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label for="maritalStatus">Marital Status *</label>
+            <select id="maritalStatus" name="maritalStatus" required>
+              <option value="">Select</option>
+              <option>Single</option>
+              <option>Married</option>
+              <option>Divorced</option>
+              <option>Separated</option>
+              <option>Widowed</option>
+            </select>
+            <div class="error" id="err-maritalStatus">Select marital status.</div>
+          </div>
+          <div class="col small" id="childrenWrap" style="display:none">
+            <label for="childrenCount">Number of Children *</label>
+            <input id="childrenCount" name="childrenCount" type="number" min="0" step="1" />
+            <div class="error" id="err-children">Enter number of children.</div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col">
+            <label for="stateOrigin">State of Origin *</label>
+            <select id="stateOrigin" name="stateOrigin" required>
+              <option value="">Loading states…</option>
+            </select>
+            <div class="error" id="err-stateOrigin">Select your state.</div>
+          </div>
+          <div class="col" id="lgaCol" style="display:none">
+            <label for="lgaOrigin">LGA of Origin *</label>
+            <select id="lgaOrigin" name="lgaOrigin"></select>
+            <div class="error" id="err-lgaOrigin">Select your LGA.</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <div class="left-info">Step 2 of 7</div>
+          <div>
+            <button type="button" class="ghost" id="back1">← Back</button>
+            <button type="button" class="btn" id="next1"><span class="btn-text">Next →</span><span class="spinner ring-blue"></span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 2: Parents/Guardian -->
+      <section class="section" data-step="2">
+        <label for="parentName">Parent/Guardian Full Name *</label>
+        <input id="parentName" name="parentName" type="text" required />
+        <div class="error" id="err-parentName">Enter parent/guardian name.</div>
+
+        <div class="row">
+          <div class="col">
+            <label for="parentPhone">Parent Phone *</label>
+            <input id="parentPhone" name="parentPhone" type="tel" required />
+            <div class="error" id="err-parentPhone">Enter parent phone.</div>
+          </div>
+          <div class="col">
+            <label for="parentRelationship">Relationship to You *</label>
+            <input id="parentRelationship" name="parentRelationship" type="text" required />
+            <div class="error" id="err-parentRelationship">Enter relationship.</div>
+          </div>
+        </div>
+
+        <label for="parentAddress">Parent Address *</label>
+        <textarea id="parentAddress" name="parentAddress" required></textarea>
+        <div class="error" id="err-parentAddress">Enter parent address.</div>
+
+        <div class="actions">
+          <div class="left-info">Step 3 of 7</div>
+          <div>
+            <button type="button" class="ghost" id="back2">← Back</button>
+            <button type="button" class="btn" id="next2"><span class="btn-text">Next →</span><span class="spinner ring-blue"></span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 3: Formal Workplace -->
+      <section class="section" data-step="3">
+        <label for="prevWorkplace">Previous Workplace Name *</label>
+        <input id="prevWorkplace" name="prevWorkplace" type="text" required />
+        <div class="error" id="err-prevWorkplace">Enter workplace name.</div>
+
+        <label for="positionHeld">Position/Role *</label>
+        <input id="positionHeld" name="positionHeld" type="text" required />
+        <div class="error" id="err-positionHeld">Enter position.</div>
+
+        <div class="row">
+          <div class="col small">
+            <label for="workFrom">From *</label>
+            <input id="workFrom" name="workFrom" type="date" required />
+            <div class="error" id="err-workFrom">Select start date.</div>
+          </div>
+          <div class="col small">
+            <label for="workTo">To *</label>
+            <input id="workTo" name="workTo" type="date" required />
+            <div class="error" id="err-workTo">Select end date.</div>
+          </div>
+          <div class="col">
+            <label for="workContact">Contact Person Phone *</label>
+            <input id="workContact" name="workContact" type="tel" required />
+            <div class="error" id="err-workContact">Enter contact phone.</div>
+          </div>
+        </div>
+
+        <label for="reasonLeaving">Reason for Leaving (max 50 words) *</label>
+        <textarea id="reasonLeaving" name="reasonLeaving" maxlength="300" required></textarea>
+        <div class="error" id="err-reasonLeaving">Provide reason for leaving.</div>
+
+        <div class="actions">
+          <div class="left-info">Step 4 of 7</div>
+          <div>
+            <button type="button" class="ghost" id="back3">← Back</button>
+            <button type="button" class="btn" id="next3"><span class="btn-text">Next →</span><span class="spinner ring-blue"></span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 4: Guarantor -->
+      <section class="section" data-step="4">
+        <label for="guarantorName">Guarantor Full Name *</label>
+        <input id="guarantorName" name="guarantorName" type="text" required />
+        <div class="error" id="err-guarantorName">Enter guarantor name.</div>
+
+        <label for="guarantorPhone">Guarantor Phone *</label>
+        <input id="guarantorPhone" name="guarantorPhone" type="tel" required />
+        <div class="error" id="err-guarantorPhone">Enter guarantor phone.</div>
+
+        <label for="guarantorAddress">Guarantor Address *</label>
+        <textarea id="guarantorAddress" name="guarantorAddress" required></textarea>
+        <div class="error" id="err-guarantorAddress">Enter guarantor address.</div>
+
+        <div class="actions">
+          <div class="left-info">Step 5 of 7</div>
+          <div>
+            <button type="button" class="ghost" id="back4">← Back</button>
+            <button type="button" class="btn" id="next4"><span class="btn-text">Next →</span><span class="spinner ring-blue"></span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 5: Education (required now) -->
+      <section class="section" data-step="5">
+        <div class="row">
+          <div class="col">
+            <label for="education">Highest Qualification *</label>
+            <input id="education" name="education" type="text" required />
+            <div class="error" id="err-education">Enter qualification.</div>
+          </div>
+          <div class="col">
+            <label for="institution">Institution *</label>
+            <input id="institution" name="institution" type="text" required />
+            <div class="error" id="err-institution">Enter institution.</div>
+          </div>
+          <div class="col small">
+            <label for="gradYear">Graduation Year *</label>
+            <input id="gradYear" name="gradYear" type="number" min="1900" max="2100" required />
+            <div class="error" id="err-gradYear">Enter graduation year.</div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <div class="left-info">Step 6 of 7</div>
+          <div>
+            <button type="button" class="ghost" id="back5">← Back</button>
+            <button type="button" class="btn" id="next5"><span class="btn-text">Next →</span><span class="spinner ring-blue"></span></button>
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 6: Photo / Preview -->
+      <section class="section" data-step="6">
+        <label for="photo">Upload Passport Photo *</label>
+        <div class="row" style="align-items:center;">
+          <div style="flex:1">
+            <input id="photo" name="photo" type="file" accept="image/*" required />
+            <div class="error" id="err-photo">Upload a photo.</div>
+            <div class="note" style="margin-top:6px">Square image &lt; 1MB recommended for faster upload.</div>
+          </div>
+          <div style="width:130px">
+            <div class="photo-preview" id="photoPreview"><span class="note">No photo</span></div>
+          </div>
+        </div>
+
+        <div class="actions">
+          <div class="left-info">Step 7 of 7 (Preview & Submit)</div>
+          <div>
+            <button type="button" class="ghost" id="back6">← Back</button>
+            <button type="button" class="btn" id="previewBtn">
+              <span class="btn-text">Preview / Print</span>
+              <span class="spinner ring-blue"></span>
+            </button>
+          </div>
+        </div>
+      </section>
+    </form>
+  </div>
+
+  <!-- Preview Modal -->
+  <div class="modal" id="previewModal" aria-hidden="true">
+    <div class="card" role="dialog" aria-modal="true" aria-label="Preview application">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+        <strong style="color:var(--accent)">Application Preview</strong>
+        <div>
+          <button class="ghost" id="closePreview">Close</button>
+          <button class="btn" id="printPdf"><span class="btn-text">Print / Save PDF</span><span class="spinner ring-orange"></span></button>
+          <button class="btn" id="submitFinal" style="background:#2ed573"><span class="btn-text">Submit</span><span class="spinner ring-green"></span></button>
+        </div>
+      </div>
+
+      <div id="previewContent">
+        <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:12px">
+          <div class="preview-photo" id="previewPhoto"></div>
+          <div style="flex:1">
+            <div class="preview-row"><b>Full name:</b> <span id="pvFullName"></span></div>
+            <div class="preview-row"><b>Email:</b> <span id="pvEmail"></span></div>
+            <div class="preview-row"><b>Phone:</b> <span id="pvPhone"></span></div>
+            <div class="preview-row"><b>Address:</b> <span id="pvAddress"></span></div>
+            <div class="preview-row"><b>Bank / A/C:</b> <span id="pvBank"></span></div>
+          </div>
+        </div>
+
+        <div class="preview-grid">
+          <div><b>Date of Birth:</b></div><div id="pvDob"></div>
+          <div><b>Age:</b></div><div id="pvAge"></div>
+          <div><b>Gender:</b></div><div id="pvGender"></div>
+          <div><b>Marital Status:</b></div><div id="pvMarital"></div>
+          <div id="pvChildrenRow" style="display:contents">
+            <div><b>Children:</b></div><div id="pvChildren"></div>
+          </div>
+          <div><b>State of Origin:</b></div><div id="pvState"></div>
+          <div><b>LGA of Origin:</b></div><div id="pvLga"></div>
+
+          <div><b>Parent/Guardian:</b></div><div id="pvParent"></div>
+          <div><b>Parent Phone:</b></div><div id="pvParentPhone"></div>
+          <div><b>Relationship:</b></div><div id="pvParentRel"></div>
+          <div><b>Parent Address:</b></div><div id="pvParentAddr"></div>
+
+          <div><b>Previous Workplace:</b></div><div id="pvWorkplace"></div>
+          <div><b>Position:</b></div><div id="pvPosition"></div>
+          <div><b>Employment Dates:</b></div><div id="pvDates"></div>
+          <div><b>Work Contact:</b></div><div id="pvWorkContact"></div>
+          <div><b>Reason for Leaving:</b></div><div id="pvReason"></div>
+
+          <div><b>Highest Qualification:</b></div><div id="pvEdu"></div>
+          <div><b>Institution:</b></div><div id="pvInst"></div>
+          <div><b>Graduation Year:</b></div><div id="pvYear"></div>
+        </div>
+
+        <div class="note" style="margin-top:10px">Preview first, then Print or Submit.</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /********** CONFIG **********/
+    const SHEETDB_URL = 'https://sheetdb.io/api/v1/v7ewb4v3x7zwa'; // your SheetDB endpoint
+    const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
+    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+    const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
+    // Full list (all 36 states + FCT) fetched at runtime:
+    const LGAS_URL = 'https://unpkg.com/vue-nigeria-states-lgas@1.1.0/src/data.json';
+    /****************************/
+
+    // init EmailJS
+    if (window.emailjs) {
+      emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+    }
+
+    // helpers
+    const qs = (s, r=document)=>r.querySelector(s);
+    const qsa = (s, r=document)=>Array.from(r.querySelectorAll(s));
+    const sections = qsa('.section');
+    const bars = qsa('.bar');
+    let step = 0, total = sections.length;
+
+    // progress
+    function updateProgress(i){
+      bars.forEach((b, idx) => b.style.width = idx <= i ? '100%' : '0%');
+    }
+    function showStep(n){
+      sections.forEach((s, i)=> s.classList.toggle('active', i===n));
+      step = n; updateProgress(n); window.scrollTo({top:0,behavior:'smooth'});
+    }
+    updateProgress(0);
+
+    // spinner on a button
+    function withSpinner(btn, fn){
+      if(!btn) return;
+      btn.classList.add('loading'); btn.setAttribute('aria-busy','true'); btn.disabled = true;
+      const done = () => { btn.classList.remove('loading'); btn.removeAttribute('aria-busy'); btn.disabled = false; };
+      const p = Promise.resolve().then(fn);
+      p.finally(done);
+      return p;
+    }
+
+    // validation (section-level)
+    function validateSection(idx){
+      const sec = sections[idx];
+      const requireds = qsa('input[required], select[required], textarea[required]', sec);
+      let ok = true;
+      requireds.forEach(el=>{
+        const errId = 'err-' + el.id;
+        const err = qs('#'+errId) || el.nextElementSibling?.classList?.contains('error') ? el.nextElementSibling : null;
+        const have = (el.type === 'file') ? el.files && el.files.length > 0 : !!String(el.value).trim();
+        if(!have){ ok=false; if(qs('#'+errId)) qs('#'+errId).style.display='block'; }
+        else if(qs('#'+errId)) qs('#'+errId).style.display='none';
+      });
+
+      // extra account number check at step 0
+      if(idx===0){
+        const acct = qs('#accountNumber').value.trim();
+        if(!/^\d{10}$/.test(acct)){ ok=false; qs('#err-accountNumber').style.display='block'; }
+      }
+      // children required only if visible
+      if(idx===1 && qs('#childrenWrap').style.display!=='none'){
+        const c = qs('#childrenCount').value;
+        if(c==='' || Number(c)<0){ ok=false; qs('#err-children').style.display='block'; }
+        else qs('#err-children').style.display='none';
+      }
+      // lga required if state chosen
+      if(idx===1 && qs('#lgaCol').style.display!=='none'){
+        const lga = qs('#lgaOrigin').value;
+        if(!lga){ ok=false; qs('#err-lgaOrigin').style.display='block'; } else qs('#err-lgaOrigin').style.display='none';
+      }
+      return ok;
+    }
+
+    // nav events
+    qs('#next0').addEventListener('click', e=> { if(validateSection(0)) showStep(1); });
+    qs('#next1').addEventListener('click', e=> { if(validateSection(1)) showStep(2); });
+    qs('#next2').addEventListener('click', e=> { if(validateSection(2)) showStep(3); });
+    qs('#next3').addEventListener('click', e=> { if(validateSection(3)) showStep(4); });
+    qs('#next4').addEventListener('click', e=> { if(validateSection(4)) showStep(5); });
+    qs('#next5').addEventListener('click', e=> { if(validateSection(5)) showStep(6); });
+    qs('#back1').addEventListener('click', ()=> showStep(0));
+    qs('#back2').addEventListener('click', ()=> showStep(1));
+    qs('#back3').addEventListener('click', ()=> showStep(2));
+    qs('#back4').addEventListener('click', ()=> showStep(3));
+    qs('#back5').addEventListener('click', ()=> showStep(4));
+    qs('#back6').addEventListener('click', ()=> showStep(5));
+
+    // DOB → Age
+    const dob = qs('#dob'), ageEl = qs('#age');
+    dob.addEventListener('change', ()=>{
+      if(!dob.value){ ageEl.value=''; return; }
+      const d = new Date(dob.value); if(isNaN(d)) return;
+      const now = new Date(); let a = now.getFullYear()-d.getFullYear();
+      const m = now.getMonth()-d.getMonth(); if(m<0 || (m===0 && now.getDate()<d.getDate())) a--;
+      ageEl.value = Math.max(0,a);
+      qs('#err-dob').style.display = a>=0 ? 'none' : 'block';
+    });
+
+    // marital status → children
+    const marital = qs('#maritalStatus'), childrenWrap = qs('#childrenWrap'), childrenCount = qs('#childrenCount');
+    function toggleChildren(){
+      const v = marital.value; const need = ['Married','Divorced','Separated'].includes(v);
+      childrenWrap.style.display = need ? 'block' : 'none';
+      childrenCount.required = need;
+      if(!need){ childrenCount.value=''; qs('#err-children').style.display='none'; }
+    }
+    marital.addEventListener('change', toggleChildren);
+
+    // Load States → LGAs (full list via CDN)
+    let STATES = {};
+    async function loadStates(){
+      try{
+        const res = await fetch(LGAS_URL, { cache: 'force-cache' });
+        const data = await res.json(); // { "Abia": ["Aba North", ...], ... , "FCT": ["Abaji",...] }
+        STATES = data;
+      }catch(e){
+        // minimal fallback (in case CDN blocked)
+        STATES = {
+          "Abia":["Aba North","Aba South","Isiala Ngwa North","Isiala Ngwa South","Umuahia North","Umuahia South"],
+          "Lagos":["Agege","Alimosho","Amuwo-Odofin","Eti-Osa","Ikeja","Kosofe","Lagos Island","Lagos Mainland","Oshodi-Isolo","Shomolu","Surulere"],
+          "FCT":["Abaji","Abuja Municipal","Bwari","Gwagwalada","Kuje","Kwali"]
+        };
+      }
+      // fill state select (include Abuja/FCT)
+      const stateSel = qs('#stateOrigin');
+      stateSel.innerHTML = '<option value="">Select State</option>' + Object.keys(STATES).sort().map(s=>`<option>${s}</option>`).join('');
+    }
+    loadStates();
+
+    // state change → show LGA
+    const stateSel = qs('#stateOrigin'), lgaSel = qs('#lgaOrigin'), lgaCol = qs('#lgaCol');
+    stateSel.addEventListener('change', ()=>{
+      const st = stateSel.value;
+      if(!st){ lgaCol.style.display='none'; lgaSel.innerHTML=''; return; }
+      const lgas = STATES[st] || [];
+      lgaSel.innerHTML = '<option value="">Select LGA</option>' + lgas.map(l=>`<option>${l}</option>`).join('');
+      lgaCol.style.display = 'block';
+    });
+
+    // photo preview
+    let photoDataURL = '';
+    const photoInput = qs('#photo'), photoPreview = qs('#photoPreview'), previewPhoto = qs('#previewPhoto');
+    photoInput.addEventListener('change', (e)=>{
+      const f = e.target.files?.[0]; if(!f) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        photoDataURL = reader.result;
+        photoPreview.innerHTML = `<img alt="photo preview" src="${photoDataURL}">`;
+      };
+      reader.readAsDataURL(f);
+    });
+
+    // build preview content
+    function fillPreview(){
+      qs('#pvFullName').textContent = qs('#fullName').value.trim();
+      qs('#pvEmail').textContent = qs('#email').value.trim();
+      qs('#pvPhone').textContent = qs('#phoneNumber').value.trim();
+      qs('#pvAddress').textContent = qs('#address').value.trim();
+      qs('#pvBank').textContent = `${qs('#bank').value} / ${qs('#accountNumber').value}`;
+      qs('#pvDob').textContent = qs('#dob').value;
+      qs('#pvAge').textContent = qs('#age').value;
+      qs('#pvGender').textContent = qs('#gender').value;
+      const ms = qs('#maritalStatus').value;
+      qs('#pvMarital').textContent = ms;
+      const showKids = ['Married','Divorced','Separated'].includes(ms);
+      qs('#pvChildrenRow').style.display = showKids ? 'contents' : 'none';
+      if(showKids) qs('#pvChildren').textContent = qs('#childrenCount').value;
+
+      qs('#pvState').textContent = qs('#stateOrigin').value;
+      qs('#pvLga').textContent = qs('#lgaOrigin').value || '-';
+
+      qs('#pvParent').textContent = qs('#parentName').value;
+      qs('#pvParentPhone').textContent = qs('#parentPhone').value;
+      qs('#pvParentRel').textContent = qs('#parentRelationship').value;
+      qs('#pvParentAddr').textContent = qs('#parentAddress').value;
+
+      qs('#pvWorkplace').textContent = qs('#prevWorkplace').value;
+      qs('#pvPosition').textContent = qs('#positionHeld').value;
+      qs('#pvDates').textContent = `${qs('#workFrom').value} → ${qs('#workTo').value}`;
+      qs('#pvWorkContact').textContent = qs('#workContact').value;
+      qs('#pvReason').textContent = qs('#reasonLeaving').value;
+
+      qs('#pvEdu').textContent = qs('#education').value;
+      qs('#pvInst').textContent = qs('#institution').value;
+      qs('#pvYear').textContent = qs('#gradYear').value;
+
+      previewPhoto.innerHTML = photoDataURL ? `<img alt="photo" src="${photoDataURL}">` : '<div class="note" style="padding:10px">No photo</div>';
+    }
+
+    // validate ALL sections quickly
+    function validateAll(){
+      let ok = true;
+      for(let i=0;i<sections.length;i++){
+        if(!validateSection(i)){ ok=false; showStep(i); break; }
+      }
+      return ok;
+    }
+
+    // preview open
+    const previewBtn = qs('#previewBtn'), previewModal = qs('#previewModal'), closePreview = qs('#closePreview');
+    previewBtn.addEventListener('click', ()=>{
+      withSpinner(previewBtn, ()=>{
+        if(!validateAll()) return;
+        fillPreview();
+        previewModal.classList.add('open');
+      });
+    });
+    closePreview.addEventListener('click', ()=> previewModal.classList.remove('open'));
+
+    // print
+    const printBtn = qs('#printPdf');
+    printBtn.addEventListener('click', ()=>{
+      withSpinner(printBtn, ()=> { window.print(); });
+    });
+
+    // submit (SheetDB + EmailJS)
+    const submitBtn = qs('#submitFinal');
+    submitBtn.addEventListener('click', async ()=>{
+      await withSpinner(submitBtn, async ()=>{
+        if(!validateAll()) return;
+
+        const payload = {
+          fullName: qs('#fullName').value.trim(),
+          email: qs('#email').value.trim(),
+          phoneNumber: qs('#phoneNumber').value.trim(),
+          address: qs('#address').value.trim(),
+          bank: qs('#bank').value,
+          accountNumber: qs('#accountNumber').value.trim(),
+          dob: qs('#dob').value,
+          age: qs('#age').value,
+          gender: qs('#gender').value,
+          maritalStatus: qs('#maritalStatus').value,
+          childrenCount: qs('#childrenCount').value || '0',
+          stateOrigin: qs('#stateOrigin').value,
+          lgaOrigin: qs('#lgaOrigin').value,
+          parentName: qs('#parentName').value,
+          parentPhone: qs('#parentPhone').value,
+          parentRelationship: qs('#parentRelationship').value,
+          parentAddress: qs('#parentAddress').value,
+          prevWorkplace: qs('#prevWorkplace').value,
+          positionHeld: qs('#positionHeld').value,
+          workFrom: qs('#workFrom').value,
+          workTo: qs('#workTo').value,
+          workContact: qs('#workContact').value,
+          reasonLeaving: qs('#reasonLeaving').value,
+          education: qs('#education').value,
+          institution: qs('#institution').value,
+          gradYear: qs('#gradYear').value,
+          photoDataURL // base64 image for record keeping
+        };
+
+        // 1) SheetDB
+        const sheetdbReq = fetch(SHEETDB_URL, {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({ data: [ payload ] })
+        });
+
+        // 2) EmailJS (send key fields — adjust your template to match)
+        const emailParams = {
+          fullName: payload.fullName,
+          email: payload.email,
+          phoneNumber: payload.phoneNumber,
+          bank: payload.bank,
+          accountNumber: payload.accountNumber,
+          stateOrigin: payload.stateOrigin,
+          lgaOrigin: payload.lgaOrigin,
+          maritalStatus: payload.maritalStatus,
+          childrenCount: payload.childrenCount,
+          prevWorkplace: payload.prevWorkplace,
+          positionHeld: payload.positionHeld
+        };
+        const emailReq = window.emailjs
+          ? emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, emailParams)
+          : Promise.resolve();
+
+        const [sheetRes] = await Promise.allSettled([sheetdbReq, emailReq]);
+        if(sheetRes.status==='fulfilled'){
+          alert('Submitted successfully! You will be redirected.');
+          // optional redirect:
+          // window.location.href = 'thank-you.html';
+          submitBtn.disabled = true;
+        }else{
+          alert('Submission failed. Please check your connection and try again.');
+        }
+      });
+    });
+
+    /******** Accessibility niceties ********/
+    // Enter key on text inputs should not accidentally submit/skip steps
+    qsa('input, select, textarea').forEach(el=>{
+      el.addEventListener('keydown', (e)=>{
+        if(e.key==='Enter' && el.tagName!=='TEXTAREA'){ e.preventDefault(); }
+      });
+    });
+  </script>
+</body>
+</html>
