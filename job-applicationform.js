@@ -11,7 +11,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Navigation Buttons
   const nextBtns = document.querySelectorAll("[id^=nextBtn]");
   const backBtns = document.querySelectorAll("[id^=backBtn]");
-  const saveDraftBtn = document.getElementById("saveDraftBtn");
 
   const stateSelect = document.getElementById("stateOfOrigin");
   const lgaWrap = document.getElementById("lgaWrap");
@@ -30,120 +29,98 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitFinal = document.getElementById("submitFinal");
   const previewContent = document.getElementById("previewContent");
 
-  // STATE & LGA JSON
-  const statesLgas = {
-    "Abia": ["Aba North","Aba South","Arochukwu","Bende","Ikwuano","Isiala Ngwa North","Isiala Ngwa South","Isuikwuato","Obi Ngwa","Ohafia","Osisioma","Ugwunagbo","Ukwa East","Ukwa West","Umuahia North","Umuahia South","Umu Nneochi"],
-    "FCT - Abuja": ["Abaji","Bwari","Gwagwalada","Kuje","Kwali","Municipal Area Council"]
-    // Add all other states and LGAs here
-  };
-// Show/Hide LGA based on state
-stateSelect.addEventListener("change", () => {
-  const lgas = statesLgas[stateSelect.value];
-  if (lgas) {
-    lgaWrap.classList.remove("hidden");
-    lgaInput.innerHTML = '<option value="">Select LGA</option>';
-    lgas.forEach(lga => {
-      const option = document.createElement("option");
-      option.value = lga;
-      option.textContent = lga;
-      lgaInput.appendChild(option);
-    });
-  } else {
-    lgaWrap.classList.add("hidden");
-    lgaInput.innerHTML = "";
-  }
-});
+  let statesLgas = {}; // Will load from external JSON
 
-  function showStep(index) {
-  sections.forEach((sec, i) => {
-    sec.classList.toggle("active", i === index);
-    progressBars[i].style.width = i <= index ? "100%" : "0%";
-  });
+  // 🔹 Load states & LGAs from external file (states.json)
+  fetch("states.json")
+    .then(res => res.json())
+    .then(data => {
+      statesLgas = data;
 
-  currentStep = index;
+      // Populate states dropdown
+      Object.keys(statesLgas).forEach(state => {
+        const option = document.createElement("option");
+        option.value = state;
+        option.textContent = state;
+        stateSelect.appendChild(option);
+      });
+    })
+    .catch(err => console.error("Error loading states.json:", err));
 
-  // Show Preview button only on last step
-    document.getElementById("previewBtn").addEventListener("click", () => {
-  document.getElementById("previewModal").classList.add("show");
-});
-
-document.getElementById("closePreview").addEventListener("click", () => {
-  document.getElementById("previewModal").classList.remove("show");
-});
- 
-    // Update progress bars
-    if (progressBars && progressBars[i]) {
-      progressBars[i].style.width = i <= index ? "100%" : "0%";
-    }
-  });
-
-  currentStep = index;
-  stepCount.textContent = index + 1;
-
-  // 🔹 Button visibility logic
-  backBtn.classList.toggle("hidden", index === 0); // Hide Back on step 1
-  nextBtn.classList.toggle("hidden", index === sections.length - 1); // Hide Next on last step
-
-  // Show Submit only on last step
-  const submitBtn = document.getElementById("submitBtn");
-  if (submitBtn) {
-    submitBtn.classList.toggle("hidden", index !== sections.length - 1);
-  }
-
-  // Optionally: show Save Draft / Print only from step 2+
-  const saveDraftBtn = document.getElementById("saveDraftBtn");
-  const printBtn = document.getElementById("printBtn");
-  if (saveDraftBtn) saveDraftBtn.classList.toggle("hidden", index < 1);
-  if (printBtn) printBtn.classList.toggle("hidden", index < 1);
-}
-  
-
-
-
-// Back
-backBtn.addEventListener("click", () => {
-  if (currentStep > 0) {
-    currentStep--;
-    showStep(currentStep);
-  }
-});
-
-// Dark Mode Toggle
-document.getElementById("darkModeToggle").addEventListener("change", function() {
-  document.body.classList.toggle("dark-mode", this.checked);
-});
-  
-
-
-
-
-
-
-  
-  /*stateSelect.addEventListener("change", () => {
+  // 🔹 Show/Hide LGAs based on state
+  stateSelect.addEventListener("change", () => {
     const lgas = statesLgas[stateSelect.value];
-    if(lgas){
+    if (lgas) {
       lgaWrap.classList.remove("hidden");
-      lgaInput.innerHTML = "";
-      lgaInput.setAttribute("list","lgaList");
-      let datalist = document.getElementById("lgaList");
-      if(!datalist){
-        datalist = document.createElement("datalist");
-        datalist.id = "lgaList";
-        document.body.appendChild(datalist);
-      }
-      datalist.innerHTML = "";
+      lgaInput.innerHTML = '<option value="">Select LGA</option>';
       lgas.forEach(lga => {
         const option = document.createElement("option");
         option.value = lga;
-        datalist.appendChild(option);
+        option.textContent = lga;
+        lgaInput.appendChild(option);
       });
     } else {
       lgaWrap.classList.add("hidden");
+      lgaInput.innerHTML = "";
     }
-  });*/
+  });
 
-  // Age calculation
+  // 🔹 Step navigation
+  function showStep(index) {
+    sections.forEach((sec, i) => {
+      sec.classList.toggle("active", i === index);
+      progressBars[i].style.width = i <= index ? "100%" : "0%";
+    });
+
+    currentStep = index;
+
+    // Hide back button on first step
+    backBtns.forEach(btn => btn.classList.toggle("hidden", index === 0));
+
+    // Hide next button on last step
+    nextBtns.forEach(btn => btn.classList.toggle("hidden", index === sections.length - 1));
+
+    // Show preview modal trigger only on last step
+    previewBtn.classList.toggle("hidden", index !== sections.length - 1);
+  }
+
+  nextBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (currentStep < totalSteps - 1) {
+        currentStep++;
+        showStep(currentStep);
+      }
+    });
+  });
+
+  backBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    });
+  });
+
+  // 🔹 Preview Modal
+  previewBtn.addEventListener("click", () => {
+    previewModal.classList.add("show");
+    previewContent.innerHTML = new FormData(form)
+      .entries()
+      .map(([key, val]) => `<p><strong>${key}:</strong> ${val}</p>`)
+      .join("");
+  });
+
+  closePreview.addEventListener("click", () => {
+    previewModal.classList.remove("show");
+  });
+
+  // 🔹 Dark Mode Toggle
+  document.getElementById("themeToggle").addEventListener("change", function () {
+    document.body.classList.toggle("dark-mode", this.checked);
+  });
+
+  // 🔹 Age calculation
   dobInput.addEventListener("change", () => {
     const dob = new Date(dobInput.value);
     const diff = Date.now() - dob.getTime();
@@ -151,101 +128,16 @@ document.getElementById("darkModeToggle").addEventListener("change", function() 
     ageInput.value = age >= 0 ? age : "";
   });
 
-  // Photo preview
+  // 🔹 Photo preview
   photoInput.addEventListener("change", () => {
     const file = photoInput.files[0];
-    if(file){
+    if (file) {
       const reader = new FileReader();
       reader.onload = e => {
-        photoPreview.innerHTML = `<img src="${e.target.result}" alt="Photo" style="width:100%;height:100%;object-fit:cover"/>`;
+        photoPreview.src = e.target.result;
+        photoPreview.style.display = "block";
       };
       reader.readAsDataURL(file);
     }
   });
-
-  // Show Step
-  function showStep(index){
-    sections.forEach((sec,i) => {
-      sec.classList.toggle("active", i===index);
-      progressBars[i].style.width = i<=index ? "100%" : "0%";
-    });
-    currentStep = index;
-  }
-
-  // Validation for required fields
-  function validateStep(index){
-    const currentSection = sections[index];
-    let valid = true;
-    const inputs = currentSection.querySelectorAll("input, select, textarea");
-    inputs.forEach(input => {
-      if(input.hasAttribute("required") && !input.value.trim()){
-        valid = false;
-        const errDiv = document.getElementById(`err-${input.id}`);
-        if(errDiv) errDiv.style.display = "block";
-      } else {
-        const errDiv = document.getElementById(`err-${input.id}`);
-        if(errDiv) errDiv.style.display = "none";
-      }
-    });
-    return valid;
-  }
-
-  // Next Buttons
-  nextBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      if(validateStep(currentStep)){
-        if(currentStep < totalSteps - 1) showStep(currentStep+1);
-      }
-    });
-  });
-
-  // Back Buttons
-  backBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      if(currentStep > 0) showStep(currentStep-1);
-    });
-  });
-
-  // Preview
-  previewBtn.addEventListener("click", () => {
-    if(validateStep(currentStep)){
-      previewModal.setAttribute("aria-hidden", "false");
-      previewContent.innerHTML = "";
-      const data = new FormData(form);
-      for(const [key,value] of data.entries()){
-        previewContent.innerHTML += `<p><strong>${key}:</strong> ${value}</p>`;
-      }
-      // Photo preview
-      if(photoInput.files[0]){
-        const reader = new FileReader();
-        reader.onload = e => {
-          previewContent.innerHTML += `<p><strong>Photo:</strong><br><img src="${e.target.result}" style="width:100px;height:100px;object-fit:cover"/></p>`;
-        };
-        reader.readAsDataURL(photoInput.files[0]);
-      }
-    }
-  });
-
-  closePreview.addEventListener("click", () => previewModal.setAttribute("aria-hidden", "true"));
-
-  // Print PDF
-  printBtn.addEventListener("click", () => {
-    const printWindow = window.open("", "_blank");
-    printWindow.document.write("<html><head><title>Application Preview</title></head><body>");
-    printWindow.document.write(previewContent.innerHTML);
-    printWindow.document.write("</body></html>");
-    printWindow.document.close();
-    printWindow.print();
-  });
-
-  // Submit Final
-  submitFinal.addEventListener("click", () => {
-    alert("Application submitted successfully!");
-    form.reset();
-    showStep(0);
-    previewModal.setAttribute("aria-hidden", "true");
-  });
-
-  // Initialize first step
-  showStep(0);
 });
