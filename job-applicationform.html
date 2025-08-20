@@ -5,187 +5,155 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>JobTrust Connect — Application</title>
 
-  <!-- EmailJS -->
+  <!-- EmailJS (browser SDK) -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
   <style>
-    /* ===== Dark Theme Base ===== */
+    /* Global Dark Theme */
     body {
       font-family: Arial, sans-serif;
       background: #121212;
-      color: #e0e0e0;
+      color: #f1f1f1;
       margin: 0;
       padding: 0;
     }
-
     .wrap {
-      max-width: 800px;
-      margin: 20px auto;
+      max-width: 700px;
+      margin: 30px auto;
       background: #1e1e1e;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0px 0px 12px rgba(0,0,0,0.6);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
     }
-
+    header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
     header h1 {
-      margin: 0 0 10px;
-      font-size: 1.6rem;
-      color: #4da3ff;
+      color: #1e90ff;
+      margin-bottom: 10px;
     }
     header p {
-      margin-bottom: 20px;
-      color: #bbb;
+      color: #ccc;
     }
 
-    /* ===== Progress Bar ===== */
+    /* Form Controls */
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #333;
+      border-radius: 8px;
+      background: #2a2a2a;
+      color: #fff;
+      transition: border 0.3s, box-shadow 0.3s;
+    }
+    input:focus, select:focus, textarea:focus {
+      border-color: #1e90ff;
+      box-shadow: 0 0 8px #1e90ff;
+      outline: none;
+    }
+
+    /* Progress Bar */
     #progressbar {
       display: flex;
       justify-content: space-between;
       margin: 20px 0 30px;
       counter-reset: step;
     }
-
     .progress-step {
       width: 30px;
       height: 30px;
-      border-radius: 50%;
       background: #444;
       color: #fff;
+      border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 14px;
       font-weight: bold;
       position: relative;
-      transition: 0.3s;
     }
-
     .progress-step.active {
-      background: #007bff;
+      background: #1e90ff;
     }
-
     .progress-step::after {
-      content: "";
+      content: '';
       position: absolute;
       top: 50%;
       left: 100%;
-      transform: translateY(-50%);
-      width: 60px;
-      height: 3px;
+      width: 80px;
+      height: 4px;
       background: #444;
+      transform: translateY(-50%);
+      z-index: -1;
     }
     .progress-step:last-child::after {
       display: none;
     }
-    .progress-step.active + .progress-step::after {
-      background: #007bff;
+    .progress-step.active::after {
+      background: #1e90ff;
     }
 
-    /* ===== Form Inputs ===== */
-    .form-step {
-      display: none;
-    }
-    .form-step.active {
-      display: block;
-      animation: fadeIn 0.4s ease-in;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    input, select, textarea {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #444;
-      border-radius: 6px;
-      background: #2a2a2a;
-      color: #fff;
-      font-size: 14px;
-      transition: 0.3s;
-    }
-    input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 5px #007bff55;
-    }
-
-    /* ===== Buttons ===== */
+    /* Buttons */
     .form-navigation {
       display: flex;
-      flex-wrap: wrap;
+      justify-content: space-between;
+      margin-top: 20px;
       gap: 10px;
-      margin-top: 20px;
+      flex-wrap: wrap;
     }
-
     .form-navigation button {
-      padding: 12px 25px;
-      font-size: 15px;
-      font-weight: bold;
+      flex: 1;
+      min-width: 120px;
+      background: #1e90ff;
+      color: #fff;
       border: none;
+      padding: 12px;
       border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: background 0.3s, transform 0.2s;
+    }
+    .form-navigation button:hover {
+      background: #0d6efd;
+      transform: scale(1.05);
+    }
+    #previewBtn {
+      background: #28a745;
+    }
+    #previewBtn:hover {
+      background: #218838;
+    }
+    #submitBtn {
+      background: #ff5722;
+    }
+    #submitBtn:hover {
+      background: #e64a19;
     }
 
-    #prevBtn {
-      background: #444;
-      color: #fff;
-    }
-    #prevBtn:hover {
-      background: #666;
-    }
-
-    #nextBtn, #submitBtn, #previewBtn {
-      background: #007bff;
-      color: #fff;
-    }
-    #nextBtn:hover, #submitBtn:hover, #previewBtn:hover {
-      background: #0056b3;
-    }
-
-    #spinner {
-      font-size: 18px;
-      color: #4da3ff;
-      align-self: center;
-    }
-
-    /* ===== Preview Section ===== */
+    /* Preview Section */
     #previewSection {
-      background: #1e1e1e;
-      padding: 15px;
-      border: 1px solid #333;
+      background: #222;
+      padding: 20px;
       border-radius: 8px;
-      margin-top: 20px;
+      color: #ddd;
     }
-
     #previewSection h3 {
-      color: #4da3ff;
+      color: #1e90ff;
     }
-
     #previewSection button {
+      background: #1e90ff;
       margin-top: 10px;
-      background: #007bff;
-      color: #fff;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    #previewSection button:hover {
-      background: #0056b3;
     }
 
-    /* ===== Exit Button ===== */
+    /* Exit Button */
     .exit-container {
       display: flex;
       justify-content: center;
-      margin: 25px 0;
+      margin: 30px 0 10px;
     }
-
     .exit-btn {
-      background: #007BFF;
+      background: #1e90ff;
       color: #fff;
       border: none;
       padding: 12px 25px;
@@ -193,11 +161,19 @@
       font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      transition: 0.3s;
+      transition: 0.3s ease;
     }
     .exit-btn:hover {
       background: #0056b3;
       transform: scale(1.05);
+    }
+
+    /* Step Hide/Show */
+    .form-step {
+      display: none;
+    }
+    .form-step.active {
+      display: block;
     }
   </style>
 </head>
@@ -255,7 +231,6 @@
         <h3>State & LGA</h3>
         <label>State of Origin</label>
         <select id="stateOrigin" name="stateOrigin" required></select>
-
         <div id="lgaCol" style="display:none;">
           <label>LGA of Origin</label>
           <select id="lgaOrigin" name="lgaOrigin" required></select>
@@ -278,10 +253,10 @@
 
       <!-- Navigation Buttons -->
       <div class="form-navigation">
-        <button id="prevBtn" type="button">⬅ Previous</button>
-        <button id="nextBtn" type="button">Next ➡</button>
-        <button id="previewBtn" type="button">🔍 Preview</button>
-        <button id="submitBtn" type="button">✅ Submit</button>
+        <button id="prevBtn" type="button">Previous</button>
+        <button id="nextBtn" type="button">Next</button>
+        <button id="previewBtn" type="button">Preview</button>
+        <button id="submitBtn" type="button">Submit</button>
         <span id="spinner" style="display:none;">⏳</span>
       </div>
     </form>
@@ -290,7 +265,7 @@
     <div id="previewSection" style="display:none; margin-top:20px;">
       <h3>Preview Your Information</h3>
       <div id="previewContent"></div>
-      <button type="button" onclick="downloadPDF()">📥 Download PDF</button>
+      <button type="button" onclick="downloadPDF()">Download PDF</button>
     </div>
     
     <!-- Exit Container -->
@@ -301,10 +276,9 @@
 
   <script>
     function goHome() {
-      window.location.href = "index.html"; // adjust as needed
+      window.location.href = "index.html"; // change to your homepage file/link
     }
   </script>
-
   <script src="job-applicationform.js"></script>
 </body>
 </html>
