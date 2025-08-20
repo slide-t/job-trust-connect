@@ -4,7 +4,252 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>JobTrust Connect Application Form</title>
-  <link rel="stylesheet" href="style.css">
+  <!--<link rel="stylesheet" href="style.css">-->
+  <style>
+    /* ===== Reset & Base ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --bg-dark: #121212;
+  --text-dark: #f1f1f1;
+  --accent: #2ed573;
+
+  --bg-light: #f7f9fc;
+  --text-light: #222;
+  --border-light: #ddd;
+
+  --transition: 0.3s ease;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  background: var(--bg-dark);
+  color: var(--text-dark);
+  transition: background var(--transition), color var(--transition);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+/* Light Mode */
+body.light-mode {
+  background: var(--bg-light);
+  color: var(--text-light);
+}
+
+/* ===== Form Sections ===== */
+.form-section {
+  display: none;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 600px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+  animation: fadeIn var(--transition);
+}
+
+body.light-mode .form-section {
+  background: #fff;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.form-section.active {
+  display: flex;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input, select, textarea {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  outline: none;
+  width: 100%;
+  transition: border var(--transition);
+  background: #1e1e1e;
+  color: var(--text-dark);
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--accent);
+}
+
+body.light-mode input,
+body.light-mode select,
+body.light-mode textarea {
+  background: #fff;
+  border: 1px solid var(--border-light);
+  color: var(--text-light);
+}
+
+/* ===== Buttons ===== */
+button {
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background var(--transition), transform var(--transition);
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+.btn {
+  background: var(--accent);
+  color: #fff;
+}
+
+.ghost {
+  background: transparent;
+  color: inherit;
+  border: 1px solid currentColor;
+}
+
+.exit-btn {
+  background: #e74c3c;
+  color: #fff;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* ===== Progress Bar ===== */
+.progress {
+  display: flex;
+  gap: 8px;
+  margin: 20px 0;
+  max-width: 600px;
+  width: 100%;
+}
+
+.step {
+  flex: 1;
+  height: 6px;
+  background: #333;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.step .bar {
+  height: 100%;
+  width: 0;
+  background: var(--accent);
+  transition: width var(--transition);
+}
+
+body.light-mode .step {
+  background: var(--border-light);
+}
+
+/* ===== Modal ===== */
+.modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.show {
+  display: flex;
+}
+
+.modal .card {
+  background: #1e1e1e;
+  color: var(--text-dark);
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+
+body.light-mode .modal .card {
+  background: #fff;
+  color: var(--text-light);
+}
+
+/* ===== Dark Mode Switch ===== */
+.switch {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: inline-block;
+  width: 50px;
+  height: 28px;
+}
+
+.switch input {
+  display: none;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #444;
+  transition: var(--transition);
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 22px;
+  width: 22px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: var(--transition);
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--accent);
+}
+
+input:checked + .slider:before {
+  transform: translateX(22px);
+}
+
+/* ===== Animations ===== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Photo Preview ===== */
+#photoPreview {
+  display: none;
+  max-width: 150px;
+  margin-top: 10px;
+  border-radius: 8px;
+  border: 2px solid var(--accent);
+}
+  </style>
 </head>
 <body>
 
