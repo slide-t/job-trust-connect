@@ -269,135 +269,7 @@ input:checked + .slider:before {
     document.body.classList.toggle("light-theme");
   });
 </script>
-  
-  <!--<style>
-  :root {
-    --accent: #3498db;
-    --error: #e74c3c;
-    --bg: #f8f9fa;
-    --btn: #2980b9;
-    --ghost: #bdc3c7;
-  }
-  body { font-family: Arial, sans-serif; background: var(--bg); margin: 0; padding: 0; }
-  .container { max-width: 900px; margin: 20px auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,.1); }
-  h1 { text-align:center; color: var(--accent); }
-  form { margin-top: 20px; }
-  label { display:block; margin-top:10px; font-weight:bold; }
-  input, select, textarea { width: 100%; padding:8px; margin-top:4px; border-radius:4px; border:1px solid #ccc; }
-  textarea { resize: vertical; min-height:60px; }
-  .row { display:flex; gap:10px; flex-wrap: wrap; }
-  .col { flex:1; min-width:150px; }
-  .col.small { flex:0.5; }
-  .error { color: var(--error); font-size:0.85em; display:none; margin-top:2px; }
-  .actions { display:flex; justify-content: space-between; margin-top:20px; align-items:center; }
-  .btn { background: var(--btn); color:#fff; padding:8px 16px; border:none; border-radius:4px; cursor:pointer; }
-  .ghost { background: var(--ghost); color:#000; padding:8px 16px; border:none; border-radius:4px; cursor:pointer; }
-  .step { flex:1; height:6px; background:#ddd; margin:0 2px; position:relative; overflow:hidden; border-radius:3px; }
-  .bar { width:0%; height:100%; background: var(--accent); transition: width 0.3s ease; }
-  .progress { display:flex; margin-bottom:20px; }
-  .hidden { display:none; }
-  .photo-preview { width:100px; height:100px; border:1px solid #ccc; display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:6px; margin-left:10px; background:#f1f1f1; }
-  .photo-preview img { width:100%; height:100%; object-fit:cover; }
-  .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.5); justify-content:center; align-items:center; }
-  .modal .card { background:#fff; padding:20px; border-radius:6px; width:90%; max-width:800px; }
-  .note { font-size:0.85em; color:#555; }
 
-  /* Hide all form sections *
-.form-section {
-  display: none;
-}
-
-/* Show only the active step *
-.form-section.active {
-  display: block;
-}
-  /* Base state: hidden *
-.form-section {
-  opacity: 0;
-  visibility: hidden;
-  height: 0;
-  overflow: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease, height 0.4s ease;
-}
-/* Base state: hidden */
-.form-section {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute; /* keep inactive sections stacked */
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 0;
-  overflow: hidden;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
-}
-
-/* Active state: visible */
-.form-section.active {
-  position: relative;
-  opacity: 1;
-  visibility: visible;
-  height: auto;
-  overflow: visible;
-}
-
-/* LGA reveal */
-#lgaWrap {
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: opacity 0.5s ease, max-height 0.5s ease;
-}
-
-#lgaWrap.show {
-  opacity: 1;
-  max-height: 500px; /* big enough for content */
-}
-  
-
-/* Active state: visible *
-.form-section.active {
-  opacity: 1;
-  visibility: visible;
-  height: auto;
-  overflow: visible;
-  }
-#lgaWrap {
-  opacity: 0;
-  max-height: 0;
-  overflow: hidden;
-  transition: opacity 0.5s ease, max-height 0.5s ease;
-}
-
-#lgaWrap.show {
-  opacity: 1;
-  max-height: 500px; /* enough space *
-}
-.form-section {
-  opacity: 0;
-  visibility: hidden;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-.form-section.active {
-  position: relative;
-  opacity: 1;
-  visibility: visible;
-}*/
-.fade-in {
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-.fade-out {
-  opacity: 0 !important;
-  visibility: hidden !important;
-}
-    
-</style>
-  -->
 </head>
 <body>
 <div class="container">
@@ -477,6 +349,27 @@ input:checked + .slider:before {
   <input name="dob" id="dob" type="date" required>
   <div class="error" id="err-dob">Please select DOB.</div>
 
+<!-- State and LGA Select Fields -->
+<div class="form-group">
+  <label for="state">State</label>
+  <select id="state" name="state" required>
+    <option value="">-- Select State --</option>
+    <!-- States will load dynamically -->
+  </select>
+</div>
+
+<div class="form-group">
+  <label for="lga">LGA</label>
+  <select id="lga" name="lga" required>
+    <option value="">-- Select LGA --</option>
+    <!-- LGAs will load dynamically -->
+  </select>
+</div>
+
+
+
+  
+  <!--
   <label>State of Origin *</label>
   <select name="stateOfOrigin" id="stateOfOrigin" required>
     <option value="">-- Select State --</option>
@@ -490,7 +383,7 @@ input:checked + .slider:before {
     </select>
     <div class="error" id="err-lga">Please enter LGA.</div>
   </div>
-
+-->
   <div class="row">
     <div class="col small">
       <label>Age</label>
@@ -724,7 +617,41 @@ input:checked + .slider:before {
     <span class="slider round"></span>
   </label>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const stateSelect = document.getElementById("state");
+  const lgaSelect = document.getElementById("lga");
 
+  // Fetch states and LGAs from external JSON
+  fetch("states-lgas.json")
+    .then(response => response.json())
+    .then(data => {
+      // Populate states
+      Object.keys(data).forEach(state => {
+        const option = document.createElement("option");
+        option.value = state;
+        option.textContent = state;
+        stateSelect.appendChild(option);
+      });
+
+      // Update LGAs on state change
+      stateSelect.addEventListener("change", () => {
+        lgaSelect.innerHTML = '<option value="">-- Select LGA --</option>'; // reset
+        const selectedState = stateSelect.value;
+
+        if (selectedState && data[selectedState]) {
+          data[selectedState].forEach(lga => {
+            const option = document.createElement("option");
+            option.value = lga;
+            option.textContent = lga;
+            lgaSelect.appendChild(option);
+          });
+        }
+      });
+    })
+    .catch(error => console.error("Error loading states/LGAs:", error));
+});
+</script>
 <script src="job-applicationform.js"></script>
 </body>
 </html>
