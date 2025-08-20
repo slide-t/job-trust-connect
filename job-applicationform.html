@@ -4,7 +4,162 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>JobTrust Connect Application Form</title>
+
+  <!-- Exit Home Button -->
+<button class="exit-btn" onclick="window.location.href='index.html'">Exit Home</button>
+
+<!-- Dark Mode Toggle -->
+<label class="switch">
+  <input type="checkbox" id="themeToggle">
+  <span class="slider"></span>
+</label>
+
 <style>
+  :root {
+    --accent: #3498db;
+    --error: #e74c3c;
+    --btn: #2980b9;
+    --ghost: #95a5a6;
+
+    /* Dark theme default */
+    --bg: #1e1e1e;
+    --text: #f5f5f5;
+    --card: #2c2c2c;
+    --border: #444;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 0;
+  }
+
+  .container {
+    max-width: 950px;
+    margin: 20px auto;
+    background: var(--card);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(0,0,0,.4);
+  }
+
+  h1 {
+    text-align: center;
+    color: var(--accent);
+  }
+
+  label {
+    display: block;
+    margin-top: 12px;
+    font-weight: bold;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 6px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: #111;
+    color: var(--text);
+  }
+
+  textarea { resize: vertical; min-height: 70px; }
+
+  .row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .col { flex: 1; min-width: 200px; }
+  .col.small { flex: 0.5; }
+
+  .error { color: var(--error); font-size: 0.9em; display: none; margin-top: 3px; }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+    align-items: center;
+  }
+
+  .btn {
+    background: var(--btn);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .btn:hover { opacity: 0.9; }
+
+  .ghost {
+    background: var(--ghost);
+    color: #000;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  .exit-btn {
+    background: crimson;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 15px;
+    float: right;
+  }
+
+  /* Dark mode toggle switch */
+  .switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 26px;
+    margin: 15px;
+    float: left;
+  }
+
+  .switch input { display: none; }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #888;
+    transition: .4s;
+    border-radius: 26px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 20px; width: 20px;
+    left: 3px; bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+  }
+
+  input:checked + .slider {
+    background-color: var(--accent);
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(24px);
+  }
+</style>
+
+<script>
+  // Toggle between dark/light themes
+  const themeToggle = document.getElementById("themeToggle");
+  themeToggle.addEventListener("change", () => {
+    document.body.classList.toggle("light-theme");
+  });
+</script>
+  
+  <!--<style>
   :root {
     --accent: #3498db;
     --error: #e74c3c;
@@ -131,6 +286,7 @@
 }
     
 </style>
+  -->
 </head>
 <body>
 <div class="container">
