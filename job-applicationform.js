@@ -1,5 +1,4 @@
-
-
+// app.js
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.getElementById("appForm");
   const sections = document.querySelectorAll(".form-section");
@@ -12,16 +11,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextBtns = document.querySelectorAll("[id^=nextBtn]");
   const backBtns = document.querySelectorAll("[id^=backBtn]");
 
+  // Inputs
   const stateSelect = document.getElementById("stateOfOrigin");
   const lgaWrap = document.getElementById("lgaWrap");
   const lgaInput = document.getElementById("lga");
-
   const dobInput = document.getElementById("dob");
   const ageInput = document.getElementById("age");
-
   const photoInput = document.getElementById("photo");
   const photoPreview = document.getElementById("photoPreview");
 
+  // Preview modal
   const previewModal = document.getElementById("previewModal");
   const closePreview = document.getElementById("closePreview");
   const previewBtn = document.getElementById("previewBtn");
@@ -29,15 +28,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const submitFinal = document.getElementById("submitFinal");
   const previewContent = document.getElementById("previewContent");
 
-  let statesLgas = {}; // Will load from external JSON
+  let statesLgas = {}; // external JSON data
 
-  // 🔹 Load states & LGAs from external file (states.json)
+  // 🔹 Load states & LGAs from external file
   fetch("states.json")
     .then(res => res.json())
     .then(data => {
       statesLgas = data;
-
-      // Populate states dropdown
       Object.keys(statesLgas).forEach(state => {
         const option = document.createElement("option");
         option.value = state;
@@ -47,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(err => console.error("Error loading states.json:", err));
 
-  // 🔹 Show/Hide LGAs based on state
+  // 🔹 Populate LGAs on state change
   stateSelect.addEventListener("change", () => {
     const lgas = statesLgas[stateSelect.value];
     if (lgas) {
@@ -65,7 +62,21 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 🔹 Step navigation
+  // 🔹 Step navigation + validation
+  function validateStep(stepIndex) {
+    const currentSection = sections[stepIndex];
+    const inputs = currentSection.querySelectorAll("input, select, textarea");
+
+    for (let input of inputs) {
+      if (!input.checkValidity() || (input.type === "file" && input.files.length === 0)) {
+        alert(`Please fill out the field: ${input.name || input.id}`);
+        input.focus();
+        return false;
+      }
+    }
+    return true;
+  }
+
   function showStep(index) {
     sections.forEach((sec, i) => {
       sec.classList.toggle("active", i === index);
@@ -74,21 +85,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     currentStep = index;
 
-    // Hide back button on first step
+    // back/next button visibility
     backBtns.forEach(btn => btn.classList.toggle("hidden", index === 0));
+    nextBtns.forEach(btn => btn.classList.toggle("hidden", index === totalSteps - 1));
 
-    // Hide next button on last step
-    nextBtns.forEach(btn => btn.classList.toggle("hidden", index === sections.length - 1));
-
-    // Show preview modal trigger only on last step
-    previewBtn.classList.toggle("hidden", index !== sections.length - 1);
+    // Preview button only at last step
+    previewBtn.classList.toggle("hidden", index !== totalSteps - 1);
   }
 
   nextBtns.forEach(btn => {
     btn.addEventListener("click", () => {
-      if (currentStep < totalSteps - 1) {
-        currentStep++;
-        showStep(currentStep);
+      if (validateStep(currentStep)) {
+        if (currentStep < totalSteps - 1) {
+          currentStep++;
+          showStep(currentStep);
+        }
       }
     });
   });
@@ -102,29 +113,29 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 🔹 Preview Modal
+  // 🔹 Preview modal
   previewBtn.addEventListener("click", () => {
-    previewModal.classList.add("show");
-    previewContent.innerHTML = Array.from(new FormData(form).entries())
-      .map(([key, val]) => `<p><strong>${key}:</strong> ${val}</p>`)
-      .join("");
+    if (validateStep(currentStep)) {
+      previewModal.classList.add("show");
+      const entries = [...new FormData(form).entries()];
+      previewContent.innerHTML = entries
+        .map(([key, val]) => `<p><strong>${key}:</strong> ${val}</p>`)
+        .join("");
+    }
   });
 
   closePreview.addEventListener("click", () => {
     previewModal.classList.remove("show");
   });
 
-  // 🔹 Dark Mode Toggle
-  document.getElementById("themeToggle").addEventListener("change", function () {
-    document.body.classList.toggle("dark-mode", this.checked);
-  });
-
   // 🔹 Age calculation
   dobInput.addEventListener("change", () => {
     const dob = new Date(dobInput.value);
-    const diff = Date.now() - dob.getTime();
-    const age = new Date(diff).getUTCFullYear() - 1970;
-    ageInput.value = age >= 0 ? age : "";
+    if (!isNaN(dob)) {
+      const diff = Date.now() - dob.getTime();
+      const age = new Date(diff).getUTCFullYear() - 1970;
+      ageInput.value = age >= 0 ? age : "";
+    }
   });
 
   // 🔹 Photo preview
@@ -140,6 +151,11 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ✅ Initialize first step
+  // 🔹 Dark mode
+  document.getElementById("themeToggle").addEventListener("change", function () {
+    document.body.classList.toggle("dark-mode", this.checked);
+  });
+
+  // 🔹 Start at first step
   showStep(0);
 });
