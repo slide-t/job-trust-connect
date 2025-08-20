@@ -160,7 +160,71 @@
   visibility: visible;
   transform: translateX(0);
 }
-  
+/* Exit Home button */
+.exit-home {
+  margin-top: 15px;
+  text-align: center;
+}
+.exit-btn {
+  background: #e63946;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.exit-btn:hover {
+  background: #c82333;
+}
+
+/* Hide by default */
+.hidden {
+  display: none !important;
+}
+
+/* Toggle switch styling */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 26px;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 20px;
+  width: 20px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+input:checked + .slider {
+  background-color: #2196f3;
+}
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+
+    
 </style>
 
 <script>
@@ -614,7 +678,21 @@
 </div>
 <!-- Exit Home Button -->
 <button class="exit-btn" onclick="window.location.href='index.html'">Exit Home</button>
+<!-- Actions Area -->
+<div class="actions">
+  <div class="left-info note">Step <span id="stepCount">1</span> of 7</div>
+  <div>
+    <!-- Back button hidden in Step 1 -->
+    <button type="button" class="ghost hidden" id="backBtn">← Back</button>
+    <button type="button" class="btn" id="nextBtn">Next →</button>
+  </div>
+</div>
 
+<!-- Exit Home button (always visible) -->
+<div class="exit-home">
+  <button type="button" class="exit-btn" onclick="location.href='index.html'">Exit Home</button>
+</div>
+</div>
 <!-- Dark Mode Toggle -->
 <label class="switch">
   <input type="checkbox" id="themeToggle">
@@ -622,7 +700,6 @@
 </label>
 
 <script src="job-applicationform.js"></script>
-</div>
 </body>
 </html>
 
