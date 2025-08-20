@@ -548,38 +548,53 @@
     }
     marital.addEventListener('change', toggleChildren);
 
-    // Load States → LGAs (full list via CDN)
-    let STATES = {};
-    async function loadStates(){
-      try{
-        const res = await fetch(LGAS_URL, { cache: 'force-cache' });
-        const data = await res.json(); // { "Abia": ["Aba North", ...], ... , "FCT": ["Abaji",...] }
-        STATES = data;
-      }catch(e){
-        // minimal fallback (in case CDN blocked)
-        STATES = {
-          "Abia":["Aba North","Aba South","Isiala Ngwa North","Isiala Ngwa South","Umuahia North","Umuahia South"],
-          "Lagos":["Agege","Alimosho","Amuwo-Odofin","Eti-Osa","Ikeja","Kosofe","Lagos Island","Lagos Mainland","Oshodi-Isolo","Shomolu","Surulere"],
-          "FCT":["Abaji","Abuja Municipal","Bwari","Gwagwalada","Kuje","Kwali"]
-        };
-      }
-      // fill state select (include Abuja/FCT)
-      const stateSel = qs('#stateOrigin');
-      stateSel.innerHTML = '<option value="">Select State</option>' + Object.keys(STATES).sort().map(s=>`<option>${s}</option>`).join('');
-    }
-    loadStates();
+    // === LOAD STATES & LGAS FROM LOCAL JSON ===
+async function loadLGAs() {
+  try {
+    const res = await fetch('nigeria-lgas.json'); // 👈 local file
+    const data = await res.json();
 
-    // state change → show LGA
-    const stateSel = qs('#stateOrigin'), lgaSel = qs('#lgaOrigin'), lgaCol = qs('#lgaCol');
-    stateSel.addEventListener('change', ()=>{
-      const st = stateSel.value;
-      if(!st){ lgaCol.style.display='none'; lgaSel.innerHTML=''; return; }
-      const lgas = STATES[st] || [];
-      lgaSel.innerHTML = '<option value="">Select LGA</option>' + lgas.map(l=>`<option>${l}</option>`).join('');
-      lgaCol.style.display = 'block';
+    const stateSelect = qs('#stateOrigin');
+    const lgaSelect = qs('#lgaOrigin');
+
+    // populate states
+    stateSelect.innerHTML = '<option value="">Select State</option>';
+    Object.keys(data).forEach(state => {
+      const opt = document.createElement('option');
+      opt.value = state;
+      opt.textContent = state;
+      stateSelect.appendChild(opt);
     });
 
-    // photo preview
+    // auto populate LGAs on state selection
+    stateSelect.addEventListener('change', ()=>{
+      const selected = stateSelect.value;
+      lgaSelect.innerHTML = '<option value="">Select LGA</option>';
+
+      if (data[selected]) {
+        data[selected].forEach(lga => {
+          const opt = document.createElement('option');
+          opt.value = lga;
+          opt.textContent = lga;
+          lgaSelect.appendChild(opt);
+        });
+
+        // reveal LGA field automatically
+        lgaSelect.parentElement.style.display = 'block';
+      } else {
+        lgaSelect.parentElement.style.display = 'none';
+      }
+    });
+
+  } catch (err) {
+    console.error('Failed to load LGAs:', err);
+  }
+}
+
+// Call on page load
+document.addEventListener('DOMContentLoaded', loadLGAs);
+    
+       // photo preview
     let photoDataURL = '';
     const photoInput = qs('#photo'), photoPreview = qs('#photoPreview'), previewPhoto = qs('#previewPhoto');
     photoInput.addEventListener('change', (e)=>{
