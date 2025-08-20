@@ -561,6 +561,108 @@ qs('#previewBtn').addEventListener('click', ()=>{
 // =============================
 // Submit Handler
 // =============================
+
+// ===== FORM WIZARD & VALIDATION =====
+const qs = (s, o=document)=>o.querySelector(s);
+const qsa = (s, o=document)=>[...o.querySelectorAll(s)];
+let currentStep = 0;
+
+const steps = qsa(".form-step");
+const nextBtns = qsa(".next-btn");
+const prevBtns = qsa(".prev-btn");
+const form = qs("#jobForm");
+const previewBtn = qs("#previewBtn");
+const submitBtn = qs("#submitBtn");
+const spinner = qs("#spinner");
+
+// show step
+function showStep(i){
+  steps.forEach((s,idx)=>s.style.display = (idx===i?"block":"none"));
+}
+showStep(currentStep);
+
+// next step
+nextBtns.forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    if(!form.checkValidity()){ form.reportValidity(); return; }
+    currentStep++;
+    if(currentStep >= steps.length) currentStep = steps.length-1;
+    showStep(currentStep);
+  });
+});
+
+// prev step
+prevBtns.forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    currentStep--;
+    if(currentStep < 0) currentStep = 0;
+    showStep(currentStep);
+  });
+});
+
+// ===== STATE → LGA DYNAMIC LOAD =====
+const stateSel = qs("#stateOrigin"), lgaSel = qs("#lgaOrigin"), lgaCol = qs("#lgaCol");
+
+// fetch your renamed JSON file
+fetch("job-applicationform.json")
+  .then(res=>res.json())
+  .then(STATES=>{
+    stateSel.addEventListener("change", ()=>{
+      const st = stateSel.value;
+      if(!st){ lgaCol.style.display="none"; lgaSel.innerHTML=""; return; }
+      const lgas = STATES[st] || [];
+      lgaSel.innerHTML = '<option value="">Select LGA</option>' + lgas.map(l=>`<option>${l}</option>`).join("");
+      lgaCol.style.display = "block";
+    });
+  });
+
+// ===== PREVIEW PDF =====
+previewBtn.addEventListener("click", ()=>{
+  spinner.style.display="inline-block";
+  setTimeout(()=>{
+    window.print(); // simple preview as PDF print
+    spinner.style.display="none";
+  }, 1200);
+});
+
+// ===== FORM SUBMISSION =====
+form.addEventListener("submit", (e)=>{
+  e.preventDefault();
+  spinner.style.display="inline-block";
+
+  // collect data
+  const data = {
+    fullname: qs("#fullname").value,
+    address: qs("#address").value,
+    gender: qs("#gender").value,
+    phoneNumber: qs("#phoneNumber").value,
+    guarantorName: qs("#guarantorName").value,
+    guarantorPhone: qs("#guarantorPhone").value,
+  };
+
+  // 1. send to SheetDB
+  fetch("https://sheetdb.io/api/v1/YOUR_SHEETDB_ID", {
+    method: "POST",
+    headers: {"Content-Type":"application/json"},
+    body: JSON.stringify({data:[data]})
+  })
+  .then(r=>r.json())
+  .then(()=>{
+    // 2. send with EmailJS
+    emailjs.send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", data)
+    .then(()=>{
+      spinner.style.display="none";
+      alert("Submission successful!");
+      window.location.href="job-applicationfor.html"; // reload to index page
+    });
+  })
+  .catch(err=>{
+    spinner.style.display="none";
+    alert("Error: " + err);
+  });
+});
+
+   
 // Replace with your real keys
 const SHEETDB_URL = "https://sheetdb.io/api/v1/XXXXXXXX"; 
 const EMAILJS_SERVICE_ID = "service_xxxxxx";
