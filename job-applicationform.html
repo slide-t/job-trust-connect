@@ -617,13 +617,14 @@ input:checked + .slider:before {
     <span class="slider round"></span>
   </label>
 </div>
-<script>
+
+  <script>
 document.addEventListener("DOMContentLoaded", () => {
   const stateSelect = document.getElementById("state");
   const lgaSelect = document.getElementById("lga");
 
   // Fetch states and LGAs from external JSON
-  fetch("states-lgas.json")
+  fetch("job-applicationform.json")
     .then(response => response.json())
     .then(data => {
       // Populate states
@@ -652,7 +653,8 @@ document.addEventListener("DOMContentLoaded", () => {
     .catch(error => console.error("Error loading states/LGAs:", error));
 });
 </script>
-<script src="job-applicationform.js"></script>
+
+  <script src="job-applicationform.js"></script>
 </body>
 </html>
 
