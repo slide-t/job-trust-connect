@@ -541,9 +541,8 @@ document.addEventListener('DOMContentLoaded', loadLGAs);
 // =============================
 // Wizard Navigation
 // =============================
-
-   // =============================
-// Wizard Navigation
+// =============================
+// Wizard Navigation with Disabled Next
 // =============================
 
 // shortcuts
@@ -553,10 +552,12 @@ const qsa = (sel, par=document) => [...par.querySelectorAll(sel)];
 let currentStep = 0;
 const steps = qsa('.form-step');
 
+// show step
 function showStep(i){
   steps.forEach((st,idx)=>{
     st.style.display = (idx===i)?'block':'none';
   });
+  toggleNextButton(); // check validation whenever step is shown
 }
 showStep(currentStep);
 
@@ -569,14 +570,29 @@ function validateStep(stepIndex) {
   inputs.forEach(input => {
     if (!input.value.trim()) {
       valid = false;
-      input.classList.add("error");
-    } else {
-      input.classList.remove("error");
     }
   });
 
   return valid;
 }
+
+// enable/disable Next button
+function toggleNextButton() {
+  const step = steps[currentStep];
+  const nextBtn = step.querySelector('.next-btn');
+  if(nextBtn){
+    nextBtn.disabled = !validateStep(currentStep);
+  }
+}
+
+// Attach input listeners to re-check validity
+steps.forEach((step, idx) => {
+  const inputs = step.querySelectorAll("[required]");
+  inputs.forEach(input => {
+    input.addEventListener('input', toggleNextButton);
+    input.addEventListener('change', toggleNextButton);
+  });
+});
 
 // next step
 qsa('.next-btn').forEach(btn => {
@@ -598,34 +614,9 @@ qsa('.prev-btn').forEach(btn => {
   });
 });
    
-   
-   /*let currentStep = 0;
-const steps = qsa('.form-step');
 
-function showStep(i){
-  steps.forEach((st,idx)=>{
-    st.style.display = (idx===i)?'block':'none';
-  });
-}
-showStep(currentStep);
 
-qsa('.next-btn').forEach(btn => {
-  btn.addEventListener('click', ()=>{
-    if(validateStep(currentStep)){
-      currentStep++;
-      if(currentStep >= steps.length) currentStep = steps.length-1;
-      showStep(currentStep);
-    }
-  });
-});
-qsa('.prev-btn').forEach(btn => {
-  btn.addEventListener('click', ()=>{
-    currentStep--;
-    if(currentStep < 0) currentStep = 0;
-    showStep(currentStep);
-  });
-});
-*/
+
 // =============================
 // Validation
 // =============================
