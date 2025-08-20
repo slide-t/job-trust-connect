@@ -60,6 +60,19 @@
   height: auto;
   overflow: visible;
   }
+#lgaWrap {
+  opacity: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: opacity 0.5s ease, max-height 0.5s ease;
+}
+
+#lgaWrap.show {
+  opacity: 1;
+  max-height: 500px; /* enough space */
+}
+
+    
 </style>
 </head>
 <body>
@@ -134,7 +147,7 @@
   </div>
 </section>
 
-<!-- SECTION 1: Biodata -->
+  <!-- SECTION 1: Biodata -->
 <section class="section form-section" data-step="1">
   <label>Date of Birth *</label>
   <input name="dob" id="dob" type="date" required>
@@ -142,13 +155,15 @@
 
   <label>State of Origin *</label>
   <select name="stateOfOrigin" id="stateOfOrigin" required>
-    <option value="">Select State</option>
+    <option value="">-- Select State --</option>
   </select>
   <div class="error" id="err-stateOfOrigin">Please select state.</div>
 
   <div id="lgaWrap" class="hidden">
     <label>Local Govt. Area (LGA) *</label>
-    <select name="lga" id="lga" required></select>
+    <select name="lga" id="lga" required>
+      <option value="">-- Select LGA --</option>
+    </select>
     <div class="error" id="err-lga">Please enter LGA.</div>
   </div>
 
@@ -187,6 +202,8 @@
     </div>
   </div>
 </section>
+
+
 
 <!-- SECTION 2: Parents/Guardian -->
 <section class="section form-section" data-step="2">
