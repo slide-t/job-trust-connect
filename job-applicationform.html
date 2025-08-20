@@ -8,6 +8,7 @@
   <!-- EmailJS (browser SDK) -->
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 
+  <!--
   <style>
 /* ===========================
    Step Progress Indicator (Top Bar + Circles)
@@ -174,6 +175,7 @@ button.ghost:hover { background:rgba(255,255,255,0.05); }
 .exit-btn:hover{ filter:brightness(1.1); }
     
   </style>
+  -->
 </head>
 <body>
   <div class="wrap" id="printArea">
@@ -223,7 +225,33 @@ button.ghost:hover { background:rgba(255,255,255,0.05); }
     <input type="tel" name="guarantorPhone" placeholder="Guarantor Phone" required>
   </div>
 
-  <!-- Buttons -->
+  <!-- Step 5 -->
+  <div class="form-step">
+    <h3>State & LGA</h3>
+    <label>State of Origin</label>
+    <select id="stateOrigin" name="stateOrigin" required></select>
+
+    <div id="lgaCol" style="display:none;">
+      <label>LGA of Origin</label>
+      <select id="lgaOrigin" name="lgaOrigin" required></select>
+    </div>
+  </div>
+
+  <!-- Step 6 -->
+  <div class="form-step">
+    <h3>Education</h3>
+    <input type="text" name="highestQualification" placeholder="Highest Qualification" required>
+    <input type="text" name="schoolAttended" placeholder="School Attended" required>
+  </div>
+
+  <!-- Step 7 -->
+  <div class="form-step">
+    <h3>Work Experience / Additional Info</h3>
+    <textarea name="experience" placeholder="Brief Work Experience"></textarea>
+    <textarea name="otherInfo" placeholder="Any Additional Information"></textarea>
+  </div>
+
+  <!-- Navigation Buttons -->
   <div class="form-navigation">
     <button id="prevBtn" type="button">Previous</button>
     <button id="nextBtn" type="button">Next</button>
@@ -233,8 +261,23 @@ button.ghost:hover { background:rgba(255,255,255,0.05); }
   </div>
 </form>
 
+<!-- Styling -->
 <style>
   .form-step { display: none; }
+  .form-navigation { margin-top: 20px; text-align: center; }
+  .form-navigation button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  #prevBtn { background: #ccc; }
+  #nextBtn { background: #007bff; color: white; }
+  #previewBtn { background: #ffc107; color: black; }
+  #submitBtn { background: #28a745; color: white; }
+  #spinner { margin-left: 10px; }
 </style>
     
     
