@@ -54,19 +54,23 @@ stateSelect.addEventListener("change", () => {
   }
 });
 
-function showStep(index) {
+  function showStep(index) {
   sections.forEach((sec, i) => {
-    if (i === index) {
-      sec.classList.add("fade-in");
-      sec.classList.remove("fade-out");
-      sec.classList.add("active");
-    } else {
-      if (sec.classList.contains("active")) {
-        sec.classList.remove("fade-in");
-        sec.classList.add("fade-out");
-        setTimeout(() => sec.classList.remove("active"), 300); // match CSS duration
-      }
-    }
+    sec.classList.toggle("active", i === index);
+    progressBars[i].style.width = i <= index ? "100%" : "0%";
+  });
+
+  currentStep = index;
+
+  // Show Preview button only on last step
+    document.getElementById("previewBtn").addEventListener("click", () => {
+  document.getElementById("previewModal").classList.add("show");
+});
+
+document.getElementById("closePreview").addEventListener("click", () => {
+  document.getElementById("previewModal").classList.remove("show");
+});
+ 
     // Update progress bars
     if (progressBars && progressBars[i]) {
       progressBars[i].style.width = i <= index ? "100%" : "0%";
