@@ -192,8 +192,54 @@ button.ghost:hover { background:rgba(255,255,255,0.05); }
       <div class="step"><div class="bar" id="bar6"></div></div>
     </div>
 
-    <form id="appForm" novalidate>
-      <!-- STEP 0: Personal -->
+    <form id="regForm">
+  <!-- Step 1 -->
+  <div class="form-step">
+    <h3>Personal Information</h3>
+    <input type="text" name="fullname" placeholder="Full Name" required>
+    <input type="text" name="address" placeholder="Address" required>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="form-step">
+    <h3>Gender</h3>
+    <select name="gender" required>
+      <option value="">Select Gender</option>
+      <option>Male</option>
+      <option>Female</option>
+    </select>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="form-step">
+    <h3>Contact</h3>
+    <input type="tel" name="phoneNumber" placeholder="Phone Number" required>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="form-step">
+    <h3>Guarantor</h3>
+    <input type="text" name="guarantorName" placeholder="Guarantor Name" required>
+    <input type="tel" name="guarantorPhone" placeholder="Guarantor Phone" required>
+  </div>
+
+  <!-- Buttons -->
+  <div class="form-navigation">
+    <button id="prevBtn" type="button">Previous</button>
+    <button id="nextBtn" type="button">Next</button>
+    <button id="previewBtn" type="button">Preview</button>
+    <button id="submitBtn" type="button">Submit</button>
+    <span id="spinner" style="display:none;">⏳</span>
+  </div>
+</form>
+
+<style>
+  .form-step { display: none; }
+</style>
+    
+    
+    <!--<form id="appForm" novalidate>
+      <!-- STEP 0: Personal --
       <section class="section active" data-step="0">
         <label for="fullName">Full name *</label>
         <input id="fullName" name="fullName" type="text" required />
@@ -245,7 +291,7 @@ button.ghost:hover { background:rgba(255,255,255,0.05); }
         </div>
       </section>
 
-      <!-- STEP 1: Biodata (with State → LGA) -->
+      <!-- STEP 1: Biodata (with State → LGA) --
       <section class="section" data-step="1">
         <div class="row">
           <div class="col">
@@ -310,7 +356,7 @@ button.ghost:hover { background:rgba(255,255,255,0.05); }
         </div>
       </section>
 
-      <!-- STEP 2: Parents/Guardian -->
+      <!-- STEP 2: Parents/Guardian --
       <section class="section" data-step="2">
         <label for="parentName">Parent/Guardian Full Name *</label>
         <input id="parentName" name="parentName" type="text" required />
@@ -342,7 +388,7 @@ button.ghost:hover { background:rgba(255,255,255,0.05); }
         </div>
       </section>
 
-      <!-- STEP 3: Formal Workplace -->
+      <!-- STEP 3: Formal Workplace --
       <section class="section" data-step="3">
         <label for="prevWorkplace">Previous Workplace Name *</label>
         <input id="prevWorkplace" name="prevWorkplace" type="text" required />
@@ -383,7 +429,7 @@ button.ghost:hover { background:rgba(255,255,255,0.05); }
         </div>
       </section>
 
-      <!-- STEP 4: Guarantor -->
+      <!-- STEP 4: Guarantor --
       <section class="section" data-step="4">
         <label for="guarantorName">Guarantor Full Name *</label>
         <input id="guarantorName" name="guarantorName" type="text" required />
@@ -406,7 +452,7 @@ button.ghost:hover { background:rgba(255,255,255,0.05); }
         </div>
       </section>
 
-      <!-- STEP 5: Education (required now) -->
+      <!-- STEP 5: Education (required now) --
       <section class="section" data-step="5">
         <div class="row">
           <div class="col">
@@ -435,7 +481,7 @@ button.ghost:hover { background:rgba(255,255,255,0.05); }
         </div>
       </section>
 
-      <!-- STEP 6: Photo / Preview -->
+      <!-- STEP 6: Photo / Preview --
       <section class="section" data-step="6">
         <label for="photo">Upload Passport Photo *</label>
         <div class="row" style="align-items:center;">
@@ -463,7 +509,7 @@ button.ghost:hover { background:rgba(255,255,255,0.05); }
     </form>
   </div>
 
-  <!-- Preview Modal -->
+  <!-- Preview Modal --
   <div class="modal" id="previewModal" aria-hidden="true">
     <div class="card" role="dialog" aria-modal="true" aria-label="Preview application">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
@@ -517,7 +563,7 @@ button.ghost:hover { background:rgba(255,255,255,0.05); }
         <div class="note" style="margin-top:10px">Preview first, then Print or Submit.</div>
       </div>
     </div>
-  </div>
+  </div>-->
 <!-- Exit Container -->
 <div class="exit-container">
   <button onclick="goHome()" class="exit-btn">🏠 Exit to Home</button>
