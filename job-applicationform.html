@@ -4,178 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>JobTrust Connect — Application</title>
-
-  <!-- EmailJS (browser SDK) -->
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-
-  <style>
-    /* Global Dark Theme */
-    body {
-      font-family: Arial, sans-serif;
-      background: #121212;
-      color: #f1f1f1;
-      margin: 0;
-      padding: 0;
-    }
-    .wrap {
-      max-width: 700px;
-      margin: 30px auto;
-      background: #1e1e1e;
-      padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.6);
-    }
-    header {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    header h1 {
-      color: #1e90ff;
-      margin-bottom: 10px;
-    }
-    header p {
-      color: #ccc;
-    }
-
-    /* Form Controls */
-    input, select, textarea {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: 1px solid #333;
-      border-radius: 8px;
-      background: #2a2a2a;
-      color: #fff;
-      transition: border 0.3s, box-shadow 0.3s;
-    }
-    input:focus, select:focus, textarea:focus {
-      border-color: #1e90ff;
-      box-shadow: 0 0 8px #1e90ff;
-      outline: none;
-    }
-
-    /* Progress Bar */
-    #progressbar {
-      display: flex;
-      justify-content: space-between;
-      margin: 20px 0 30px;
-      counter-reset: step;
-    }
-    .progress-step {
-      width: 30px;
-      height: 30px;
-      background: #444;
-      color: #fff;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      position: relative;
-    }
-    .progress-step.active {
-      background: #1e90ff;
-    }
-    .progress-step::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 100%;
-      width: 80px;
-      height: 4px;
-      background: #444;
-      transform: translateY(-50%);
-      z-index: -1;
-    }
-    .progress-step:last-child::after {
-      display: none;
-    }
-    .progress-step.active::after {
-      background: #1e90ff;
-    }
-
-    /* Buttons */
-    .form-navigation {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .form-navigation button {
-      flex: 1;
-      min-width: 120px;
-      background: #1e90ff;
-      color: #fff;
-      border: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-size: 16px;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-    }
-    .form-navigation button:hover {
-      background: #0d6efd;
-      transform: scale(1.05);
-    }
-    #previewBtn {
-      background: #28a745;
-    }
-    #previewBtn:hover {
-      background: #218838;
-    }
-    #submitBtn {
-      background: #ff5722;
-    }
-    #submitBtn:hover {
-      background: #e64a19;
-    }
-
-    /* Preview Section */
-    #previewSection {
-      background: #222;
-      padding: 20px;
-      border-radius: 8px;
-      color: #ddd;
-    }
-    #previewSection h3 {
-      color: #1e90ff;
-    }
-    #previewSection button {
-      background: #1e90ff;
-      margin-top: 10px;
-    }
-
-    /* Exit Button */
-    .exit-container {
-      display: flex;
-      justify-content: center;
-      margin: 30px 0 10px;
-    }
-    .exit-btn {
-      background: #1e90ff;
-      color: #fff;
-      border: none;
-      padding: 12px 25px;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-    .exit-btn:hover {
-      background: #0056b3;
-      transform: scale(1.05);
-    }
-
-    /* Step Hide/Show */
-    .form-step {
-      display: none;
-    }
-    .form-step.active {
-      display: block;
-    }
-  </style>
+  <link rel="stylesheet" href="job-applicationform.css">
 </head>
 <body>
   <div class="wrap" id="printArea">
@@ -231,6 +60,7 @@
         <h3>State & LGA</h3>
         <label>State of Origin</label>
         <select id="stateOrigin" name="stateOrigin" required></select>
+
         <div id="lgaCol" style="display:none;">
           <label>LGA of Origin</label>
           <select id="lgaOrigin" name="lgaOrigin" required></select>
@@ -274,11 +104,6 @@
     </div>
   </div>
 
-  <script>
-    function goHome() {
-      window.location.href = "index.html"; // change to your homepage file/link
-    }
-  </script>
   <script src="job-applicationform.js"></script>
 </body>
 </html>
