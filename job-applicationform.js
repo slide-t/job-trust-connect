@@ -54,7 +54,6 @@ stateSelect.addEventListener("change", () => {
   }
 });
 
-// Show Step with fade transition
 function showStep(index) {
   sections.forEach((sec, i) => {
     if (i === index) {
@@ -68,10 +67,48 @@ function showStep(index) {
         setTimeout(() => sec.classList.remove("active"), 300); // match CSS duration
       }
     }
-    progressBars[i].style.width = i <= index ? "100%" : "0%";
+    // Update progress bars
+    if (progressBars && progressBars[i]) {
+      progressBars[i].style.width = i <= index ? "100%" : "0%";
+    }
   });
+
   currentStep = index;
+  stepCount.textContent = index + 1;
+
+  // 🔹 Button visibility logic
+  backBtn.classList.toggle("hidden", index === 0); // Hide Back on step 1
+  nextBtn.classList.toggle("hidden", index === sections.length - 1); // Hide Next on last step
+
+  // Show Submit only on last step
+  const submitBtn = document.getElementById("submitBtn");
+  if (submitBtn) {
+    submitBtn.classList.toggle("hidden", index !== sections.length - 1);
+  }
+
+  // Optionally: show Save Draft / Print only from step 2+
+  const saveDraftBtn = document.getElementById("saveDraftBtn");
+  const printBtn = document.getElementById("printBtn");
+  if (saveDraftBtn) saveDraftBtn.classList.toggle("hidden", index < 1);
+  if (printBtn) printBtn.classList.toggle("hidden", index < 1);
 }
+  
+
+
+
+// Back
+backBtn.addEventListener("click", () => {
+  if (currentStep > 0) {
+    currentStep--;
+    showStep(currentStep);
+  }
+});
+
+// Dark Mode Toggle
+document.getElementById("darkModeToggle").addEventListener("change", function() {
+  document.body.classList.toggle("dark-mode", this.checked);
+});
+  
 
 
 
