@@ -152,7 +152,7 @@
     }
   </style>
   -->
-  <style>
+<style>
 /* 🔹 Base Styling (Dark Theme by default) */
 body {
   font-family: Arial, sans-serif;
@@ -328,6 +328,8 @@ body.light-theme .btn-cancel:hover {
   background: #aaa;
 }
 </style>
+
+    
 </head>
 <body>
 
@@ -455,6 +457,10 @@ body.light-theme .btn-cancel:hover {
       </div>
     </div>
   </div>
+
+  <button onclick="document.body.classList.toggle('light-theme')">
+  Switch Theme
+  </button>
 
   <!-- ✅ EmailJS SDK -->
   <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
@@ -594,6 +600,13 @@ closeBtn.addEventListener("click", () => {
   window.location.href = "index.html"; 
 });
 </script>
-  
+  <div class="theme-switch-wrapper">
+  <label class="theme-switch" for="themeToggle">
+    <input type="checkbox" id="themeToggle">
+    <span class="slider">
+      <span class="icon">🌙</span>
+    </span>
+  </label>
+</div>
 </body>
 </html>
