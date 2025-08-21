@@ -182,48 +182,50 @@ document.addEventListener("DOMContentLoaded", () => {
       reader.readAsDataURL(file);
     }
   });
+// 🔹 Final submission → SheetDB + EmailJS
+submitFinal.addEventListener("click", e => {
+  e.preventDefault();
 
-  // 🔹 Final submission → SheetDB + EmailJS
-  submitFinal.addEventListener("click", e => {
-    e.preventDefault();
-    const fd = new FormData(form);
-    const data = {};
-    fd.forEach((val, key) => {
-      if (key === "photo") {
-        data[key] = photoBase64;
-      } else {
-        data[key] = val;
-      }
-    });
-
-    // ✅ Send to SheetDB
-    fetch("https://sheetdb.io/api/v1/YOUR_SHEETDB_ID", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ data: [data] }),
-    })
-      .then(res => res.json())
-      .then(() => {
-        // ✅ Send via EmailJS
-        emailjs
-          .send("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", data)
-          .then(() => {
-            alert("Application submitted successfully!");
-            form.reset();
-            previewModal.classList.remove("show");
-            showStep(0); // reset to first step
-          })
-          .catch(err => {
-            console.error("EmailJS error:", err);
-            alert("Error sending email. Please try again.");
-          });
-      })
-      .catch(err => {
-        console.error("SheetDB error:", err);
-        alert("Error submitting form. Please try again.");
-      });
+  const fd = new FormData(form);
+  const data = {};
+  fd.forEach((val, key) => {
+    if (key === "photo") {
+      data[key] = photoBase64;
+    } else {
+      data[key] = val;
+    }
   });
 
+  // ✅ Save to SheetDB
+  fetch("https://sheetdb.io/api/v1/2d6wigbp84e9e", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ data: [data] }),
+  })
+    .then(res => res.json())
+    .then(() => {
+      // ✅ Send via EmailJS
+      emailjs
+        .send("service_74g1ljg", "ejs-test-mail-service", data, "zJDixw4ygvB_riybX")
+        .then(() => {
+          alert("🎉 Application submitted successfully!");
+          form.reset();
+          previewModal.classList.remove("show");
+          showStep(0); // reset to first step
+        })
+        .catch(err => {
+          console.error("EmailJS error:", err);
+          alert("⚠️ Error sending email. Please try again.");
+        });
+    })
+    .catch(err => {
+      console.error("SheetDB error:", err);
+      alert("⚠️ Error submitting form. Please try again.");
+    });
+});
+
+  
+  
   // 🔹 Start at step 0
   showStep(0);
 });
