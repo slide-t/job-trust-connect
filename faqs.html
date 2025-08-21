@@ -438,8 +438,8 @@
   /* Floating Search Box */
   #faqSearchBox {
     position: fixed;
-    top: 60px;
-    right: 40px;
+    top: 20px;
+    right: 20px;
     display: flex;
     align-items: center;
     background: #222;
@@ -455,14 +455,14 @@
     outline: none;
     background: transparent;
     color: #fff;
-    font-size: 16px;
+    font-size: 14px;
     width: 0;               /* collapsed by default */
     opacity: 0;
     transition: width 0.3s ease, opacity 0.3s ease;
   }
 
   #faqSearchBox.expanded #faqSearchInput {
-    width: 300px;           /* expands on focus */
+    width: 220px;           /* expands on focus */
     opacity: 1;
     margin-left: 8px;
   }
@@ -528,9 +528,14 @@
     }
   });
 
-  // Search FAQs
+  // Perform Search
   function performSearch() {
-    const term = searchInput.value.toLowerCase();
+    const term = searchInput.value.toLowerCase().trim();
+    if (!term) {
+      renderFAQs(faqData);
+      return;
+    }
+
     const results = faqData.filter(item =>
       item.q.toLowerCase().includes(term) || item.a.toLowerCase().includes(term)
     );
@@ -538,16 +543,35 @@
     if (results.length > 0) {
       renderFAQs(results);
     } else {
+      // Redirect to Google if no results
       window.location.href = `https://www.google.com/search?q=${encodeURIComponent(term)}`;
     }
   }
 
+  // 🔹 Live search while typing
+  searchInput.addEventListener("input", () => {
+    const term = searchInput.value.toLowerCase().trim();
+    const results = faqData.filter(item =>
+      item.q.toLowerCase().includes(term) || item.a.toLowerCase().includes(term)
+    );
+    renderFAQs(results.length > 0 ? results : faqData);
+  });
+
+  // 🔹 Enter triggers full search (with redirect if no result)
   searchInput.addEventListener("keypress", e => {
     if (e.key === "Enter") {
       performSearch();
     }
   });
+
+  // 🔹 Collapse on outside click
+  document.addEventListener("click", (e) => {
+    if (!searchBox.contains(e.target)) {
+      searchBox.classList.remove("expanded");
+    }
+  });
 </script>
+  
   
 <script>
   function toggleMenu() {
