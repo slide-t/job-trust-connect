@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Caregiving Service Registration</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #121212;
+      color: #eaeaea;
+    }
+    h2 {
+      text-align: center;
+      color: #1e90ff;
+    }
+    form {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      background: #1e1e1e;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #ddd;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #333;
+      border-radius: 6px;
+      background: #2a2a2a;
+      color: #fff;
+    }
+    button {
+      background: #1e90ff;
+      color: #fff;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+      transition: 0.3s;
+    }
+    button:hover {
+      background: #187bcd;
+    }
+    fieldset {
+      border: 1px solid #333;
+      padding: 15px;
+      margin-top: 20px;
+      border-radius: 6px;
+    }
+    legend {
+      font-weight: bold;
+      color: #1e90ff;
+    }
+
+    /* 🔹 Modal Styling */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0; top: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #1e1e1e;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+      max-width: 400px;
+      color: #fff;
+      border: 1px solid #1e90ff;
+    }
+    .modal h3 {
+      margin-bottom: 15px;
+      color: #1e90ff;
+    }
+    .modal p {
+      margin: 8px 0;
+    }
+    .modal button {
+      margin-top: 15px;
+      width: auto;
+      padding: 10px 20px;
+    }
+    .modal-actions {
+      display: flex;
+      justify-content: space-around;
+    }
+    .btn-cancel {
+      background: #444;
+    }
+    .btn-cancel:hover {
+      background: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Register for Caregiving Services</h2>
+
+  <form id="careForm">
+    <!-- Client Information -->
+    <div class="form-group">
+      <label>Full Name</label>
+      <input type="text" name="fullname" required />
+    </div>
+
+    <div class="form-group">
+      <label>Address</label>
+      <input type="text" name="address" required />
+    </div>
+
+    <div class="form-group">
+      <label>State</label>
+      <select id="stateSelect" name="state" required>
+        <option value="">Select State</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>LGA</label>
+      <select id="lgaSelect" name="lga" required>
+        <option value="">Select LGA</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Type of Service</label>
+      <select name="serviceType" required>
+        <option value="">Select Service</option>
+        <option value="Care-Giver">Care-Giver</option>
+        <option value="Driver">Driver</option>
+        <option value="Cleaner">Cleaner</option>
+      </select>
+    </div>
+<!-- Preferred Caregiver Gender -->
+<div class="form-group">
+  <label>Preferred Caregiver Gender <span style="opacity:.7">(required)</span></label>
+  <div style="display: flex; gap: 20px; margin-top: 6px;">
+    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+      <input type="radio" name="caregiverGender" value="Male" required>
+      Male
+    </label>
+    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+      <input type="radio" name="caregiverGender" value="Female" required>
+      Female
+    </label>
+    <label style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+      <input type="radio" name="caregiverGender" value="No Preference" required>
+      No Preference
+    </label>
+  </div>
+</div>
+    <div class="form-group">
+      <label>Phone Number (WhatsApp)</label>
+      <input type="tel" name="phoneNumber" placeholder="e.g. +2348123456789" required />
+    </div>
+
+    <div class="form-group">
+      <label>Second Mobile Number</label>
+      <input type="tel" name="altPhone" required />
+    </div>
+
+    <!-- Patient Profile -->
+    <fieldset>
+      <legend>Patient Profile</legend>
+
+      <div class="form-group">
+        <label>Patient Name</label>
+        <input type="text" name="patientName" required />
+      </div>
+
+      <div class="form-group">
+        <label>Patient Age</label>
+        <input type="number" name="patientAge" required />
+      </div>
+
+      <div class="form-group">
+        <label>Relationship with Client</label>
+        <input type="text" name="relationship" required />
+      </div>
+
+      <div class="form-group">
+        <label>Gender</label>
+        <select name="gender" required>
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <button type="submit">Submit Request</button>
+  </form>
+
+  <!-- 🔹 Modal -->
+  <div id="feeModal" class="modal">
+    <div class="modal-content">
+      <h3>Registration Fee Required</h3>
+      <p>You are required to pay a registration fee of <strong>₦10,000</strong></p>
+      <p><strong>Bank:</strong> Access Bank</p>
+      <p><strong>Account Number:</strong> 0039752546</p>
+      <p><strong>Account Name:</strong> Alimi Azeez Olajide (CEO-JobTrust Connect)</p>
+      <div class="modal-actions">
+        <button class="btn-cancel" id="cancelBtn">Cancel</button>
+        <button id="proceedBtn">Proceed</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <script>
+    (function(){
+      emailjs.init("zJDixw4ygvB_riybX"); // ✅ Your public key
+    })();
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const stateSelect = document.getElementById("stateSelect");
+      const lgaSelect = document.getElementById("lgaSelect");
+      const feeModal = document.getElementById("feeModal");
+      const cancelBtn = document.getElementById("cancelBtn");
+      const proceedBtn = document.getElementById("proceedBtn");
+      let statesLgas = {};
+      let pendingForm = null;
+
+      // 🔹 Load states & LGAs
+      fetch("job-applicationform.json")
+        .then(res => res.json())
+        .then(data => {
+          statesLgas = data;
+          Object.keys(statesLgas).forEach(state => {
+            const option = document.createElement("option");
+            option.value = state;
+            option.textContent = state;
+            stateSelect.appendChild(option);
+          });
+        });
+
+      stateSelect.addEventListener("change", () => {
+        const lgas = statesLgas[stateSelect.value];
+        lgaSelect.innerHTML = '<option value="">Select LGA</option>';
+        if (lgas) {
+          lgas.forEach(lga => {
+            const option = document.createElement("option");
+            option.value = lga;
+            option.textContent = lga;
+            lgaSelect.appendChild(option);
+          });
+        }
+      });
+
+      // 🔹 Handle form submission
+      document.getElementById("careForm").addEventListener("submit", e => {
+        e.preventDefault();
+        pendingForm = e.target;
+        feeModal.style.display = "flex"; // show modal
+      });
+
+      // Cancel closes modal
+      cancelBtn.addEventListener("click", () => {
+        feeModal.style.display = "none";
+        pendingForm = null;
+      });
+
+      // Proceed sends form via EmailJS
+      proceedBtn.addEventListener("click", () => {
+        if (!pendingForm) return;
+        emailjs.sendForm("service_74g1ljg", "ejs-test-mail-service", pendingForm)
+          .then(() => {
+            alert("🎉 Your caregiving request has been submitted successfully!");
+            pendingForm.reset();
+            feeModal.style.display = "none";
+            pendingForm = null;
+          })
+          .catch(err => {
+            console.error("EmailJS error:", err);
+            alert("⚠️ Error sending request. Please try again.");
+          });
+      });
+    });
+  </script>
+
+</body>
+</html>
