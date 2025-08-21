@@ -754,6 +754,7 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 </script>
 <!-- ===== END MODAL ===== -->
+
 <!-- ✅ WhatsApp Float Button with Tooltip -->
 <a id="whatsapp-float"
    href="https://wa.me/2349046464822?text=Hello%20JobTrust%20Connect!%20I%27d%20like%20to%20learn%20more%20about%20your%20caregiving%20services."
@@ -805,19 +806,35 @@ document.addEventListener("DOMContentLoaded", function () {
     pointer-events: none;
     transition: all 0.3s ease;
   }
-  #whatsapp-f.com/YOUR_KIT_ID.js" crossorigin="anonymous"></script>
+  #whatsapp-float.show-tooltip .tooltip {
+    opacity: 1;
+    transform: scale(1);
+  }
+</style>
+
+<script>
+  const waBtn = document.getElementById("whatsapp-float");
+
+  // Show tooltip on hover
+  waBtn.addEventListener("mouseenter", () => {
+    waBtn.classList.add("show-tooltip");
+  });
+  waBtn.addEventListener("mouseleave", () => {
+    waBtn.classList.remove("show-tooltip");
+  });
+
+  // 🔄 Auto zoom in/out tooltip every 10 seconds
+  setInterval(() => {
+    waBtn.classList.add("show-tooltip");
+    setTimeout(() => waBtn.classList.remove("show-tooltip"), 2500); // tooltip visible for 2.5s
+  }, 10000);
+</script>
+
+<!-- Font Awesome (if not already included) -->
+<script src="https://kit.fontawesome.com/YOUR_KIT_ID.js" crossorigin="anonymous"></script>
 
   
 
-<script>
-  // Optional: dynamically include current page title in the message
-  (function(){
-    var link = document.getElementById('whatsapp-float');
-    var base = 'https://wa.me/2349046464822'; // 🔁 replace with your WhatsApp number (no +, no spaces)
-    var msg = 'Hello JobTrust Connect! I\'d like to learn more about your caregiving services — (' + document.title + ')';
-    link.href = base + '?text=' + encodeURIComponent(msg);
-  }());
-</script>
-
+  
 </body>
 </html>
