@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Caregiving Service Registration</title>
+  <title>JobTrust Connect Service Registration</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -111,10 +111,23 @@
 </head>
 <body>
 
-  <h2>Register for Caregiving Services</h2>
+  <h2> JobTrust Connect Request Form</h2>
 
   <form id="careForm">
     <!-- Client Information -->
+    <div class="form-group">
+      <label>Title</label>
+      <select name="serviceType" required>
+        <option value="">Mr.</option>
+        <option value="alhaji-alhaja">Alhaji/Alhaja</option>
+        <option value="pastor">Pastor/Pastor Mrs.</option>
+        <option value="chief">Chief/Chief Mrs.</option>
+        <option value="honourable">Honourable</option>
+        <option value="professor">Professor</option>
+        <option value="doctor">Doctor </option>
+      
+      </select>
+    </div>
     <div class="form-group">
       <label>Full Name</label>
       <input type="text" name="fullname" required />
