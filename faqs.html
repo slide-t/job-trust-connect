@@ -315,17 +315,7 @@
 </head>
   <body>
 <header>
-  <!--
-  <div class="logo"><i class="fas fa-briefcase"></i> JobTrust Connect</div>
-  <div class="menu-toggle" onclick="toggleMenu()">☰</div>
-  <nav id="navLinks">
-    <a href="index.html">Home</a>
-    <a href="contact.html">Contact</a>
-    <a href="blog.html">Blog</a>
-    <a href="faqs.html">FAQs</a>
-    <a href="job-applicationform.html">Download Job Form</a>
-  </nav>
-  -->
+  
   <!-- Navbar HTML -->
 <header class="navbar">
   <div class="logo"><i class="fas fa-briefcase"></i> JobTrust Connect</div>
@@ -385,20 +375,94 @@
   {"q": "How do I prepare for a virtual interview?", "a": "Test your tech, choose a quiet spot, and dress professionally."},
   {"q": "What is professional branding?", "a": "How you present yourself to employers through skills and reputation."},
   {"q": "Should I use a professional email address?", "a": "Yes, avoid nicknames or casual addresses."},
-  {"q": "What is continuous learning?", "a": "Regularly updating your skills to stay competitive in your career."}
-]
+  {"q": "What is continuous learning?", "a": "Regularly updating your skills to stay competitive in your career."},
+  
+  {
+    "q": "Why should I choose JobTrust Connect for caregiving services?",
+    "a": "JobTrust Connect carefully screens and trains caregivers to provide professional, reliable, and compassionate support."
+  },
+  {
+    "q": "What types of caregiving services does JobTrust Connect offer?",
+    "a": "We provide childcare, eldercare, home assistance, cleaning, and emotional support for families."
+  },
+  {
+    "q": "How are JobTrust Connect caregivers trained?",
+    "a": "Our caregivers undergo background checks, professional training, and continuous assessments to ensure quality service."
+  },
+  {
+    "q": "Can JobTrust Connect provide caregivers for elderly parents?",
+    "a": "Yes, we specialize in elderly care, including companionship, mobility assistance, and medical reminders."
+  },
+  {
+    "q": "Why is caregiving important for old age?",
+    "a": "Caregiving ensures seniors receive the emotional, physical, and medical support they need to live comfortably and safely."
+  },
+  {
+    "q": "How can caregivers support people with depression?",
+    "a": "Caregivers provide companionship, encourage healthy routines, and monitor well-being while connecting clients with professional help."
+  },
+  {
+    "q": "What makes JobTrust Connect different from other agencies?",
+    "a": "We combine professionalism with compassion, ensuring each caregiver matches the specific needs of clients."
+  },
+  {
+    "q": "Does JobTrust Connect provide childcare services?",
+    "a": "Yes, we offer trained nannies and babysitters to care for children safely and responsibly."
+  },
+  {
+    "q": "How do caregivers help working parents?",
+    "a": "They provide reliable childcare, school pick-ups, meal preparation, and ensure children feel secure while parents work."
+  },
+  {
+    "q": "Can JobTrust Connect caregivers help with household chores?",
+    "a": "Yes, our caregivers can also assist with light cleaning, meal preparation, and organizing the home."
+  },
+  {
+    "q": "What are the signs my elderly parent may need a caregiver?",
+    "a": "Signs include forgetfulness, mobility issues, loneliness, or difficulty handling daily tasks."
+  },
+  {
+    "q": "How does JobTrust Connect handle emergencies?",
+    "a": "Our caregivers are trained in first aid and crisis response, and we maintain 24/7 support lines for clients."
+  },
+  {
+    "q": "Can caregivers assist patients with depression?",
+    "a": "Yes, caregivers provide empathy, encouragement, and routine support while ensuring clients access professional care."
+  },
+  {
+    "q": "Why is companionship important for seniors?",
+    "a": "Companionship reduces loneliness, improves mental health, and promotes overall well-being in old age."
+  },
+  {
+    "q": "Does JobTrust Connect serve both male and female clients?",
+    "a": "Yes, we provide professional caregivers based on the gender preference of our clients."
+  },
+  {
+    "q": "How affordable are JobTrust Connect services?",
+    "a": "Our services are competitively priced, ensuring families receive professional care without excessive costs."
+  },
+  {
+    "q": "What role do caregivers play in depression recovery?",
+    "a": "Caregivers support clients by maintaining routines, offering a listening ear, and reducing isolation."
+  },
+  {
+    "q": "Can JobTrust Connect help with postnatal childcare?",
+    "a": "Yes, our trained caregivers assist new mothers with infant care, household help, and emotional support."
+  },
+  {
+    "q": "How can caregiving improve the quality of life for seniors?",
+    "a": "By ensuring safety, companionship, and personalized support, seniors can enjoy dignity and independence."
+  },
+  {
+    "q": "Why is JobTrust Connect trusted by families?",
+    "a": "Because we combine professionalism, trust, and compassion, making us a reliable partner for caregiving needs."
+  }
+
+
+  
+  ]
 </script>
-  
-
-
-
-
-
-  
-
-
-  
-<div id="footer"></div>
+  <div id="footer"></div>
 <script>
   fetch("footer.html")
     .then(response => response.text())
@@ -517,7 +581,7 @@
     }
   });
 
-  // Search on typing
+  // Filter FAQs as user types
   searchInput.addEventListener("input", () => {
     const term = searchInput.value.toLowerCase().trim();
     if (!term) {
@@ -529,10 +593,20 @@
       item.q.toLowerCase().includes(term) || item.a.toLowerCase().includes(term)
     );
 
-    if (results.length > 0) {
-      renderFAQs(results);
-    } else {
-      window.location.href = `https://www.google.com/search?q=${encodeURIComponent(term)}`;
+    renderFAQs(results);
+  });
+
+  // Redirect to Google only when Enter is pressed and no result
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      const term = searchInput.value.toLowerCase().trim();
+      const results = faqData.filter(item =>
+        item.q.toLowerCase().includes(term) || item.a.toLowerCase().includes(term)
+      );
+
+      if (results.length === 0 && term) {
+        window.location.href = `https://www.google.com/search?q=${encodeURIComponent(term)}`;
+      }
     }
   });
 
@@ -544,101 +618,6 @@
   });
 </script>
 
-
-  <!--
-<script>
-  const faqData = JSON.parse(document.getElementById("faqData").textContent);
-  const container = document.getElementById("faqContainer");
-  const searchBox = document.getElementById("faqSearchBox");
-  const searchInput = document.getElementById("faqSearchInput");
-  const searchIcon = document.getElementById("faqSearchIcon");
-
-  // Render FAQs
-  function renderFAQs(list) {
-    container.innerHTML = "";
-    list.forEach(item => {
-      const faqItem = document.createElement("div");
-      faqItem.className = "faq-item";
-
-      const questionBtn = document.createElement("button");
-      questionBtn.className = "faq-question";
-      questionBtn.innerHTML = `${item.q} <i class="fas fa-chevron-right"></i>`;
-
-      const answerDiv = document.createElement("div");
-      answerDiv.className = "faq-answer";
-      answerDiv.textContent = item.a;
-
-      questionBtn.addEventListener("click", () => {
-        questionBtn.classList.toggle("active");
-        if (answerDiv.style.maxHeight) {
-          answerDiv.style.maxHeight = null;
-          answerDiv.classList.remove("show");
-        } else {
-          answerDiv.style.maxHeight = answerDiv.scrollHeight + "px";
-          answerDiv.classList.add("show");
-        }
-      });
-
-      faqItem.appendChild(questionBtn);
-      faqItem.appendChild(answerDiv);
-      container.appendChild(faqItem);
-    });
-  }
-  renderFAQs(faqData);
-
-  // Expand search on icon click
-  searchIcon.addEventListener("click", () => {
-    searchBox.classList.toggle("expanded");
-    if (searchBox.classList.contains("expanded")) {
-      searchInput.focus();
-    }
-  });
-
-  // Perform Search
-  function performSearch() {
-    const term = searchInput.value.toLowerCase().trim();
-    if (!term) {
-      renderFAQs(faqData);
-      return;
-    }
-
-    const results = faqData.filter(item =>
-      item.q.toLowerCase().includes(term) || item.a.toLowerCase().includes(term)
-    );
-
-    if (results.length > 0) {
-      renderFAQs(results);
-    } else {
-      // Redirect to Google if no results
-      window.location.href = `https://www.google.com/search?q=${encodeURIComponent(term)}`;
-    }
-  }
-
-  // 🔹 Live search while typing
-  searchInput.addEventListener("input", () => {
-    const term = searchInput.value.toLowerCase().trim();
-    const results = faqData.filter(item =>
-      item.q.toLowerCase().includes(term) || item.a.toLowerCase().includes(term)
-    );
-    renderFAQs(results.length > 0 ? results : faqData);
-  });
-
-  // 🔹 Enter triggers full search (with redirect if no result)
-  searchInput.addEventListener("keypress", e => {
-    if (e.key === "Enter") {
-      performSearch();
-    }
-  });
-
-  // 🔹 Collapse on outside click
-  document.addEventListener("click", (e) => {
-    if (!searchBox.contains(e.target)) {
-      searchBox.classList.remove("expanded");
-    }
-  });
-</script>
-  
-  -->
 <script>
   function toggleMenu() {
     const nav = document.getElementById("navLinks");
