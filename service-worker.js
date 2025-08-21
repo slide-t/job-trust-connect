@@ -12,6 +12,7 @@ const urlsToCache = [
   '/blog.html',
   'posts.json',
   'post.html',
+  'requestform.html',
   '/feedback.html',
   '/style.css',
   '/script.js',
