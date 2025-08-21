@@ -309,56 +309,7 @@
       transform: translateY(0);
     }
   }
-
-  .faq-search {
-    position: fixed;
-    top: 50px;
-    right: 20px;
-    display: flex;
-    align-items: center;
-    background: #fff;
-    border-radius: 30px;
-    padding: 6px 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-    transition: all 0.3s ease-in-out;
-    z-index: 1000;
-  }
-
-  .faq-search input {
-    width: 0;
-    border: none;
-    outline: none;
-    padding: 6px;
-    font-size: 14px;
-    background: transparent;
-    transition: width 0.4s ease-in-out;
-  }
-
-  .faq-search button {
-    background: #007bff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 50%;
-    cursor: pointer;
-    color: white;
-    font-size: 16px;
-  }
-
-  /* Expand input when focused */
-  .faq-search input:focus {
-    width: 220px;
-    background: #f9f9f9;
-    border-radius: 20px;
-    margin-right: 6px;
-  }
-
-  /* Expand also when input has text */
-  .faq-search input:not(:placeholder-shown) {
-    width: 220px;
-    background: #f9f9f9;
-    border-radius: 20px;
-    margin-right: 6px;
-  }
+   
 </style>
 
 </head>
@@ -452,13 +403,94 @@
 
 
 
+
+  
+
+
+  
+<div id="footer"></div>
+<script>
+  fetch("footer.html")
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById("footer").innerHTML = data;
+    });
+</script>
+<script>
+  function toggleMenu() {
+    const nav = document.getElementById("navLinks");
+    nav.classList.toggle("show");
+  }
+
+  // Close menu on link click (mobile)
+  document.addEventListener("DOMContentLoaded", () => {
+    const navLinks = document.querySelectorAll("#navLinks a");
+    const nav = document.getElementById("navLinks");
+
+    navLinks.forEach(link => {
+      link.addEventListener("click", () => {
+        nav.classList.remove("show");
+      });
+    });
+  });
+</script>
+<style>
+  /* Floating Search Box */
+  #faqSearchBox {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    background: #222;
+    border-radius: 30px;
+    padding: 6px 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    z-index: 1000;
+    transition: all 0.3s ease;
+  }
+
+  #faqSearchInput {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: #fff;
+    font-size: 14px;
+    width: 0;               /* collapsed by default */
+    opacity: 0;
+    transition: width 0.3s ease, opacity 0.3s ease;
+  }
+
+  #faqSearchBox.expanded #faqSearchInput {
+    width: 200px;           /* expands on focus */
+    opacity: 1;
+    margin-left: 8px;
+  }
+
+  #faqSearchIcon {
+    color: #0af;
+    cursor: pointer;
+    font-size: 18px;
+  }
+</style>
+
+<!-- Floating Search Box -->
+<div id="faqSearchBox">
+  <i id="faqSearchIcon" class="fas fa-search"></i>
+  <input type="text" id="faqSearchInput" placeholder="Search FAQs...">
+</div>
+
 <script>
   const faqData = JSON.parse(document.getElementById("faqData").textContent);
   const container = document.getElementById("faqContainer");
+  const searchBox = document.getElementById("faqSearchBox");
+  const searchInput = document.getElementById("faqSearchInput");
+  const searchIcon = document.getElementById("faqSearchIcon");
 
-  function renderFAQs(data) {
+  // Render FAQs
+  function renderFAQs(list) {
     container.innerHTML = "";
-    data.forEach(item => {
+    list.forEach(item => {
       const faqItem = document.createElement("div");
       faqItem.className = "faq-item";
 
@@ -486,105 +518,37 @@
       container.appendChild(faqItem);
     });
   }
-
-  // Initial render
   renderFAQs(faqData);
 
-  function searchFAQ(query) {
-    query = query.toLowerCase().trim();
-    if (!query) {
-      renderFAQs(faqData);
-      return;
+  // Expand search on icon click
+  searchIcon.addEventListener("click", () => {
+    searchBox.classList.toggle("expanded");
+    if (searchBox.classList.contains("expanded")) {
+      searchInput.focus();
     }
+  });
 
+  // Search FAQs
+  function performSearch() {
+    const term = searchInput.value.toLowerCase();
     const results = faqData.filter(item =>
-      item.q.toLowerCase().includes(query) || item.a.toLowerCase().includes(query)
+      item.q.toLowerCase().includes(term) || item.a.toLowerCase().includes(term)
     );
 
     if (results.length > 0) {
       renderFAQs(results);
     } else {
-      // Redirect to Google if no FAQ matches
-      window.location.href = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+      window.location.href = `https://www.google.com/search?q=${encodeURIComponent(term)}`;
     }
   }
 
-  // Button click search
-  document.getElementById("faqSearchBtn").addEventListener("click", () => {
-    const query = document.getElementById("faqSearchInput").value;
-    searchFAQ(query);
-  });
-
-  // Enter key search
-  document.getElementById("faqSearchInput").addEventListener("keypress", e => {
+  searchInput.addEventListener("keypress", e => {
     if (e.key === "Enter") {
-      e.preventDefault();
-      searchFAQ(e.target.value);
+      performSearch();
     }
   });
 </script>
   
-<!--  
-<script>
-  const faqData = JSON.parse(document.getElementById("faqData").textContent);
-  const container = document.getElementById("faqContainer");
-
-  faqData.forEach(item => {
-    const faqItem = document.createElement("div");
-    faqItem.className = "faq-item";
-
-    const questionBtn = document.createElement("button");
-    questionBtn.className = "faq-question";
-    questionBtn.innerHTML = `${item.q} <i class="fas fa-chevron-right"></i>`;
-
-    const answerDiv = document.createElement("div");
-    answerDiv.className = "faq-answer";
-    answerDiv.textContent = item.a;
-
-    questionBtn.addEventListener("click", () => {
-      questionBtn.classList.toggle("active");
-      if (answerDiv.style.maxHeight) {
-        answerDiv.style.maxHeight = null;
-        answerDiv.classList.remove("show");
-      } else {
-        answerDiv.style.maxHeight = answerDiv.scrollHeight + "px";
-        answerDiv.classList.add("show");
-      }
-    });
-
-    faqItem.appendChild(questionBtn);
-    faqItem.appendChild(answerDiv);
-    container.appendChild(faqItem);
-  });
-</script>
-  -->
-<div id="footer"></div>
-<script>
-  fetch("footer.html")
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById("footer").innerHTML = data;
-    });
-</script>
-<script>
-  function toggleMenu() {
-    const nav = document.getElementById("navLinks");
-    nav.classList.toggle("show");
-  }
-
-  // Close menu on link click (mobile)
-  document.addEventListener("DOMContentLoaded", () => {
-    const navLinks = document.querySelectorAll("#navLinks a");
-    const nav = document.getElementById("navLinks");
-
-    navLinks.forEach(link => {
-      link.addEventListener("click", () => {
-        nav.classList.remove("show");
-      });
-    });
-  });
-</script>
-    <!-- JavaScript -->
 <script>
   function toggleMenu() {
     const nav = document.getElementById("navLinks");
