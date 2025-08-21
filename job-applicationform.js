@@ -72,14 +72,14 @@ document.addEventListener("DOMContentLoaded", () => {
     previewBtn.classList.toggle("hidden", index !== totalSteps - 1);
   }
 
-  nextBtns.forEach(btn =>
+ /* nextBtns.forEach(btn =>
     btn.addEventListener("click", () => {
       if (currentStep < totalSteps - 1) {
         currentStep++;
         showStep(currentStep);
       }
     })
-  );
+  );*/
 
   backBtns.forEach(btn =>
     btn.addEventListener("click", () => {
@@ -89,6 +89,52 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     })
   );
+// 🔹 Validate required fields in current step
+  function validateStep(index) {
+    const section = sections[index];
+    const inputs = section.querySelectorAll("input, select, textarea");
+    let valid = true;
+
+    inputs.forEach(input => {
+      if (input.hasAttribute("required") && !input.value.trim()) {
+        input.classList.add("error");
+        valid = false;
+      } else {
+        input.classList.remove("error");
+      }
+
+      // Special case: radio/checkbox groups
+      if ((input.type === "radio" || input.type === "checkbox") && input.required) {
+        const group = section.querySelectorAll(`input[name="${input.name}"]`);
+        const checked = Array.from(group).some(r => r.checked);
+        if (!checked) {
+          valid = false;
+          group.forEach(r => r.classList.add("error"));
+        } else {
+          group.forEach(r => r.classList.remove("error"));
+        }
+      }
+    });
+
+    if (!valid) {
+      alert("⚠️ Please complete all required fields before proceeding.");
+    }
+
+    return valid;
+  }
+
+  // 🔹 Update Next button logic
+  nextBtns.forEach(btn =>
+    btn.addEventListener("click", () => {
+      if (currentStep < totalSteps - 1) {
+        if (validateStep(currentStep)) {   // ✅ check before moving forward
+          currentStep++;
+          showStep(currentStep);
+        }
+      }
+    })
+  );
+  
 
   // 🔹 Preview Modal
   previewBtn.addEventListener("click", () => {
