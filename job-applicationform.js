@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const photoPreview = document.getElementById("photoPreview");
 
   // 🔹 Load states & LGAs from external JSON
-  fetch("states.json")
+  fetch("job-applicationform.json")
     .then(res => res.json())
     .then(data => {
       statesLgas = data;
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
         stateSelect.appendChild(option);
       });
     })
-    .catch(err => console.error("Error loading states.json:", err));
+    .catch(err => console.error("Error loading job-applicationform.json:", err));
 
   // 🔹 Show LGAs dynamically
   stateSelect.addEventListener("change", () => {
