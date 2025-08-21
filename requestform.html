@@ -278,13 +278,7 @@
         }
       });
 
-      // 🔹 Handle form submission
-      document.getElementById("careForm").addEventListener("submit", e => {
-        e.preventDefault();
-        pendingForm = e.target;
-        feeModal.style.display = "flex"; // show modal
-      });
-
+      
       // Cancel closes modal
       cancelBtn.addEventListener("click", () => {
         feeModal.style.display = "none";
@@ -309,5 +303,77 @@
     });
   </script>
 
+<style>
+/* Spinner style */
+.spinner {
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid #ffffff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 8px;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+</style>
+
+<script>
+let pendingForm = null;
+const feeModal = document.getElementById("feeModal");
+const closeBtn = document.getElementById("closePreview");  
+const proceedBtn = document.getElementById("proceedBtn");  
+const submitBtn = document.querySelector("#careForm button[type=submit]");
+
+// When form is submitted → open fee modal
+document.getElementById("careForm").addEventListener("submit", e => {
+  e.preventDefault();
+  pendingForm = e.target;
+  feeModal.style.display = "flex"; 
+  submitBtn.disabled = true; 
+});
+
+// ✅ Proceed button inside modal → send EmailJS
+proceedBtn.addEventListener("click", () => {
+  if (!pendingForm) return;
+
+  // Show spinner on proceed button
+  proceedBtn.disabled = true;
+  proceedBtn.innerHTML = "Processing <span class='spinner'></span>";
+
+  const fd = new FormData(pendingForm);
+  const data = {};
+  fd.forEach((val, key) => data[key] = val);
+
+  emailjs.send("service_74g1ljg", "ejs-test-mail-service", data, "zJDixw4ygvB_riybX")
+    .then(() => {
+      alert("Application submitted successfully!");
+      pendingForm.reset();
+      submitBtn.disabled = false; 
+      feeModal.style.display = "none";
+      proceedBtn.disabled = false;
+      proceedBtn.innerHTML = "Proceed"; // reset button
+    })
+    .catch(err => {
+      console.error("EmailJS error:", err);
+      alert("Error sending email. Please try again.");
+      submitBtn.disabled = false;
+      proceedBtn.disabled = false;
+      proceedBtn.innerHTML = "Proceed"; // reset button
+    });
+});
+
+// ❌ Close button → cancel & redirect
+closeBtn.addEventListener("click", () => {
+  feeModal.style.display = "none";
+  submitBtn.disabled = false;
+  window.location.href = "index.html"; 
+});
+</script>
+  
 </body>
 </html>
