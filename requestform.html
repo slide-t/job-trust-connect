@@ -600,13 +600,106 @@ closeBtn.addEventListener("click", () => {
   window.location.href = "index.html"; 
 });
 </script>
-  <div class="theme-switch-wrapper">
+ <!-- <div class="theme-switch-wrapper">
   <label class="theme-switch" for="themeToggle">
     <input type="checkbox" id="themeToggle">
     <span class="slider">
       <span class="icon">🌙</span>
     </span>
   </label>
-</div>
+</div>-->
+  <div class="theme-switch-wrapper">
+  <label class="theme-switch" for="themeToggle">
+    <input type="checkbox" id="themeToggle">
+    <span class="slider">
+      <span class="icon">⚙️</span>
+    </span>
+  </label>
+  </div>
+
+  <style>
+   .theme-switch-wrapper {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.theme-switch {
+  display: inline-block;
+  height: 34px;
+  position: relative;
+  width: 60px;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.slider {
+  background-color: #ccc;
+  bottom: 0;
+  cursor: pointer;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-radius: 34px;
+  transition: 0.4s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+.slider .icon {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 16px;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #1e90ff;
+}
+
+input:checked + .slider::before {
+  transform: translateX(26px);
+}
+
+input:checked + .slider .icon {
+  left: 8px;
+  right: auto;
+} 
+  </style>
+<script>
+  const toggle = document.getElementById("themeToggle");
+
+  toggle.addEventListener("change", () => {
+    document.body.classList.toggle("light-theme");
+    if(document.body.classList.contains("light-theme")){
+      localStorage.setItem("theme", "light");
+    } else {
+      localStorage.setItem("theme", "dark");
+    }
+  });
+
+  // Load saved preference
+  if(localStorage.getItem("theme") === "light"){
+    document.body.classList.add("light-theme");
+    toggle.checked = true;
+  }
+</script>
+  
 </body>
 </html>
