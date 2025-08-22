@@ -291,8 +291,70 @@
     <path fill="white" d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7a2.5 2.5 0 0 0 0-1.39l7.05-4.11a2.5 2.5 0 1 0-.91-1.45L8 9.91a2.5 2.5 0 1 0 0 4.18l7.14 4.12c.43.26.94.39 1.46.39a2.5 2.5 0 1 0 1.4-4.52z"/>
   </svg>
 </button>
+  
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  const shareBtn = document.getElementById("shareBtn");
+  if (!shareBtn) return;
+
+  shareBtn.addEventListener("click", async () => {
+    const title = document.title || "Interesting Post";
+    const url = document.querySelector('link[rel="canonical"]')?.href || window.location.href;
+    const excerpt = document.querySelector('meta[name="description"]')?.content || "Check out this post!";
+    const text = `${title}\n\n${excerpt}\n\nRead more: ${url}`;
+    const imageUrl = document.querySelector('meta[property="og:image"]')?.content || null;
+
+    // Open popup immediately to avoid blockers
+    const popup = window.open("", "_blank", "width=400,height=600,resizable=yes,scrollbars=yes");
+    if (!popup) return alert("Please enable popups to share this post.");
+
+    popup.document.write(`
+      <html>
+        <head>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Share Post</title>
+          <style>
+            body { font-family: Arial,sans-serif; margin: 20px; text-align:center; }
+            h2 { margin-bottom: 20px; color:#1e90ff; }
+            img { max-width:100%; border-radius:8px; margin-bottom: 15px; }
+            p { margin-bottom: 20px; }
+            a.share-btn {
+              display:block; margin:10px 0; padding:15px; font-size:18px; border-radius:8px; color:#fff; text-decoration:none; transition:0.3s;
+            }
+            a.whatsapp { background:#25D366; }
+            a.twitter  { background:#1DA1F2; }
+            a.facebook { background:#4267B2; }
+            a.share-btn:hover { opacity:0.85; }
+          </style>
+        </head>
+        <body>
+          <h2>${title}</h2>
+          <p>${excerpt}</p>
+          <a class="share-btn whatsapp" href="https://wa.me/?text=${encodeURIComponent(text)}" target="_blank">Share on WhatsApp</a>
+          <a class="share-btn twitter" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}" target="_blank">Share on Twitter</a>
+          <a class="share-btn facebook" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}&quote=${encodeURIComponent(text)}" target="_blank">Share on Facebook</a>
+        </body>
+      </html>
+    `);
+    popup.document.close();
+
+    // Load image asynchronously (won't block popup)
+    if (imageUrl) {
+      try {
+        const img = new Image();
+        img.src = imageUrl;
+        img.onload = () => {
+          const body = popup.document.body;
+          body.insertBefore(img, body.children[1]); // insert after h2
+        };
+      } catch (err) {
+        console.warn("Image preview failed:", err);
+      }
+    }
+  });
+});
+  
+/*document.addEventListener("DOMContentLoaded", () => {
   const shareBtn = document.getElementById("shareBtn");
   if (!shareBtn) return;
 
@@ -590,57 +652,7 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 
-  <!--
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const shareBtn = document.getElementById("shareBtn");
 
-  shareBtn.addEventListener("click", async () => {
-    try {
-      // Detect post title (or fallback to document title)
-      const title = document.querySelector("h1, h2, .post-title")?.innerText || document.title;
-
-      // Detect first image
-      const imgElement = document.querySelector(".post img, article img, img");
-      let file = null;
-
-      if (imgElement) {
-        const response = await fetch(imgElement.src);
-        const blob = await response.blob();
-        file = new File([blob], "post-image.jpg", { type: blob.type });
-      }
-
-      // Custom text, trimmed to ~200 characters
-      let textContent = `📢 ${title}\nAt JobTrust Connect, we provide top-notch care services.`;
-      if (textContent.length > 200) {
-        textContent = textContent.slice(0, 197) + "...";
-      }
-
-      // Build share data
-      const shareData = {
-        title: title,
-        text: textContent,
-        url: window.location.href
-      };
-
-      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
-        shareData.files = [file];
-      }
-
-      // Share API call
-      if (navigator.share) {
-        await navigator.share(shareData);
-      } else {
-        alert("Your browser does not support Web Share API.");
-      }
-
-    } catch (err) {
-      console.log("Share failed:", err.message);
-    }
-  });
-});
-</script>
- -->
   <style>
 #shareBtn {
   position: fixed;
