@@ -19,6 +19,7 @@
 
 /* Card base */
 .card {
+  --delay: 0s; /* default */
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -28,6 +29,7 @@
   transform: translateY(20px);
   opacity: 0;
   animation: fadeInUp 0.8s ease forwards;
+  animation-delay: var(--delay);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -97,50 +99,7 @@
     opacity: 1;
   }
 }
-    /*.container {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-      padding: 20px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-    .card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-    }
-    .card-content {
-      padding: 15px;
-      flex-grow: 1;
-    }
-    .card h2 {
-      font-size: 20px;
-      margin: 0 0 10px;
-    }
-    .card p {
-      font-size: 14px;
-      color: #555;
-    }
-    .read-more {
-      background: #001219;
-      color: #fff;
-      text-decoration: none;
-      display: block;
-      padding: 10px;
-      text-align: center;
-      border-radius: 0 0 10px 10px;
-    }
-    .read-more:hover {
-      background: #003049;
-    }
-*/
+
 
     header {
   display: flex;
