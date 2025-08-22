@@ -472,182 +472,7 @@ function showShareChooser(links) {
   document.getElementById("shareChooserClose").addEventListener("click", () => overlay.remove());
 }
 </script>
-
-
-
-  <!--
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
-  const shareBtn = document.getElementById("shareBtn");
-  if (!shareBtn) return;
-
-  shareBtn.addEventListener("click", async () => {
-    const title = getPostTitle();
-    const url   = getCanonicalUrl();
-    const text  = buildShareText(title);
-    const imageUrl = getPostImageUrl();
-
-    const shareDataBase = { title, text, url };
-
-    try {
-      // Try Web Share API (mobile/tablets mostly)
-      if (navigator.share) {
-        let file = null;
-
-        if (imageUrl) {
-          try {
-            const blob = await fetch(imageUrl, { mode: "cors" }).then(r => r.blob());
-            file = new File([blob], guessFileName(imageUrl), { type: blob.type || "image/jpeg" });
-          } catch (e) {
-            console.warn("Could not fetch image:", e.message);
-          }
-        }
-
-        if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
-          await navigator.share({ ...shareDataBase, files: [file] });
-          return;
-        }
-
-        await navigator.share(shareDataBase);
-        return;
-      }
-
-      // Fallback for desktop browsers
-      fallbackShare({ title, url, text });
-
-    } catch (err) {
-      console.error("Share failed:", err);
-      fallbackShare({ title, url, text });
-    }
-  });
-  
-
-  // ---------- helpers ----------
-
-  function getPostTitle() {
-    const el = document.querySelector("h1, h2, .post-title");
-    return (el?.innerText || document.title || "This post").trim();
-  }
-
-  function getCanonicalUrl() {
-    const link = document.querySelector('link[rel="canonical"]');
-    return (link?.href || window.location.href);
-  }
-
-  function buildShareText(title) {
-    let t = `📢 ${title}\nAt JobTrust Connect we provide top-notch care services.`;
-    if (t.length > 220) t = t.slice(0, 217) + "...";
-    return t;
-  }
-
-  function getPostImageUrl() {
-    const og = document.querySelector('meta[property="og:image"], meta[name="og:image"]')?.content;
-    if (og) return absolutize(og);
-    const img = document.querySelector(".post img, article img, img");
-    return img ? absolutize(img.src) : null;
-  }
-
-  function absolutize(src) {
-    try { return new URL(src, window.location.href).href; } catch { return src; }
-  }
-
-  function guessFileName(url) {
-    try {
-      const u = new URL(url);
-      const last = u.pathname.split("/").pop() || "post-image.jpg";
-      return last.includes(".") ? last : last + ".jpg";
-    } catch {
-      return "post-image.jpg";
-    }
-  }
-
-  async function fallbackShare({ title, url, text }) {
-    try {
-      await navigator.clipboard.writeText(url);
-      toast("Link copied. Choose an app to share:");
-    } catch {}
-
-    const encodedUrl   = encodeURIComponent(url);
-    const encodedText  = encodeURIComponent(text);
-    const encodedTitle = encodeURIComponent(title);
-
-    const links = [
-      { name: "WhatsApp", href: `https://wa.me/?text=${encodedText}%0A${encodedUrl}` },
-      { name: "Facebook", href: `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}` },
-      { name: "X (Twitter)", href: `https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}` },
-      { name: "Telegram", href: `https://t.me/share/url?url=${encodedUrl}&text=${encodedText}` },
-      { name: "Email", href: `mailto:?subject=${encodedTitle}&body=${encodedText}%0A${encodedUrl}` }
-    ];
-
-    showShareChooser(links);
-  }
-
-  function toast(msg) {
-    const n = document.createElement("div");
-    n.textContent = msg;
-    n.style.cssText = `
-      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-      background: rgba(0,0,0,0.8); color: #fff; padding: 10px 14px; border-radius: 8px;
-      font-size: 14px; z-index: 999999; opacity: 0; transition: opacity .2s ease;
-    `;
-    document.body.appendChild(n);
-    requestAnimationFrame(() => { n.style.opacity = "1"; });
-    setTimeout(() => {
-      n.style.opacity = "0";
-      setTimeout(() => n.remove(), 200);
-    }, 1800);
-  }
-
-  function showShareChooser(links) {
-    document.getElementById("share-chooser-overlay")?.remove();
-
-    const overlay = document.createElement("div");
-    overlay.id = "share-chooser-overlay";
-    overlay.style.cssText = `
-      position: fixed; inset: 0; background: rgba(0,0,0,.5);
-      display: flex; align-items: center; justify-content: center; z-index: 999998;
-    `;
-
-    const box = document.createElement("div");
-    box.style.cssText = `
-      background: #fff; color: #222; width: 92%; max-width: 420px; border-radius: 12px;
-      padding: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.25); font-family: system-ui, Arial, sans-serif;
-    `;
-    box.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-        <strong style="font-size:16px;">Share this post</strong>
-        <button id="shareChooserClose" style="background:none;border:none;font-size:20px;line-height:1;cursor:pointer;">×</button>
-      </div>`;
-
-    const list = document.createElement("div");
-    list.style.cssText = "display:grid; grid-template-columns:1fr; gap:10px;";
-    links.forEach(l => {
-      const a = document.createElement("a");
-      a.href = l.href;
-      a.target = "_blank";
-      a.rel = "noopener";
-      a.textContent = l.name;
-      a.style.cssText = `
-        display:block; text-decoration:none; background:#f5f5f5; padding:12px; border-radius:10px;
-        text-align:center; border:1px solid #e6e6e6; transition:transform .12s ease;
-      `;
-      a.onmouseenter = () => a.style.transform = "scale(1.02)";
-      a.onmouseleave = () => a.style.transform = "scale(1)";
-      list.appendChild(a);
-    });
-
-    box.appendChild(list);
-    overlay.appendChild(box);
-    document.body.appendChild(overlay);
-
-    overlay.addEventListener("click", e => { if (e.target === overlay) overlay.remove(); });
-    document.getElementById("shareChooserClose").addEventListener("click", () => overlay.remove());
-  }
-});
-</script>
-  -->
-
-
-  <style>
+ <style>
 #shareBtn {
   position: fixed;
   bottom: 20px;
@@ -673,8 +498,53 @@ document.addEventListener("DOMContentLoaded", () => {
 #shareBtn svg {
   width: 22px;   /* icon size */
   height: 22px;
+}#scrollTopBtn {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  border: 2px solid black;
+  border-radius: 50%;
+  background: white;
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  display: none; /* hidden by default */
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s, transform 0.3s;
+  z-index: 999;
 }
 
+#scrollTopBtn:hover {
+  background: black;
+  color: white;
+  transform: translateX(-50%) scale(1.1);
+}
+    
+
   </style>
+  <button id="scrollTopBtn" aria-label="Scroll to top">↑</button>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("scrollTopBtn");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      btn.style.display = "flex";
+    } else {
+      btn.style.display = "none";
+    }
+  });
+
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+});
+</script>
+  
 </body>
 </html>
