@@ -293,6 +293,52 @@
 </button>
   
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const shareBtn = document.getElementById("shareBtn");
+  if (!shareBtn) return;
+
+  shareBtn.addEventListener("click", async () => {
+    try {
+      const title = getPostTitle();
+      const url   = getCanonicalUrl();
+      const text  = buildShareText(title);
+
+      // Try to get an image to share (same-origin or CORS-allowed)
+      const imageUrl = getPostImageUrl();
+      let file = null;
+      if (imageUrl) {
+        try {
+          const blob = await fetch(imageUrl, { mode: "cors", credentials: "omit" }).then(r => r.blob());
+          file = new File([blob], guessFileName(imageUrl), { type: blob.type || "image/jpeg" });
+        } catch {
+          // If CORS blocks the image, we’ll just share without the file.
+        }
+      }
+
+      const shareDataBase = { title, text, url };
+
+      // Share with image when supported
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+        await navigator.share({ ...shareDataBase, files: [file] });
+        return;
+      }
+
+      // Share without image when available
+      if (navigator.share) {
+        await navigator.share(shareDataBase);
+        return;
+      }
+
+      // Fallback for browsers without Web Share
+      await fallbackShare({ title, url, text });
+
+    } catch (err) {
+      console.warn("Share failed:", err?.message || err);
+      alert("Unable to open the share sheet. You can copy the link and share manually.");
+    }
+  });
+});
+  
 /*document.addEventListener("DOMContentLoaded", () => {
   const shareBtn = document.getElementById("shareBtn");
   if (!shareBtn) return;
@@ -352,7 +398,7 @@
       }
     }
   });
-});*/
+});
  document.addEventListener("DOMContentLoaded", () => {
   const shareBtn = document.getElementById("shareBtn");
   if (!shareBtn) return;
@@ -428,7 +474,7 @@
     };
   });
 });
-
+*/
           
   // ---------- helpers ----------
 
