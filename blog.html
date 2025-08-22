@@ -296,6 +296,33 @@
   opacity: 1;
   transform: scale(1.2);
 }
+#scrollTopBtn {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  border: 2px solid black;
+  border-radius: 50%;
+  background: white;
+  color: black;
+  font-size: 24px;
+  font-weight: bold;
+  cursor: pointer;
+  display: none; /* hidden by default */
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s, transform 0.3s;
+  z-index: 999;
+}
+
+#scrollTopBtn:hover {
+  background: black;
+  color: white;
+  transform: translateX(-50%) scale(1.1);
+}
+  
 </style>
 
 <script>
@@ -361,6 +388,25 @@ document.addEventListener("DOMContentLoaded", () => {
   cards.forEach((card, i) => {
     card.style.setProperty("--delay", `${i * 0.1}s`); // stagger effect
     observer.observe(card);
+  });
+});
+</script>
+
+<button id="scrollTopBtn" aria-label="Scroll to top">↑</button>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("scrollTopBtn");
+
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      btn.style.display = "flex";
+    } else {
+      btn.style.display = "none";
+    }
+  });
+
+  btn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   });
 });
 </script>
