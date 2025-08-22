@@ -346,23 +346,22 @@ setInterval(() => {
   });
 </script>
   <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const cards = document.querySelectorAll(".card");
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target); // animate once
-        }
-      });
-    }, { threshold: 0.2 }); // 20% visible triggers animation
-
-    cards.forEach((card, i) => {
-      card.style.setProperty("--delay", `${i * 0.15}s`);
-      observer.observe(card);
+document.addEventListener("DOMContentLoaded", () => {
+  const cards = document.querySelectorAll(".card");
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target); // animate only once
+      }
     });
+  }, { threshold: 0.2 });
+
+  cards.forEach((card, i) => {
+    card.style.setProperty("--delay", `${i * 0.1}s`); // stagger effect
+    observer.observe(card);
   });
+});
 </script>
 </body>
 </html>
