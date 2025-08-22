@@ -10,6 +10,8 @@
       margin: 0; padding: 0;
       background: #f4f4f4;
     }
+   
+    
     .container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -17,9 +19,9 @@
   padding: 20px;
 }
 
-/* Card base */
+/* Card base 
 .card {
-  --delay: 0s; /* default */
+  --delay: 0s; /* default 
   background: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -33,7 +35,7 @@
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hover effect */
+/* Hover effect 
 .card:hover {
   transform: translateY(-8px) scale(1.02);
   box-shadow: 0 6px 18px rgba(0,0,0,0.25);
@@ -99,6 +101,30 @@
     opacity: 1;
   }
 }
+   .card {
+  --delay: 0s;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* When visible */
+.card.visible {
+  animation: fadeInUp 0.8s ease forwards;
+  animation-delay: var(--delay);
+}
+
+/* Hover effect */
+.card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+} 
 
 
     header {
@@ -319,6 +345,24 @@ setInterval(() => {
     });
   });
 </script>
-  
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const cards = document.querySelectorAll(".card");
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("visible");
+          observer.unobserve(entry.target); // animate once
+        }
+      });
+    }, { threshold: 0.2 }); // 20% visible triggers animation
+
+    cards.forEach((card, i) => {
+      card.style.setProperty("--delay", `${i * 0.15}s`);
+      observer.observe(card);
+    });
+  });
+</script>
 </body>
 </html>
