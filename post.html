@@ -709,5 +709,21 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 </script>
   
+
+<script>
+  const postList = document.getElementById("postList");
+  const fixedPost = document.getElementById("fixedPost"); // The first child that stays fixed
+
+  function rotatePosts() {
+    const posts = Array.from(postList.children).slice(1); // skip first child
+    if (posts.length > 1) {
+      let moved = posts.shift(); // take the first after fixed
+      postList.appendChild(moved); // move it to the bottom
+    }
+  }
+
+  // Run every 20 seconds (20000ms)
+  setInterval(rotatePosts, 20000);
+</script>
 </body>
 </html>
