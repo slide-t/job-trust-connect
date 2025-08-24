@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "How to Write a Winning CV",
+    "excerpt": "Your CV is the first impression recruiters see. Learn how to make it count...",
+    "content": "A great CV highlights your skills, experience, and achievements clearly. Start with a strong headline..."
+  },
+  {
+    "id": 2,
+    "title": "Top 5 Interview Tips",
+    "excerpt": "Interviews can be stressful. These five tips will help you shine...",
+    "content": "1. Prepare thoroughly. 2. Research the company. 3. Practice answers. 4. Dress professionally. 5. Ask questions..."
+  },
+  {
+    "id": 3,
+    "title": "Why Networking Matters",
+    "excerpt": "Opportunities often come through people you know. Networking is powerful...",
+    "content": "Networking helps you build valuable professional relationships. Attend events, engage online, and share your expertise..."
+  }
+]
