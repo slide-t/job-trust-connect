@@ -1,179 +1,331 @@
-<!-- Font Awesome (for icons) -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JobTrust Connect - Contact Modal</title>
 
-<!-- Contact Modal -->
-<div id="contactModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
+  <!-- Font Awesome (for icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+  <style>
+    /* Body */
+    body {
+      margin: 0;
+      font-family: 'Roboto', sans-serif;
+      background: #001219;
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Trigger Button */
+    .trigger-btn {
+      padding: 12px 24px;
+      background: #00b4d8;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .trigger-btn:hover {
+      background: #0096c7;
+    }
+
+    /* Modal Background */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 999; 
+      left: 0;
+      top: 0;
+      width: 100%; 
+      height: 100%;
+      background: rgba(0,0,0,0.85);
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Modal Box */
+    .modal-content {
+      background: #111;
+      color: #eee;
+      padding: 25px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+      animation: fadeIn 0.4s ease;
+      position: relative;
+    }
+
+    /* Logo */
+    .modal-logo {
+      display: block;
+      margin: 0 auto 15px auto;
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      border-radius: 12px;
+      background: #fff;
+      padding: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+      transition: transform 0.6s ease;
+      cursor: pointer;
+    }
+    .modal-logo:hover {
+      transform: rotate(360deg);
+    }
+
+    /* Close Button */
+    .close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      color: #bbb;
+      font-size: 26px;
+      cursor: pointer;
+    }
+    .close:hover {
+      color: #fff;
+    }
+
+    /* Message */
+    .modal-content h2 {
+      margin-bottom: 10px;
+      font-size: 22px;
+      color: #00b4d8;
+    }
+    .modal-content p {
+      font-size: 15px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      color: #ccc;
+    }
+
+    /* Buttons */
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 12px;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 8px;
+      transition: background 0.3s ease;
+      font-weight: bold;
+    }
+    .btn i {
+      font-size: 20px;
+    }
+    .btn.whatsapp {
+      background: #25D366;
+      color: #fff;
+    }
+    .btn.whatsapp:hover {
+      background: #20b957;
+    }
+    .btn.email {
+      background: #0077b6;
+      color: #fff;
+    }
+    .btn.email:hover {
+      background: #005f86;
+    }
+
+    /* Icon Animations */
+    .btn.whatsapp i {
+      animation: bounce 1.5s infinite;
+    }
+    .btn.email i {
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+    }
+
+    /* Animation */
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(-20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    /*Navbar Styles */
+ .navbar {
+   background: #001219;
+    padding: 12px 20px;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+  }
+  .nav-container {
+    max-width: 1100px;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    gap: 10px;
+  }
+  .nav-logo img {
+    width: 35px;
+    height: 35px;
+    border-radius: 6px;
+    background: #fff;
+    padding: 3px;
+  }
+  .nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+  }
+  .nav-links li a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.3s;
+  }
+  .nav-links li a:hover {
+    color: #00b4d8;
+  }
+  .nav-toggle {
+    display: none;
+    font-size: 22px;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .nav-links {
+      position: absolute;
+      top: 60px;
+      right: 0;
+      background: #001219;
+      flex-direction: column;
+      width: 200px;
+      padding: 15px;
+      gap: 15px;
+      display: none;
+    }
+    .nav-links.active {
+      display: flex;
+    }
+    .nav-toggle {
+      display: block;
+    }
+  }
+    
+  </style>
+</head>
+<body>
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="nav-container">
     <!-- Logo -->
-    <img src="Images/jtc-logo.png" alt="JobTrust Connect Logo" class="modal-logo">
+    <a href="index.html" class="nav-logo">
+      <img src="Images/jtc-logo.png" alt="JobTrust Connect Logo">
+      JobTrust Connect
+    </a>
 
-    <h2>💼 Connect With Us</h2>
-    <p>
-      At <strong>JobTrust Connect</strong>, we bridge opportunities between 
-      <em>employers</em> and <em>job seekers</em>.  
-      Whether you want to hire the right talent or find your dream job,  
-      we’re just a click away.  
-    </p>
-    <div class="btn-group">
-      <a href="https://wa.me/2349046464822" target="_blank" class="btn whatsapp">
-        <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-      </a>
-      <a href="mailto:jobtrustconnect@gmail.com" class="btn email">
-        <i class="fas fa-envelope"></i> Send us an Email
-      </a>
+    <!-- Menu Links -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="company-policy.html">Company Policy</a></li>
+      <li><a href="client-form.html">Client Form</a></li>
+    </ul>
+
+    <!-- Hamburger (mobile) -->
+    <div class="nav-toggle" onclick="toggleMenu()">
+      <i class="fas fa-bars"></i>
     </div>
   </div>
-</div>
+</nav>
 
-<!-- Styles -->
-<style>
-/* Modal Background */
-.modal {
-  display: none; 
-  position: fixed; 
-  z-index: 999; 
-  left: 0;
-  top: 0;
-  width: 100%; 
-  height: 100%;
-  background: rgba(0,0,0,0.85);
-  justify-content: center;
-  align-items: center;
-  font-family: 'Roboto', sans-serif;
-}
 
-/* Modal Box */
-.modal-content {
-  background: #111;
-  color: #eee;
-  padding: 25px;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 400px;
-  text-align: center;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.5);
-  animation: fadeIn 0.4s ease;
-  position: relative;
-}
 
-/* Logo */
-.modal-logo {
-  display: block;
-  margin: 0 auto 15px auto;
-  width: 80px;
-  height: 80px;
-  object-fit: contain;
-  border-radius: 12px;
-  background: #fff;
-  padding: 6px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-  transition: transform 0.6s ease;
-  cursor: pointer;
-}
-.modal-logo:hover {
-  transform: rotate(360deg);
-}
-
-/* Close Button */
-.close {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  color: #bbb;
-  font-size: 26px;
-  cursor: pointer;
-}
-.close:hover {
-  color: #fff;
-}
-
-/* Message */
-.modal-content h2 {
-  margin-bottom: 10px;
-  font-size: 22px;
-  color: #00b4d8;
-}
-.modal-content p {
-  font-size: 15px;
-  margin-bottom: 20px;
-  line-height: 1.6;
-  color: #ccc;
-}
-
-/* Buttons */
-.btn-group {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  padding: 12px;
-  text-decoration: none;
-  font-size: 16px;
-  border-radius: 8px;
-  transition: background 0.3s ease;
-  font-weight: bold;
-}
-.btn i {
-  font-size: 18px;
-}
-.btn.whatsapp {
-  background: #25D366;
-  color: #fff;
-}
-.btn.whatsapp:hover {
-  background: #20b957;
-}
-.btn.email {
-  background: #0077b6;
-  color: #fff;
-}
-.btn.email:hover {
-  background: #005f86;
-}
-
-/* Animation */
-@keyframes fadeIn {
-  from {opacity: 0; transform: translateY(-20px);}
-  to {opacity: 1; transform: translateY(0);}
-}
-</style>
 
 <!-- Script -->
 <script>
-// Open Modal (example trigger)
-function openContactModal() {
-  document.getElementById('contactModal').style.display = 'flex';
-}
-
-// Close Modal
-document.querySelector(".close").onclick = function() {
-  document.getElementById("contactModal").style.display = "none";
-}
-
-// Close when clicking outside
-window.onclick = function(event) {
-  if (event.target == document.getElementById("contactModal")) {
-    document.getElementById("contactModal").style.display = "none";
+  function toggleMenu() {
+    document.getElementById("navLinks").classList.toggle("active");
   }
-}
 </script>
 
-<!-- Example Trigger Button -->
-<button onclick="openContactModal()" style="
-  padding:10px 20px;
-  background:#00b4d8;
-  color:#fff;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-">
-Contact Us
-</button>
+<!-- Font Awesome for hamburger icon -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Example Trigger Button -->
+  <button class="trigger-btn" onclick="openContactModal()">Contact Us</button>
+
+  <!-- Contact Modal -->
+  <div id="contactModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+
+      <!-- Logo -->
+      <img src="Images/jtc-logo.png" alt="JobTrust Connect Logo" class="modal-logo">
+
+      <h2>💼 Connect With Us</h2>
+      <p>
+        At <strong>JobTrust Connect</strong>, we bridge opportunities between 
+        <em>employers</em> and <em>job seekers</em>.  
+        Whether you want to hire the right talent or find your dream job,  
+        we’re just a click away.  
+      </p>
+      <div class="btn-group">
+        <a href="https://wa.me/2348012345678" target="_blank" class="btn whatsapp">
+          <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+        </a>
+        <a href="mailto:jobtrustconnect@example.com" class="btn email">
+          <i class="fas fa-envelope"></i> Send us an Email
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script -->
+  <script>
+    function openContactModal() {
+      document.getElementById('contactModal').style.display = 'flex';
+    }
+
+    document.querySelector(".close").onclick = function() {
+      document.getElementById("contactModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == document.getElementById("contactModal")) {
+        document.getElementById("contactModal").style.display = "none";
+      }
+    }
+  </script>
+
+</body>
+</html>
