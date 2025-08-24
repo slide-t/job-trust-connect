@@ -1,3 +1,6 @@
+<!-- Font Awesome (for icons) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <!-- Contact Modal -->
 <div id="contactModal" class="modal">
   <div class="modal-content">
@@ -14,8 +17,12 @@
       we’re just a click away.  
     </p>
     <div class="btn-group">
-      <a href="https://wa.me/2349046464822" target="_blank" class="btn whatsapp">📱 Chat on WhatsApp</a>
-      <a href="mailto:jobtrustconnect@gmail.com" class="btn email">📧 Send us an Email</a>
+      <a href="https://wa.me/2349046464822" target="_blank" class="btn whatsapp">
+        <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+      </a>
+      <a href="mailto:jobtrustconnect@gmail.com" class="btn email">
+        <i class="fas fa-envelope"></i> Send us an Email
+      </a>
     </div>
   </div>
 </div>
@@ -102,7 +109,10 @@
   gap: 12px;
 }
 .btn {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   width: 100%;
   padding: 12px;
   text-decoration: none;
@@ -110,6 +120,9 @@
   border-radius: 8px;
   transition: background 0.3s ease;
   font-weight: bold;
+}
+.btn i {
+  font-size: 18px;
 }
 .btn.whatsapp {
   background: #25D366;
