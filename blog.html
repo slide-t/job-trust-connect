@@ -310,6 +310,56 @@
   </header>
   <div class="container" id="blog-container"></div>
 
+
+  <script>
+async function loadPosts() {
+  const res = await fetch("posts.json");
+  const posts = await res.json();
+
+  // Container where posts will display
+  const blogContainer = document.getElementById("blog-posts");
+  blogContainer.innerHTML = "";
+
+  // Keep the first post fixed ("Welcome to JobTrust Connect")
+  const firstPost = posts[0];
+  const fixedPost = document.createElement("div");
+  fixedPost.classList.add("post");
+  fixedPost.innerHTML = `
+      <img src="${firstPost.image}" alt="${firstPost.title}">
+      <h2>${firstPost.title}</h2>
+      <p>${firstPost.excerpt}</p>
+      <a href="post.html?id=0">Read more</a>
+  `;
+  blogContainer.appendChild(fixedPost);
+
+  // Add all other posts
+  let otherPosts = posts.slice(1);
+  otherPosts.forEach((post, index) => {
+    const postDiv = document.createElement("div");
+    postDiv.classList.add("post");
+    postDiv.innerHTML = `
+        <img src="${post.image}" alt="${post.title}">
+        <h2>${post.title}</h2>
+        <p>${post.excerpt}</p>
+        <a href="post.html?id=${index + 1}">Read more</a>
+    `;
+    blogContainer.appendChild(postDiv);
+  });
+
+  // Rotate other posts every 20s
+  setInterval(() => {
+    let rotatingPosts = Array.from(blogContainer.querySelectorAll(".post")).slice(1); 
+    if (rotatingPosts.length > 1) {
+      let first = rotatingPosts.shift(); 
+      blogContainer.appendChild(first); // move first rotating post to bottom
+    }
+  }, 20000);
+}
+
+loadPosts();
+</script>
+  
+  <!--
   <script>
     async function loadPosts() {
       const res = await fetch("posts.json");
@@ -332,6 +382,7 @@
     }
     loadPosts();
   </script>
+  -->
  <!-- Floating Home Button -->
 <a href="index.html" class="home-btn" title="Home">
   <i class="fas fa-home"></i>
