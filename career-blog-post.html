@@ -1,1 +1,37 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Career Blog Post</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 900px; margin: auto; }
+    h1 { color: #001219; }
+    a { color: #00b4d8; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <div id="post-container"></div>
+  <p><a href="career-blog.html">&larr; Back to Blog</a></p>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const postId = params.get('id');
+
+    fetch('career-posts.json')
+      .then(res => res.json())
+      .then(posts => {
+        const post = posts.find(p => p.id == postId);
+        if (post) {
+          document.getElementById('post-container').innerHTML = `
+            <h1>${post.title}</h1>
+            <p>${post.content}</p>
+          `;
+        } else {
+          document.getElementById('post-container').innerHTML = "<p>Post not found.</p>";
+        }
+      });
+  </script>
+</body>
+</html>
