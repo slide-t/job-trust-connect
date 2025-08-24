@@ -3,193 +3,143 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Career Blog - JobTrust Connect</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Career Blog | JobTrust Connect</title>
   <style>
     body {
-      margin: 0;
-      font-family: Arial, sans-serif;
+      margin: 0; font-family: Arial, sans-serif;
+      background: #f9f9f9; color: #222;
       transition: background 0.3s, color 0.3s;
-      background: #f4f4f4;
-      color: #222;
     }
-    body.dark {
-      background: #111;
-      color: #eee;
-    }
-
-    /* Navbar */
     nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #001f3f;
-      padding: 15px 20px;
-      color: white;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
+      display: flex; justify-content: space-between;
+      align-items: center; padding: 10px 20px;
+      background: #001219; color: #fff;
     }
-    .nav-links {
-      display: flex;
-      gap: 20px;
-    }
-    .nav-links a {
-      font-size: 24px;
-      text-decoration: none;
-      color: white;
+    .logo { font-size: 24px; font-weight: bold; }
+    .menu { display: flex; gap: 20px; }
+    .menu a {
+      text-decoration: none; color: #fff; font-size: 24px;
       position: relative;
-      transition: color 0.3s ease;
     }
-    .nav-links a::after {
-      content: "";
-      position: absolute;
-      width: 0;
-      height: 2px;
-      background: #1E90FF;
-      left: 0;
-      bottom: -5px;
-      transition: width 0.3s ease;
+    .menu a::after {
+      content: ''; position: absolute; left: 0; bottom: -5px;
+      width: 100%; height: 2px; background: #00b4d8;
+      transform: scaleX(0); transition: transform 0.3s ease;
+      transform-origin: right;
     }
-    .nav-links a:hover::after {
-      width: 100%;
+    .menu a:hover::after {
+      transform: scaleX(1); transform-origin: left;
     }
-    .nav-links a:hover {
-      color: #1E90FF;
-    }
-
-    /* Mobile Menu */
-    .menu-toggle {
-      font-size: 32px;
-      cursor: pointer;
-      display: none;
+    .hamburger {
+      font-size: 32px; cursor: pointer; display: none;
     }
     @media (max-width: 768px) {
-      .nav-links {
-        display: none;
-        flex-direction: column;
-        background: #001f3f;
-        position: absolute;
-        top: 60px;
-        right: 0;
-        width: 200px;
-        padding: 20px;
+      .menu {
+        display: none; flex-direction: column;
+        background: #001219; position: absolute;
+        top: 60px; left: 0; right: 0;
       }
-      .nav-links.active {
-        display: flex;
-      }
-      .menu-toggle {
-        display: block;
-      }
+      .menu.active { display: flex; }
+      .hamburger { display: block; }
     }
 
-    /* Gear container */
-    .gear-container {
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: #1E90FF;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      position: relative;
+    /* Blog layout */
+    .container { padding: 20px; max-width: 900px; margin: auto; }
+    .post-card {
+      background: #fff; border-radius: 12px;
+      padding: 20px; margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      transition: transform 0.3s;
     }
-    .gear-container i {
-      font-size: 22px;
+    .post-card:hover { transform: translateY(-5px); }
+    .post-card h2 { margin: 0; color: #001219; }
+    .post-card p { color: #444; }
+
+    /* Gear toggle */
+    .gear-container {
+      width: 50px; height: 50px;
+      border-radius: 50%; background: #001219;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      position: fixed; bottom: 20px; right: 20px;
+    }
+    .gear {
+      font-size: 28px; color: white;
       animation: spin 5s linear infinite;
-      color: white;
     }
     @keyframes spin {
-      0% { transform: rotate(0deg); }
+      0% { transform: rotate(0); }
       100% { transform: rotate(360deg); }
     }
 
-    /* Gear popup */
-    .gear-popup {
-      display: none;
-      position: absolute;
-      top: 60px;
-      right: 0;
-      background: #fff;
-      color: #222;
-      border-radius: 8px;
-      padding: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-      min-width: 180px;
-    }
-    .gear-popup button {
-      display: block;
-      width: 100%;
-      margin: 5px 0;
-      padding: 8px;
-      border: none;
-      cursor: pointer;
-      border-radius: 6px;
-      background: #1E90FF;
-      color: white;
-      font-size: 16px;
-    }
-    .gear-popup button:hover {
-      background: #0073e6;
-    }
+    /* Dark mode */
+    body.dark { background: #111; color: #eee; }
+    body.dark nav { background: #333; }
+    body.dark .post-card { background: #222; color: #eee; }
   </style>
 </head>
 <body>
+
   <nav>
-    <span class="menu-toggle"><i class="fas fa-bars"></i></span>
-    <div class="nav-links">
+    <div class="logo">JobTrust Connect</div>
+    <div class="hamburger">&#9776;</div>
+    <div class="menu">
       <a href="index.html">Home</a>
       <a href="contact.html">Contact</a>
-      <a href="blog.html">Blog</a>
-      <a href="company-policy.html">Company Policy</a>
-      <a href="job-applicationfitm.html">Job Application</a>
-    </div>
-    <div class="gear-container" id="gear">
-      <i class="fas fa-gear"></i>
-      <div class="gear-popup" id="gearPopup">
-        <button id="darkModeToggle">Toggle Dark Mode</button>
-        <button id="fontIncrease">Increase Font</button>
-        <button id="fontDecrease">Decrease Font</button>
-      </div>
+      <a href="career-blog.html">Blog</a>
+      <a href="company-policy.html">Policy</a>
+      <a href="job-applicationfitm.html">Apply</a>
     </div>
   </nav>
 
-  <main style="padding: 20px; max-width: 900px; margin: auto;">
-    <h1>Welcome to the Career Blog</h1>
-    <p>This is where career insights, CV tips, job hunting strategies, and industry news will be shared for professionals and job seekers.</p>
-  </main>
+  <div class="container" id="blog-container">
+    <h1>Career Blog</h1>
+    <!-- Posts will load here -->
+  </div>
+
+  <div class="gear-container" id="gear">
+    ⚙
+  </div>
 
   <script>
     // Navbar toggle
-    const toggle = document.querySelector(".menu-toggle");
-    const navLinks = document.querySelector(".nav-links");
-    toggle.addEventListener("click", () => {
-      navLinks.classList.toggle("active");
+    const burger = document.querySelector('.hamburger');
+    const menu = document.querySelector('.menu');
+    burger.addEventListener('click', () => menu.classList.toggle('active'));
+
+    // Dark mode + font size toggle
+    const gear = document.getElementById('gear');
+    let dark = false, bigFont = false;
+    gear.addEventListener('click', () => {
+      if (!dark) {
+        document.body.classList.add('dark');
+        dark = true;
+      } else if (!bigFont) {
+        document.body.style.fontSize = "18px";
+        bigFont = true;
+      } else {
+        document.body.classList.remove('dark');
+        document.body.style.fontSize = "16px";
+        dark = false; bigFont = false;
+      }
     });
 
-    // Gear popup
-    const gear = document.getElementById("gear");
-    const gearPopup = document.getElementById("gearPopup");
-    gear.addEventListener("click", () => {
-      gearPopup.style.display = gearPopup.style.display === "block" ? "none" : "block";
-    });
-
-    // Dark Mode
-    document.getElementById("darkModeToggle").addEventListener("click", () => {
-      document.body.classList.toggle("dark");
-    });
-
-    // Font size controls
-    let fontSize = 16;
-    document.getElementById("fontIncrease").addEventListener("click", () => {
-      fontSize += 2;
-      document.body.style.fontSize = fontSize + "px";
-    });
-    document.getElementById("fontDecrease").addEventListener("click", () => {
-      fontSize = Math.max(12, fontSize - 2);
-      document.body.style.fontSize = fontSize + "px";
-    });
+    // Fetch blog posts
+    fetch('career-posts.json')
+      .then(res => res.json())
+      .then(posts => {
+        const container = document.getElementById('blog-container');
+        posts.forEach(post => {
+          const card = document.createElement('div');
+          card.className = 'post-card';
+          card.innerHTML = `
+            <h2>${post.title}</h2>
+            <p>${post.excerpt}</p>
+            <a href="career-blog-post.html?id=${post.id}">Read more</a>
+          `;
+          container.appendChild(card);
+        });
+      });
   </script>
 </body>
 </html>
