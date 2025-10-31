@@ -164,6 +164,17 @@
     [data-theme="dark"] .switch .box{background:rgba(255,255,255,0.06)}
     [data-theme="dark"] .switch.on .dot{left:21px;background:var(--accent-2)}
     .required{color:#d23f4a;margin-left:6px}
+
+    .note {
+  font-size: 0.9em;
+  color: var(--text-muted, #666);
+  margin-top: 5px;
+  font-style: italic;
+}
+
+body.dark-mode .note {
+  color: #bbb;
+}
   </style>
 </head>
 <body data-theme="light">
@@ -344,7 +355,7 @@
           </div>
         </div>
 
-        <!-- Section 5 -->
+        <!-- Section 5 --
         <div class="section-title">
           <h2>Section 5 — Care Needs & Preferences</h2>
           <div class="small">How would you like care to be delivered?</div>
@@ -388,6 +399,68 @@
             </select>
           </div>
         </div>
+        <!-- SECTION 5: CARE NEEDS & PREFERENCES -->
+<section id="care-needs" class="form-section">
+  <h2>SECTION 5: CARE NEEDS & PREFERENCES</h2>
+
+  <!-- Caregiver Gender -->
+  <div class="form-group">
+    <label>Preferred Caregiver Gender:</label><br>
+    <label><input type="radio" name="caregiver_gender" value="Male"> Male</label>
+    <label><input type="radio" name="caregiver_gender" value="Female"> Female</label>
+    <label><input type="radio" name="caregiver_gender" value="No Preference"> No Preference</label>
+  </div>
+
+  <!-- Care Schedule -->
+  <div class="form-group">
+    <label>Daily Care Schedule (hours per day):</label><br>
+    <input type="text" name="daily_schedule" placeholder="e.g., 8 hours per day">
+  </div>
+
+  <!-- Caregiver Duties -->
+  <div class="form-group">
+    <label>Caregiver Duties Required:</label>
+    <div class="checkbox-group">
+      <label><input type="checkbox" name="duties" value="Bathing / Grooming"> Bathing / Grooming</label><br>
+      <label><input type="checkbox" name="duties" value="Feeding / Meal Preparation"> Feeding / Meal Preparation</label><br>
+      <label><input type="checkbox" name="duties" value="Medication Reminder"> Medication Reminder</label><br>
+      <label><input type="checkbox" name="duties" value="Housekeeping / Laundry"> Housekeeping / Laundry</label><br>
+      <label><input type="checkbox" name="duties" value="Companionship"> Companionship</label><br>
+      <label><input type="checkbox" name="duties" value="Mobility / Exercise Support"> Mobility / Exercise Support</label><br>
+
+      <!-- Others option -->
+      <label><input type="checkbox" id="othersCheckbox" name="duties" value="Others"> Others (please specify)</label>
+      
+      <!-- Text area hidden by default -->
+      <div id="othersField" style="display:none; margin-top:10px;">
+        <textarea name="other_duties" rows="3" placeholder="Describe additional caregiver duties..."></textarea>
+        <p class="note">If outside the above duties specified, it attracts additional payment.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Start Date and Duration -->
+  <div class="form-group">
+    <label>Preferred Start Date:</label><br>
+    <input type="date" name="start_date">
+  </div>
+
+  <div class="form-group">
+    <label>Duration of Service:</label><br>
+    <label><input type="radio" name="duration" value="One-time"> One-time</label>
+    <label><input type="radio" name="duration" value="Weekly"> Weekly</label>
+    <label><input type="radio" name="duration" value="Monthly"> Monthly</label>
+    <label><input type="radio" name="duration" value="Ongoing"> Ongoing</label>
+  </div>
+</section>
+
+<!-- JavaScript for showing/hiding textarea -->
+<script>
+  document.getElementById('othersCheckbox').addEventListener('change', function() {
+    const othersField = document.getElementById('othersField');
+    othersField.style.display = this.checked ? 'block' : 'none';
+  });
+</script>
 
         <!-- Section 6 -->
         <div class="section-title">
