@@ -546,8 +546,146 @@ body.dark-mode .note {
       </form>
     </div>
   </div>
+<script>
+(function(){
+  // === THEME SWITCHER ===
+  const body = document.body;
+  const themeSwitch = document.getElementById('themeSwitch');
+  const statusEl = document.getElementById('status');
 
-  <!-- JS: handle theme toggle, submission via webhook (Google Apps Script), fallback to mailto -->
+  function setTheme(t){
+    body.setAttribute('data-theme', t);
+    if(t === 'dark') themeSwitch.classList.add('on');
+    else themeSwitch.classList.remove('on');
+  }
+
+  const saved = localStorage.getItem('jt-theme') || 'light';
+  setTheme(saved);
+
+  themeSwitch.addEventListener('click', ()=> {
+    const current = body.getAttribute('data-theme');
+    const next = current === 'light' ? 'dark' : 'light';
+    setTheme(next);
+    localStorage.setItem('jt-theme', next);
+  });
+
+  // === FORM & INDEXEDDB LOGIC ===
+  const form = document.getElementById('careForm');
+
+  // Initialize IndexedDB
+  let db;
+  const dbReq = indexedDB.open('JobTrustConnectDB', 1);
+  dbReq.onupgradeneeded = function(e){
+    db = e.target.result;
+    if(!db.objectStoreNames.contains('careForms')){
+      db.createObjectStore('careForms', { keyPath: 'id', autoIncrement: true });
+    }
+  };
+  dbReq.onsuccess = function(e){ db = e.target.result; };
+  dbReq.onerror = function(e){ console.error('IndexedDB error', e); };
+
+  function formToObject(formEl){
+    const data = new FormData(formEl);
+    const obj = {};
+    for (const key of data.keys()){
+      const all = data.getAll(key);
+      obj[key] = all.length > 1 ? all : all[0];
+    }
+    return obj;
+  }
+
+  function saveToIndexedDB(payload){
+    return new Promise((resolve, reject)=>{
+      if(!db){ reject('DB not ready'); return; }
+      const tx = db.transaction('careForms', 'readwrite');
+      const store = tx.objectStore('careForms');
+      store.add(payload);
+      tx.oncomplete = ()=> resolve(true);
+      tx.onerror = e => reject(e);
+    });
+  }
+
+  // Create spinner element dynamically
+  const spinner = document.createElement('div');
+  spinner.style.cssText = `
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.4);
+    z-index:9999;
+    align-items:center;
+    justify-content:center;
+  `;
+  spinner.innerHTML = `
+    <div style="
+      width:60px;height:60px;
+      border:6px solid #ccc;
+      border-top:6px solid var(--accent);
+      border-radius:50%;
+      animation:spin 1s linear infinite;">
+    </div>
+  `;
+  document.body.appendChild(spinner);
+  const style = document.createElement('style');
+  style.innerHTML = `@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}`;
+  document.head.appendChild(style);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!form.reportValidity()) return;
+
+    const payload = formToObject(form);
+    statusEl.textContent = '';
+
+    spinner.style.display = 'flex'; // show spinner
+    try {
+      await saveToIndexedDB(payload);
+    } catch(err){
+      console.error('DB save error', err);
+    }
+
+    // Simulate 2.5 seconds of processing
+    setTimeout(()=>{
+      spinner.style.display = 'none';
+
+      alert(
+        "Please pay a non-refundable fee of ₦20,000\n" +
+        "Opay Bank: 8168551627\n" +
+        "Account Name: Alimi Azeez Olajide\n\n" +
+        "After payment, kindly share your receipt via WhatsApp:\n+2349131697494"
+      );
+
+      form.reset();
+      statusEl.textContent = "Submission saved locally. Awaiting payment confirmation.";
+    }, 2500);
+  });
+
+  // === HOME BUTTON TO RIGHT SIDE ===
+  const infoCard = document.querySelector('.card header.brand');
+  if(infoCard){
+    const homeBtn = document.createElement('a');
+    homeBtn.href = 'index.html';
+    homeBtn.textContent = 'Home';
+    homeBtn.style.cssText = `
+      margin-left:auto;
+      background:var(--accent);
+      color:#fff;
+      padding:8px 14px;
+      border-radius:8px;
+      font-weight:600;
+      text-decoration:none;
+      box-shadow:0 4px 10px rgba(0,0,0,0.1);
+      font-size:14px;
+    `;
+    infoCard.appendChild(homeBtn);
+  }
+
+})();
+</script>
+  
+  
+  
+  <!-- JS: handle theme toggle, submission via webhook (Google Apps Script), fallback to mailto --
   <script>
     (function(){
       // --- THEME SWITCHER ---
@@ -660,6 +798,6 @@ body.dark-mode .note {
       document.head.appendChild(style);
 
     })();
-  </script>
+  </script>-->
 </body>
 </html>
