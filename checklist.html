@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Daily Care Report</title>
+
+<style>
+body{
+font-family:Arial;
+background:#f4f4f4;
+padding:20px;
+max-width:500px;
+margin:auto;
+}
+
+h2{
+text-align:center;
+}
+
+.section{
+background:white;
+padding:15px;
+margin-bottom:15px;
+border-radius:8px;
+box-shadow:0 0 5px rgba(0,0,0,0.1);
+}
+
+button{
+width:100%;
+padding:15px;
+font-size:18px;
+background:#25D366;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<h2>Daily Care Report</h2>
+
+<div class="section">
+<label>Client Name</label><br>
+<input type="text" id="client" style="width:100%">
+<br><br>
+
+<label>Carer Name</label><br>
+<input type="text" id="carer" style="width:100%">
+</div>
+
+<div class="section">
+<h3>Morning</h3>
+
+<label><input type="checkbox" id="bath"> Bathing</label><br>
+<label><input type="checkbox" id="oral"> Oral hygiene</label><br>
+<label><input type="checkbox" id="groom"> Grooming</label><br>
+<label><input type="checkbox" id="breakfast"> Breakfast & hydration</label><br>
+<label><input type="checkbox" id="med1"> Medication given</label><br>
+
+</div>
+
+<div class="section">
+<h3>Afternoon</h3>
+
+<label><input type="checkbox" id="lunch"> Lunch & hydration</label><br>
+<label><input type="checkbox" id="mobility"> Mobility assistance</label><br>
+<label><input type="checkbox" id="tasks"> Household tasks</label><br>
+<label><input type="checkbox" id="social"> Social interaction</label><br>
+<label><input type="checkbox" id="med2"> Medication given</label>
+
+</div>
+
+<div class="section">
+<h3>Evening</h3>
+
+<label><input type="checkbox" id="dinner"> Dinner</label><br>
+<label><input type="checkbox" id="med3"> Medication given</label><br>
+<label><input type="checkbox" id="wash"> Evening wash</label><br>
+<label><input type="checkbox" id="kitchen"> Kitchen cleaned</label><br>
+<label><input type="checkbox" id="bedroom"> Bedroom prepared</label>
+
+</div>
+
+<div class="section">
+<label>Notes</label><br>
+<textarea id="notes" style="width:100%"></textarea>
+</div>
+
+<button onclick="sendReport()">Submit & Share on WhatsApp</button>
+
+<script>
+
+function check(id){
+return document.getElementById(id).checked ? "Yes" : "No";
+}
+
+function sendReport(){
+
+let date = new Date().toLocaleDateString();
+
+let message =
+"Daily Care Report%0A%0A" +
+"Client: " + document.getElementById("client").value + "%0A" +
+"Carer: " + document.getElementById("carer").value + "%0A" +
+"Date: " + date + "%0A%0A" +
+
+"MORNING%0A" +
+"Bathing: " + check("bath") + "%0A" +
+"Oral hygiene: " + check("oral") + "%0A" +
+"Grooming: " + check("groom") + "%0A" +
+"Breakfast: " + check("breakfast") + "%0A" +
+"Medication: " + check("med1") + "%0A%0A" +
+
+"AFTERNOON%0A" +
+"Lunch: " + check("lunch") + "%0A" +
+"Mobility: " + check("mobility") + "%0A" +
+"Tasks: " + check("tasks") + "%0A" +
+"Social: " + check("social") + "%0A" +
+"Medication: " + check("med2") + "%0A%0A" +
+
+"EVENING%0A" +
+"Dinner: " + check("dinner") + "%0A" +
+"Medication: " + check("med3") + "%0A" +
+"Evening wash: " + check("wash") + "%0A" +
+"Kitchen cleaned: " + check("kitchen") + "%0A" +
+"Bedroom prepared: " + check("bedroom") + "%0A%0A" +
+
+"Notes: " + document.getElementById("notes").value;
+
+let url = "https://wa.me/?text=" + message;
+
+window.open(url, "_blank");
+
+}
+
+</script>
+
+</body>
+</html>
