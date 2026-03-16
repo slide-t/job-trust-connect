@@ -2,13 +2,14 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Caregiver Checklist</title>
+<title>Caregiver Daily Checklist</title>
 
 <style>
+
 body{
-font-family: Arial;
-padding:20px;
+font-family:Arial;
 background:#f4f6f8;
+padding:20px;
 }
 
 h2{
@@ -20,18 +21,23 @@ background:white;
 padding:15px;
 margin-bottom:20px;
 border-radius:8px;
-box-shadow:0 0 5px rgba(0,0,0,0.1);
+box-shadow:0 0 6px rgba(0,0,0,0.1);
 }
 
 label{
 display:block;
-margin-top:10px;
+margin-top:8px;
 }
 
 input,select,textarea{
 width:100%;
 padding:8px;
 margin-top:5px;
+}
+
+.checkbox-group label{
+display:block;
+margin-top:6px;
 }
 
 button{
@@ -59,71 +65,124 @@ font-size:18px;
 <label>Date</label>
 <input type="date" id="date">
 
-<label>Day</label>
-<select id="day">
-<option>Monday</option>
-<option>Tuesday</option>
-<option>Wednesday</option>
-<option>Thursday</option>
-<option>Friday</option>
-<option>Saturday</option>
-<option>Sunday</option>
-</select>
+<label>Caregiver Name</label>
+<input id="caregiver">
 
 </div>
 
+
 <div class="section">
 
-<h3>Morning</h3>
+<h3>Medication Monitoring</h3>
 
-<label>Medication Given</label>
+<label>Morning Medication Given</label>
 <select id="m_med">
 <option>Yes</option>
 <option>No</option>
 </select>
 
-<label>Medication Stock OK</label>
-<select id="m_stock">
-<option>Yes</option>
-<option>No</option>
-</select>
-
-<label>Meals Eaten</label>
-<select id="m_meal">
-<option>All</option>
-<option>Half</option>
-<option>Little</option>
-<option>None</option>
-</select>
-
-<label>Side Effects</label>
-<input id="m_side">
-
-</div>
-
-
-<div class="section">
-
-<h3>Afternoon</h3>
-
-<label>Medication Given</label>
+<label>Afternoon Medication Given</label>
 <select id="a_med">
 <option>Yes</option>
 <option>No</option>
 </select>
 
+<label>Medication Stock OK</label>
+<select id="stock">
+<option>Yes</option>
+<option>No</option>
+</select>
+
 <label>Meals Eaten</label>
-<select id="a_meal">
+<select id="meal">
 <option>All</option>
 <option>Half</option>
 <option>Little</option>
 <option>None</option>
 </select>
 
-<label>Side Effects</label>
-<input id="a_side">
+<label>Side Effects Observed</label>
+<input id="side">
 
 </div>
+
+
+
+<div class="section">
+
+<h3>Morning Care</h3>
+
+<div class="checkbox-group">
+
+<label><input type="checkbox" class="morning"> Assist with washing/bathing</label>
+<label><input type="checkbox" class="morning"> Oral hygiene</label>
+<label><input type="checkbox" class="morning"> Grooming</label>
+<label><input type="checkbox" class="morning"> Dress in clean clothes</label>
+<label><input type="checkbox" class="morning"> Breakfast & hydration</label>
+<label><input type="checkbox" class="morning"> Medication administered</label>
+<label><input type="checkbox" class="morning"> Gentle exercises / walk</label>
+<label><input type="checkbox" class="morning"> Check blood sugar</label>
+
+</div>
+
+</div>
+
+
+
+<div class="section">
+
+<h3>Midday / Afternoon</h3>
+
+<div class="checkbox-group">
+
+<label><input type="checkbox" class="afternoon"> Lunch & hydration</label>
+<label><input type="checkbox" class="afternoon"> Assist with mobility</label>
+<label><input type="checkbox" class="afternoon"> Light household tasks</label>
+<label><input type="checkbox" class="afternoon"> Engage in hobbies / conversation</label>
+<label><input type="checkbox" class="afternoon"> Cognitive stimulation</label>
+<label><input type="checkbox" class="afternoon"> Medication administered</label>
+
+</div>
+
+</div>
+
+
+
+<div class="section">
+
+<h3>Evening</h3>
+
+<div class="checkbox-group">
+
+<label><input type="checkbox" class="evening"> Assist with dinner & hydration</label>
+<label><input type="checkbox" class="evening"> Medication administered</label>
+<label><input type="checkbox" class="evening"> Evening wash / change</label>
+<label><input type="checkbox" class="evening"> Tidy kitchen</label>
+<label><input type="checkbox" class="evening"> Prepare bedroom</label>
+<label><input type="checkbox" class="evening"> Check blood sugar</label>
+
+</div>
+
+</div>
+
+
+
+<div class="section">
+
+<h3>Weekly / As Needed</h3>
+
+<div class="checkbox-group">
+
+<label><input type="checkbox" class="weekly"> Change bed linen</label>
+<label><input type="checkbox" class="weekly"> Vacuum / mop floors</label>
+<label><input type="checkbox" class="weekly"> Deep clean bathroom</label>
+<label><input type="checkbox" class="weekly"> Review medication stock</label>
+<label><input type="checkbox" class="weekly"> Review safety hazards</label>
+
+</div>
+
+</div>
+
 
 
 <div class="section">
@@ -134,42 +193,65 @@ font-size:18px;
 </div>
 
 
+
 <button onclick="sendWhatsApp()">Send Report via WhatsApp</button>
+
 
 
 <script>
 
+function getChecked(className){
+
+let items=document.querySelectorAll("."+className+":checked");
+let list=[];
+
+items.forEach(i=>{
+list.push(i.parentElement.innerText.trim());
+});
+
+return list.join(", ");
+}
+
 function sendWhatsApp(){
 
-let message =
+let message=
 `PATIENT CARE REPORT
 
 Patient: ${patient.value}
+Caregiver: ${caregiver.value}
 Date: ${date.value}
-Day: ${day.value}
 
---- MORNING ---
-Medication Given: ${m_med.value}
-Stock OK: ${m_stock.value}
-Meals: ${m_meal.value}
-Side Effects: ${m_side.value}
+MEDICATION
+Morning: ${m_med.value}
+Afternoon: ${a_med.value}
+Stock OK: ${stock.value}
+Meals: ${meal.value}
+Side Effects: ${side.value}
 
---- AFTERNOON ---
-Medication Given: ${a_med.value}
-Meals: ${a_meal.value}
-Side Effects: ${a_side.value}
+MORNING TASKS
+${getChecked("morning")}
 
-Notes:
+AFTERNOON TASKS
+${getChecked("afternoon")}
+
+EVENING TASKS
+${getChecked("evening")}
+
+WEEKLY TASKS
+${getChecked("weekly")}
+
+NOTES
 ${notes.value}
 `;
 
-let url = "https://wa.me/?text=" + encodeURIComponent(message);
+let url="https://wa.me/?text="+encodeURIComponent(message);
 
 window.open(url);
 
 }
 
 </script>
+
 
 </body>
 </html>
