@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Daily Care Checklist</title>
+<title>Daily Care Report</title>
 
 <style>
 
@@ -11,63 +13,97 @@ body{
 font-family:Arial;
 background:#0f1a20;
 color:white;
-margin:0;
 padding:15px;
+max-width:500px;
+margin:auto;
 }
 
 h2{
 text-align:center;
-margin-bottom:10px;
 }
 
-.section{
-display:none;
-margin-top:15px;
+input,select,textarea{
+width:100%;
+padding:8px;
+margin:6px 0;
+border-radius:6px;
+border:none;
 }
 
 .task{
-background:#1b2b34;
-padding:12px;
-margin:10px 0;
+background:#1c2a33;
+padding:10px;
+margin-top:10px;
 border-radius:8px;
-}
-
-.task label{
-display:block;
-font-size:15px;
-margin-bottom:6px;
 }
 
 .options{
 display:flex;
 gap:20px;
+margin-top:5px;
 }
 
 button{
-padding:10px 15px;
-margin:5px;
-border:none;
-border-radius:6px;
 background:#ff4d6d;
 color:white;
-font-size:14px;
+border:none;
+padding:12px;
+width:100%;
+margin-top:15px;
+border-radius:8px;
+font-size:16px;
 }
 
-.topbuttons{
-text-align:center;
+.section{
+display:none;
 }
 
 </style>
 
+
 <script>
 
-function showSection(id){
+function showSection(){
 
-document.getElementById("morning").style.display="none";
-document.getElementById("afternoon").style.display="none";
-document.getElementById("evening").style.display="none";
+let section=document.getElementById("time").value
 
-document.getElementById(id).style.display="block";
+document.getElementById("morning").style.display="none"
+document.getElementById("afternoon").style.display="none"
+document.getElementById("evening").style.display="none"
+
+if(section=="morning"){
+document.getElementById("morning").style.display="block"
+}
+
+if(section=="afternoon"){
+document.getElementById("afternoon").style.display="block"
+}
+
+if(section=="evening"){
+document.getElementById("evening").style.display="block"
+}
+
+}
+
+
+function shareWhatsApp(){
+
+let client=document.getElementById("client").value
+let carer=document.getElementById("carer").value
+let date=document.getElementById("date").value
+let time=document.getElementById("time").value
+let notes=document.getElementById("notes").value
+
+let text="Daily Care Report%0A"
+text+="Client: "+client+"%0A"
+text+="Carer: "+carer+"%0A"
+text+="Date: "+date+"%0A"
+text+="Shift: "+time+"%0A%0A"
+text+="Notes: "+notes
+
+let url="https://wa.me/?text="+text
+
+window.open(url)
 
 }
 
@@ -75,27 +111,38 @@ document.getElementById(id).style.display="block";
 
 </head>
 
+
 <body>
 
-<h2>Daily Care Checklist</h2>
+<h2>Daily Care Report</h2>
 
-<div class="topbuttons">
+<label>Client Name</label>
+<input id="client">
 
-<button onclick="showSection('morning')">Morning</button>
-<button onclick="showSection('afternoon')">Afternoon</button>
-<button onclick="showSection('evening')">Evening</button>
+<label>Carer Name</label>
+<input id="carer">
 
-</div>
+<label>Date</label>
+<input type="date" id="date">
+
+<label>Select Shift</label>
+
+<select id="time" onchange="showSection()">
+
+<option value="">Choose</option>
+<option value="morning">Morning</option>
+<option value="afternoon">Afternoon</option>
+<option value="evening">Evening</option>
+
+</select>
 
 
 <!-- MORNING -->
 
 <div id="morning" class="section">
 
-<h3>Morning Care</h3>
-
 <div class="task">
-<label>Assist with washing / bathing</label>
+Assist with washing / bathing
 <div class="options">
 <label><input type="radio" name="bath"> Yes</label>
 <label><input type="radio" name="bath"> No</label>
@@ -103,7 +150,7 @@ document.getElementById(id).style.display="block";
 </div>
 
 <div class="task">
-<label>Oral hygiene (teeth / dentures)</label>
+Oral hygiene
 <div class="options">
 <label><input type="radio" name="oral"> Yes</label>
 <label><input type="radio" name="oral"> No</label>
@@ -111,23 +158,7 @@ document.getElementById(id).style.display="block";
 </div>
 
 <div class="task">
-<label>Grooming (hair / shaving)</label>
-<div class="options">
-<label><input type="radio" name="groom"> Yes</label>
-<label><input type="radio" name="groom"> No</label>
-</div>
-</div>
-
-<div class="task">
-<label>Dress in clean clothes</label>
-<div class="options">
-<label><input type="radio" name="dress"> Yes</label>
-<label><input type="radio" name="dress"> No</label>
-</div>
-</div>
-
-<div class="task">
-<label>Breakfast & hydration</label>
+Breakfast & hydration
 <div class="options">
 <label><input type="radio" name="breakfast"> Yes</label>
 <label><input type="radio" name="breakfast"> No</label>
@@ -135,26 +166,10 @@ document.getElementById(id).style.display="block";
 </div>
 
 <div class="task">
-<label>Medication given</label>
+Medication given
 <div class="options">
 <label><input type="radio" name="med1"> Yes</label>
 <label><input type="radio" name="med1"> No</label>
-</div>
-</div>
-
-<div class="task">
-<label>Morning exercise / walk</label>
-<div class="options">
-<label><input type="radio" name="exercise"> Yes</label>
-<label><input type="radio" name="exercise"> No</label>
-</div>
-</div>
-
-<div class="task">
-<label>Blood sugar check (if required)</label>
-<div class="options">
-<label><input type="radio" name="sugar"> Yes</label>
-<label><input type="radio" name="sugar"> No</label>
 </div>
 </div>
 
@@ -166,10 +181,8 @@ document.getElementById(id).style.display="block";
 
 <div id="afternoon" class="section">
 
-<h3>Afternoon Care</h3>
-
 <div class="task">
-<label>Lunch & hydration</label>
+Lunch & hydration
 <div class="options">
 <label><input type="radio" name="lunch"> Yes</label>
 <label><input type="radio" name="lunch"> No</label>
@@ -177,7 +190,7 @@ document.getElementById(id).style.display="block";
 </div>
 
 <div class="task">
-<label>Mobility / transfer assistance</label>
+Mobility assistance
 <div class="options">
 <label><input type="radio" name="mobility"> Yes</label>
 <label><input type="radio" name="mobility"> No</label>
@@ -185,34 +198,10 @@ document.getElementById(id).style.display="block";
 </div>
 
 <div class="task">
-<label>Light household tasks</label>
+Household tasks
 <div class="options">
 <label><input type="radio" name="tasks"> Yes</label>
 <label><input type="radio" name="tasks"> No</label>
-</div>
-</div>
-
-<div class="task">
-<label>Social interaction / conversation</label>
-<div class="options">
-<label><input type="radio" name="social"> Yes</label>
-<label><input type="radio" name="social"> No</label>
-</div>
-</div>
-
-<div class="task">
-<label>Cognitive activity (music, puzzles)</label>
-<div class="options">
-<label><input type="radio" name="brain"> Yes</label>
-<label><input type="radio" name="brain"> No</label>
-</div>
-</div>
-
-<div class="task">
-<label>Medication given</label>
-<div class="options">
-<label><input type="radio" name="med2"> Yes</label>
-<label><input type="radio" name="med2"> No</label>
 </div>
 </div>
 
@@ -224,10 +213,8 @@ document.getElementById(id).style.display="block";
 
 <div id="evening" class="section">
 
-<h3>Evening Care</h3>
-
 <div class="task">
-<label>Dinner & hydration</label>
+Dinner & hydration
 <div class="options">
 <label><input type="radio" name="dinner"> Yes</label>
 <label><input type="radio" name="dinner"> No</label>
@@ -235,7 +222,7 @@ document.getElementById(id).style.display="block";
 </div>
 
 <div class="task">
-<label>Medication given</label>
+Medication given
 <div class="options">
 <label><input type="radio" name="med3"> Yes</label>
 <label><input type="radio" name="med3"> No</label>
@@ -243,38 +230,25 @@ document.getElementById(id).style.display="block";
 </div>
 
 <div class="task">
-<label>Evening wash / change into nightwear</label>
+Prepare bedroom
 <div class="options">
-<label><input type="radio" name="wash"> Yes</label>
-<label><input type="radio" name="wash"> No</label>
-</div>
-</div>
-
-<div class="task">
-<label>Tidy kitchen / clean up</label>
-<div class="options">
-<label><input type="radio" name="kitchen"> Yes</label>
-<label><input type="radio" name="kitchen"> No</label>
-</div>
-</div>
-
-<div class="task">
-<label>Prepare bedroom for comfort</label>
-<div class="options">
-<label><input type="radio" name="bedroom"> Yes</label>
-<label><input type="radio" name="bedroom"> No</label>
-</div>
-</div>
-
-<div class="task">
-<label>Blood sugar check</label>
-<div class="options">
-<label><input type="radio" name="sugar2"> Yes</label>
-<label><input type="radio" name="sugar2"> No</label>
+<label><input type="radio" name="bed"> Yes</label>
+<label><input type="radio" name="bed"> No</label>
 </div>
 </div>
 
 </div>
+
+
+<label>Notes</label>
+
+<textarea id="notes" rows="4"></textarea>
+
+
+<button onclick="shareWhatsApp()">
+Share Report to WhatsApp
+</button>
+
 
 </body>
 </html>
