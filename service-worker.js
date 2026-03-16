@@ -14,6 +14,7 @@ const urlsToCache = [
   '/footer.html',
   '/blog.html',
   'posts.json',
+  'checklist.html',
   'post.html',
   'requestform.html',
   '/feedback.html',
@@ -22,6 +23,7 @@ const urlsToCache = [
   '/manifest.json',
   '/icons/icon-192.png',
   '/icons/icon-512.png'
+  
 ];
 
 // Install and cache essential assets
