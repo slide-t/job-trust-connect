@@ -1,143 +1,280 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Daily Care Report</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Daily Care Checklist</title>
 
 <style>
+
 body{
 font-family:Arial;
-background:#f4f4f4;
-padding:20px;
-max-width:500px;
-margin:auto;
+background:#0f1a20;
+color:white;
+margin:0;
+padding:15px;
 }
 
 h2{
 text-align:center;
+margin-bottom:10px;
 }
 
 .section{
-background:white;
-padding:15px;
-margin-bottom:15px;
+display:none;
+margin-top:15px;
+}
+
+.task{
+background:#1b2b34;
+padding:12px;
+margin:10px 0;
 border-radius:8px;
-box-shadow:0 0 5px rgba(0,0,0,0.1);
+}
+
+.task label{
+display:block;
+font-size:15px;
+margin-bottom:6px;
+}
+
+.options{
+display:flex;
+gap:20px;
 }
 
 button{
-width:100%;
-padding:15px;
-font-size:18px;
-background:#25D366;
-color:white;
+padding:10px 15px;
+margin:5px;
 border:none;
-border-radius:8px;
-cursor:pointer;
+border-radius:6px;
+background:#ff4d6d;
+color:white;
+font-size:14px;
 }
+
+.topbuttons{
+text-align:center;
+}
+
 </style>
+
+<script>
+
+function showSection(id){
+
+document.getElementById("morning").style.display="none";
+document.getElementById("afternoon").style.display="none";
+document.getElementById("evening").style.display="none";
+
+document.getElementById(id).style.display="block";
+
+}
+
+</script>
 
 </head>
 
 <body>
 
-<h2>Daily Care Report</h2>
+<h2>Daily Care Checklist</h2>
 
-<div class="section">
-<label>Client Name</label><br>
-<input type="text" id="client" style="width:100%">
-<br><br>
+<div class="topbuttons">
 
-<label>Carer Name</label><br>
-<input type="text" id="carer" style="width:100%">
-</div>
-
-<div class="section">
-<h3>Morning</h3>
-
-<label><input type="checkbox" id="bath"> Bathing</label><br>
-<label><input type="checkbox" id="oral"> Oral hygiene</label><br>
-<label><input type="checkbox" id="groom"> Grooming</label><br>
-<label><input type="checkbox" id="breakfast"> Breakfast & hydration</label><br>
-<label><input type="checkbox" id="med1"> Medication given</label><br>
+<button onclick="showSection('morning')">Morning</button>
+<button onclick="showSection('afternoon')">Afternoon</button>
+<button onclick="showSection('evening')">Evening</button>
 
 </div>
 
-<div class="section">
-<h3>Afternoon</h3>
 
-<label><input type="checkbox" id="lunch"> Lunch & hydration</label><br>
-<label><input type="checkbox" id="mobility"> Mobility assistance</label><br>
-<label><input type="checkbox" id="tasks"> Household tasks</label><br>
-<label><input type="checkbox" id="social"> Social interaction</label><br>
-<label><input type="checkbox" id="med2"> Medication given</label>
+<!-- MORNING -->
+
+<div id="morning" class="section">
+
+<h3>Morning Care</h3>
+
+<div class="task">
+<label>Assist with washing / bathing</label>
+<div class="options">
+<label><input type="radio" name="bath"> Yes</label>
+<label><input type="radio" name="bath"> No</label>
+</div>
+</div>
+
+<div class="task">
+<label>Oral hygiene (teeth / dentures)</label>
+<div class="options">
+<label><input type="radio" name="oral"> Yes</label>
+<label><input type="radio" name="oral"> No</label>
+</div>
+</div>
+
+<div class="task">
+<label>Grooming (hair / shaving)</label>
+<div class="options">
+<label><input type="radio" name="groom"> Yes</label>
+<label><input type="radio" name="groom"> No</label>
+</div>
+</div>
+
+<div class="task">
+<label>Dress in clean clothes</label>
+<div class="options">
+<label><input type="radio" name="dress"> Yes</label>
+<label><input type="radio" name="dress"> No</label>
+</div>
+</div>
+
+<div class="task">
+<label>Breakfast & hydration</label>
+<div class="options">
+<label><input type="radio" name="breakfast"> Yes</label>
+<label><input type="radio" name="breakfast"> No</label>
+</div>
+</div>
+
+<div class="task">
+<label>Medication given</label>
+<div class="options">
+<label><input type="radio" name="med1"> Yes</label>
+<label><input type="radio" name="med1"> No</label>
+</div>
+</div>
+
+<div class="task">
+<label>Morning exercise / walk</label>
+<div class="options">
+<label><input type="radio" name="exercise"> Yes</label>
+<label><input type="radio" name="exercise"> No</label>
+</div>
+</div>
+
+<div class="task">
+<label>Blood sugar check (if required)</label>
+<div class="options">
+<label><input type="radio" name="sugar"> Yes</label>
+<label><input type="radio" name="sugar"> No</label>
+</div>
+</div>
 
 </div>
 
-<div class="section">
-<h3>Evening</h3>
 
-<label><input type="checkbox" id="dinner"> Dinner</label><br>
-<label><input type="checkbox" id="med3"> Medication given</label><br>
-<label><input type="checkbox" id="wash"> Evening wash</label><br>
-<label><input type="checkbox" id="kitchen"> Kitchen cleaned</label><br>
-<label><input type="checkbox" id="bedroom"> Bedroom prepared</label>
+
+<!-- AFTERNOON -->
+
+<div id="afternoon" class="section">
+
+<h3>Afternoon Care</h3>
+
+<div class="task">
+<label>Lunch & hydration</label>
+<div class="options">
+<label><input type="radio" name="lunch"> Yes</label>
+<label><input type="radio" name="lunch"> No</label>
+</div>
+</div>
+
+<div class="task">
+<label>Mobility / transfer assistance</label>
+<div class="options">
+<label><input type="radio" name="mobility"> Yes</label>
+<label><input type="radio" name="mobility"> No</label>
+</div>
+</div>
+
+<div class="task">
+<label>Light household tasks</label>
+<div class="options">
+<label><input type="radio" name="tasks"> Yes</label>
+<label><input type="radio" name="tasks"> No</label>
+</div>
+</div>
+
+<div class="task">
+<label>Social interaction / conversation</label>
+<div class="options">
+<label><input type="radio" name="social"> Yes</label>
+<label><input type="radio" name="social"> No</label>
+</div>
+</div>
+
+<div class="task">
+<label>Cognitive activity (music, puzzles)</label>
+<div class="options">
+<label><input type="radio" name="brain"> Yes</label>
+<label><input type="radio" name="brain"> No</label>
+</div>
+</div>
+
+<div class="task">
+<label>Medication given</label>
+<div class="options">
+<label><input type="radio" name="med2"> Yes</label>
+<label><input type="radio" name="med2"> No</label>
+</div>
+</div>
 
 </div>
 
-<div class="section">
-<label>Notes</label><br>
-<textarea id="notes" style="width:100%"></textarea>
+
+
+<!-- EVENING -->
+
+<div id="evening" class="section">
+
+<h3>Evening Care</h3>
+
+<div class="task">
+<label>Dinner & hydration</label>
+<div class="options">
+<label><input type="radio" name="dinner"> Yes</label>
+<label><input type="radio" name="dinner"> No</label>
+</div>
 </div>
 
-<button onclick="sendReport()">Submit & Share on WhatsApp</button>
+<div class="task">
+<label>Medication given</label>
+<div class="options">
+<label><input type="radio" name="med3"> Yes</label>
+<label><input type="radio" name="med3"> No</label>
+</div>
+</div>
 
-<script>
+<div class="task">
+<label>Evening wash / change into nightwear</label>
+<div class="options">
+<label><input type="radio" name="wash"> Yes</label>
+<label><input type="radio" name="wash"> No</label>
+</div>
+</div>
 
-function check(id){
-return document.getElementById(id).checked ? "Yes" : "No";
-}
+<div class="task">
+<label>Tidy kitchen / clean up</label>
+<div class="options">
+<label><input type="radio" name="kitchen"> Yes</label>
+<label><input type="radio" name="kitchen"> No</label>
+</div>
+</div>
 
-function sendReport(){
+<div class="task">
+<label>Prepare bedroom for comfort</label>
+<div class="options">
+<label><input type="radio" name="bedroom"> Yes</label>
+<label><input type="radio" name="bedroom"> No</label>
+</div>
+</div>
 
-let date = new Date().toLocaleDateString();
+<div class="task">
+<label>Blood sugar check</label>
+<div class="options">
+<label><input type="radio" name="sugar2"> Yes</label>
+<label><input type="radio" name="sugar2"> No</label>
+</div>
+</div>
 
-let message =
-"Daily Care Report%0A%0A" +
-"Client: " + document.getElementById("client").value + "%0A" +
-"Carer: " + document.getElementById("carer").value + "%0A" +
-"Date: " + date + "%0A%0A" +
-
-"MORNING%0A" +
-"Bathing: " + check("bath") + "%0A" +
-"Oral hygiene: " + check("oral") + "%0A" +
-"Grooming: " + check("groom") + "%0A" +
-"Breakfast: " + check("breakfast") + "%0A" +
-"Medication: " + check("med1") + "%0A%0A" +
-
-"AFTERNOON%0A" +
-"Lunch: " + check("lunch") + "%0A" +
-"Mobility: " + check("mobility") + "%0A" +
-"Tasks: " + check("tasks") + "%0A" +
-"Social: " + check("social") + "%0A" +
-"Medication: " + check("med2") + "%0A%0A" +
-
-"EVENING%0A" +
-"Dinner: " + check("dinner") + "%0A" +
-"Medication: " + check("med3") + "%0A" +
-"Evening wash: " + check("wash") + "%0A" +
-"Kitchen cleaned: " + check("kitchen") + "%0A" +
-"Bedroom prepared: " + check("bedroom") + "%0A%0A" +
-
-"Notes: " + document.getElementById("notes").value;
-
-let url = "https://wa.me/?text=" + message;
-
-window.open(url, "_blank");
-
-}
-
-</script>
+</div>
 
 </body>
 </html>
