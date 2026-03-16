@@ -1,49 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Daily Care Checklist</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Caregiver Checklist</title>
 
 <style>
-
 body{
-font-family:Arial;
-background:#0f1a20;
-color:white;
+font-family: Arial;
 padding:20px;
-max-width:500px;
-margin:auto;
+background:#f4f6f8;
 }
 
 h2{
 text-align:center;
-margin-bottom:25px;
 }
 
 .section{
-margin-bottom:25px;
-}
-
-.option{
-margin:8px 0;
-}
-
-.bar{
-height:10px;
-background:#2a2a2a;
-border-radius:10px;
-margin-top:5px;
-}
-
-.fill{
-height:10px;
-background:#ff4d6d;
-border-radius:10px;
-width:0%;
+background:white;
+padding:15px;
+margin-bottom:20px;
+border-radius:8px;
+box-shadow:0 0 5px rgba(0,0,0,0.1);
 }
 
 label{
-font-size:16px;
+display:block;
+margin-top:10px;
+}
+
+input,select,textarea{
+width:100%;
+padding:8px;
+margin-top:5px;
+}
+
+button{
+width:100%;
+padding:15px;
+background:#25D366;
+color:white;
+border:none;
+border-radius:6px;
+font-size:18px;
 }
 
 </style>
@@ -51,80 +49,124 @@ font-size:16px;
 
 <body>
 
-<h2>Daily Care Checklist</h2>
+<h2>Patient Care Checklist</h2>
 
 <div class="section">
-<b>Morning Care</b>
 
-<div class="option">
-<label><input type="radio" name="bath" onclick="fill('bathbar')"> Bathing Done</label>
-<div class="bar"><div id="bathbar" class="fill"></div></div>
+<label>Patient Name</label>
+<input id="patient">
+
+<label>Date</label>
+<input type="date" id="date">
+
+<label>Day</label>
+<select id="day">
+<option>Monday</option>
+<option>Tuesday</option>
+<option>Wednesday</option>
+<option>Thursday</option>
+<option>Friday</option>
+<option>Saturday</option>
+<option>Sunday</option>
+</select>
+
 </div>
 
-<div class="option">
-<label><input type="radio" name="oral" onclick="fill('oralbar')"> Oral Hygiene Done</label>
-<div class="bar"><div id="oralbar" class="fill"></div></div>
-</div>
+<div class="section">
 
-<div class="option">
-<label><input type="radio" name="breakfast" onclick="fill('breakbar')"> Breakfast Given</label>
-<div class="bar"><div id="breakbar" class="fill"></div></div>
-</div>
+<h3>Morning</h3>
 
-<div class="option">
-<label><input type="radio" name="med1" onclick="fill('medbar')"> Medication Given</label>
-<div class="bar"><div id="medbar" class="fill"></div></div>
-</div>
+<label>Medication Given</label>
+<select id="m_med">
+<option>Yes</option>
+<option>No</option>
+</select>
+
+<label>Medication Stock OK</label>
+<select id="m_stock">
+<option>Yes</option>
+<option>No</option>
+</select>
+
+<label>Meals Eaten</label>
+<select id="m_meal">
+<option>All</option>
+<option>Half</option>
+<option>Little</option>
+<option>None</option>
+</select>
+
+<label>Side Effects</label>
+<input id="m_side">
 
 </div>
 
 
 <div class="section">
-<b>Afternoon Care</b>
 
-<div class="option">
-<label><input type="radio" name="lunch" onclick="fill('lunchbar')"> Lunch Given</label>
-<div class="bar"><div id="lunchbar" class="fill"></div></div>
-</div>
+<h3>Afternoon</h3>
 
-<div class="option">
-<label><input type="radio" name="mobility" onclick="fill('mobbar')"> Mobility Assistance</label>
-<div class="bar"><div id="mobbar" class="fill"></div></div>
-</div>
+<label>Medication Given</label>
+<select id="a_med">
+<option>Yes</option>
+<option>No</option>
+</select>
 
-<div class="option">
-<label><input type="radio" name="tasks" onclick="fill('taskbar')"> Household Tasks Done</label>
-<div class="bar"><div id="taskbar" class="fill"></div></div>
-</div>
+<label>Meals Eaten</label>
+<select id="a_meal">
+<option>All</option>
+<option>Half</option>
+<option>Little</option>
+<option>None</option>
+</select>
+
+<label>Side Effects</label>
+<input id="a_side">
 
 </div>
 
 
 <div class="section">
-<b>Evening Care</b>
 
-<div class="option">
-<label><input type="radio" name="dinner" onclick="fill('dinbar')"> Dinner Given</label>
-<div class="bar"><div id="dinbar" class="fill"></div></div>
-</div>
-
-<div class="option">
-<label><input type="radio" name="med2" onclick="fill('med2bar')"> Medication Given</label>
-<div class="bar"><div id="med2bar" class="fill"></div></div>
-</div>
-
-<div class="option">
-<label><input type="radio" name="bed" onclick="fill('bedbar')"> Bedroom Prepared</label>
-<div class="bar"><div id="bedbar" class="fill"></div></div>
-</div>
+<label>Notes / Actions Taken</label>
+<textarea id="notes"></textarea>
 
 </div>
+
+
+<button onclick="sendWhatsApp()">Send Report via WhatsApp</button>
 
 
 <script>
 
-function fill(bar){
-document.getElementById(bar).style.width="100%";
+function sendWhatsApp(){
+
+let message =
+`PATIENT CARE REPORT
+
+Patient: ${patient.value}
+Date: ${date.value}
+Day: ${day.value}
+
+--- MORNING ---
+Medication Given: ${m_med.value}
+Stock OK: ${m_stock.value}
+Meals: ${m_meal.value}
+Side Effects: ${m_side.value}
+
+--- AFTERNOON ---
+Medication Given: ${a_med.value}
+Meals: ${a_meal.value}
+Side Effects: ${a_side.value}
+
+Notes:
+${notes.value}
+`;
+
+let url = "https://wa.me/?text=" + encodeURIComponent(message);
+
+window.open(url);
+
 }
 
 </script>
