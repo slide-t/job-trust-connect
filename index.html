@@ -7,164 +7,238 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); }
-        .hero-gradient { background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap');
+        
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* Smooth Image Slider Animation */
+        @keyframes slide {
+            0%, 30% { opacity: 1; }
+            33%, 63% { opacity: 0; }
+            66%, 96% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        @keyframes slide2 {
+            0%, 30% { opacity: 0; }
+            33%, 63% { opacity: 1; }
+            66%, 96% { opacity: 0; }
+        }
+        @keyframes slide3 {
+            0%, 63% { opacity: 0; }
+            66%, 96% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        .slider-img-1 { animation: slide 12s infinite; }
+        .slider-img-2 { animation: slide2 12s infinite; }
+        .slider-img-3 { animation: slide3 12s infinite; }
+
+        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-900">
+<body class="bg-slate-50 text-slate-900">
 
-    <nav class="fixed w-full z-50 glass border-b border-gray-100">
+    <nav class="fixed w-full z-50 glass-nav border-b border-slate-200/50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <div class="flex items-center space-x-2">
-                <div class="bg-blue-600 p-2 rounded-lg">
-                    <i class="fas fa-hand-holding-heart text-white text-xl"></i>
+                <div class="bg-blue-600 p-2 rounded-xl shadow-lg shadow-blue-200">
+                    <i class="fas fa-heart-pulse text-white text-xl"></i>
                 </div>
-                <span class="text-2xl font-bold tracking-tight text-blue-900">JobTrust<span class="text-blue-600">Connect</span></span>
+                <span class="text-2xl font-extrabold tracking-tight text-slate-900">JobTrust</span>
             </div>
-            <div class="hidden md:flex space-x-8 font-medium text-gray-600">
-                <a href="#" class="hover:text-blue-600 transition">Services</a>
-                <a href="#" class="hover:text-blue-600 transition">How it Works</a>
-                <a href="#" class="hover:text-blue-600 transition">For Caregivers</a>
+            <div class="hidden md:flex space-x-10 font-semibold text-slate-600">
+                <a href="#services" class="hover:text-blue-600 transition">Our Services</a>
+                <a href="#impact" class="hover:text-blue-600 transition">Our Impact</a>
+                <a href="#contact" class="hover:text-blue-600 transition">Contact</a>
             </div>
-            <a href="#" class="bg-blue-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-blue-700 transition shadow-lg shadow-blue-200">
-                Get Started
-            </a>
+            <button class="bg-slate-900 text-white px-7 py-2.5 rounded-full font-bold hover:bg-blue-600 transition shadow-xl">
+                Book Care Now
+            </button>
         </div>
     </nav>
 
-    <section class="pt-32 pb-20 hero-gradient">
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
-            <div>
-                <span class="bg-blue-100 text-blue-700 px-4 py-1 rounded-full text-sm font-bold uppercase tracking-wider">Trusted by 5,000+ Families</span>
-                <h1 class="text-5xl md:text-6xl font-bold mt-6 leading-tight text-slate-900">
-                    Compassionate Care <br><span class="text-blue-600">You Can Trust.</span>
+    <section class="relative pt-32 pb-20 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
+            
+            <div class="z-10">
+                <div class="inline-flex items-center space-x-2 bg-blue-50 border border-blue-100 px-4 py-2 rounded-full mb-6">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-blue-600"></span>
+                    </span>
+                    <span class="text-blue-700 text-sm font-bold uppercase tracking-widest">Always Reliable. Always Trusted.</span>
+                </div>
+                <h1 class="text-6xl md:text-7xl font-extrabold leading-[1.1] text-slate-900 mb-8">
+                    JobTrust Connect <span class="text-blue-600">Caregiving</span> Services
                 </h1>
-                <p class="text-lg text-gray-600 mt-6 mb-10 leading-relaxed">
-                    Connecting families with certified, background-checked caregivers. Because your loved ones deserve the highest standard of support and dignity.
+                <p class="text-xl text-slate-600 leading-relaxed mb-10 max-w-lg">
+                    We bridge the gap between world-class medical support and the comfort of your home. Our platform connects you with elite, background-verified caregivers tailored to your specific health and lifestyle needs.
                 </p>
-                <div class="flex flex-col sm:flex-row gap-4">
-                    <button class="bg-blue-600 text-white px-8 py-4 rounded-xl text-lg font-bold hover:bg-blue-700 transition transform hover:-translate-y-1">
+                <div class="flex flex-col sm:flex-row gap-5">
+                    <a href="#" class="bg-blue-600 text-white text-center px-10 py-5 rounded-2xl text-lg font-bold hover:bg-blue-700 transition-all hover:shadow-2xl hover:shadow-blue-300">
                         Find a Caregiver
-                    </button>
-                    <button class="bg-white border-2 border-gray-200 text-gray-700 px-8 py-4 rounded-xl text-lg font-bold hover:border-blue-300 transition">
-                        Learn More
-                    </button>
-                </div>
-                <div class="mt-8 flex items-center space-x-4 text-gray-500">
-                    <div class="flex -space-x-2">
-                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?u=1" alt="user">
-                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?u=2" alt="user">
-                        <img class="w-10 h-10 rounded-full border-2 border-white" src="https://i.pravatar.cc/100?u=3" alt="user">
+                    </a>
+                    <div class="flex items-center px-6">
+                        <div class="flex -space-x-3 mr-4">
+                            <img src="https://i.pravatar.cc/100?u=a1" class="w-12 h-12 rounded-full border-4 border-white shadow-sm">
+                            <img src="https://i.pravatar.cc/100?u=a2" class="w-12 h-12 rounded-full border-4 border-white shadow-sm">
+                            <img src="https://i.pravatar.cc/100?u=a3" class="w-12 h-12 rounded-full border-4 border-white shadow-sm">
+                        </div>
+                        <span class="text-slate-500 font-medium">Join 2k+ families</span>
                     </div>
-                    <p class="text-sm">4.9/5 Rating from our community</p>
                 </div>
             </div>
-            <div class="relative">
-                <img src="https://images.unsplash.com/photo-1576765608596-b329f2d6c7c5?auto=format&fit=crop&q=80&w=800" alt="Caregiving" class="rounded-3xl shadow-2xl">
-                <div class="absolute -bottom-6 -left-6 bg-white p-6 rounded-2xl shadow-xl hidden lg:block">
-                    <div class="flex items-center space-x-4">
-                        <div class="bg-green-100 p-3 rounded-full">
-                            <i class="fas fa-check text-green-600"></i>
-                        </div>
+
+            <div class="relative h-[500px] md:h-[600px] w-full group">
+                <div class="absolute inset-0 bg-blue-200 rounded-[40px] rotate-3 scale-95 opacity-20 group-hover:rotate-0 transition-transform duration-700"></div>
+                <div class="relative h-full w-full overflow-hidden rounded-[40px] shadow-2xl">
+                    <img src="https://images.unsplash.com/photo-1581578731522-745d05db9ad0?q=80&w=1000&auto=format&fit=crop" 
+                         class="slider-img-1 absolute inset-0 w-full h-full object-cover" alt="Senior Care">
+                    <img src="https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=1000&auto=format&fit=crop" 
+                         class="slider-img-2 absolute inset-0 w-full h-full object-cover" alt="Nursing Care">
+                    <img src="https://images.unsplash.com/photo-1576765608596-b329f2d6c7c5?q=80&w=1000&auto=format&fit=crop" 
+                         class="slider-img-3 absolute inset-0 w-full h-full object-cover" alt="In-home Care">
+                    
+                    <div class="absolute bottom-8 left-8 right-8 bg-white/90 backdrop-blur px-6 py-4 rounded-2xl flex items-center justify-between">
                         <div>
-                            <p class="font-bold">Fully Vetted</p>
-                            <p class="text-sm text-gray-500">100% Background Checked</p>
+                            <p class="text-xs font-bold text-blue-600 uppercase">Certified Staff</p>
+                            <p class="font-bold text-slate-900 italic">"Care that feels like family"</p>
                         </div>
+                        <i class="fas fa-shield-check text-blue-500 text-3xl"></i>
                     </div>
                 </div>
             </div>
+
         </div>
     </section>
 
-    <section class="py-20 max-w-7xl mx-auto px-6">
-        <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Tailored Support for Every Need</h2>
-            <p class="text-gray-600 mt-4">We specialize in various caregiving verticals to ensure a perfect match.</p>
-        </div>
-
-        <div class="grid md:grid-cols-3 gap-8">
-            <div class="bg-white p-8 rounded-2xl border border-gray-100 hover:shadow-xl transition group">
-                <div class="w-14 h-14 bg-blue-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-600 transition">
-                    <i class="fas fa-blind text-blue-600 text-2xl group-hover:text-white"></i>
+    <section id="impact" class="py-12 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 py-12 border-y border-slate-100">
+                <div class="text-center">
+                    <p class="text-4xl font-extrabold text-slate-900">99%</p>
+                    <p class="text-slate-500 font-medium">Safety Rating</p>
                 </div>
-                <h3 class="text-xl font-bold mb-3">Elderly Care</h3>
-                <p class="text-gray-600">Professional assistance with daily living, medication management, and companionship.</p>
-            </div>
-
-            <div class="bg-white p-8 rounded-2xl border border-gray-100 hover:shadow-xl transition group">
-                <div class="w-14 h-14 bg-purple-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-600 transition">
-                    <i class="fas fa-baby text-purple-600 text-2xl group-hover:text-white"></i>
+                <div class="text-center">
+                    <p class="text-4xl font-extrabold text-slate-900">15k+</p>
+                    <p class="text-slate-500 font-medium">Care Hours</p>
                 </div>
-                <h3 class="text-xl font-bold mb-3">Childcare</h3>
-                <p class="text-gray-600">Experienced nannies and sitters focused on early development and safety.</p>
-            </div>
-
-            <div class="bg-white p-8 rounded-2xl border border-gray-100 hover:shadow-xl transition group">
-                <div class="w-14 h-14 bg-teal-50 rounded-xl flex items-center justify-center mb-6 group-hover:bg-teal-600 transition">
-                    <i class="fas fa-user-nurse text-teal-600 text-2xl group-hover:text-white"></i>
+                <div class="text-center">
+                    <p class="text-4xl font-extrabold text-slate-900">500+</p>
+                    <p class="text-slate-500 font-medium">Expert Nurses</p>
                 </div>
-                <h3 class="text-xl font-bold mb-3">Specialized Care</h3>
-                <p class="text-gray-600">Disability support and post-operative recovery care by certified professionals.</p>
+                <div class="text-center">
+                    <p class="text-4xl font-extrabold text-slate-900">24/7</p>
+                    <p class="text-slate-500 font-medium">Active Support</p>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="bg-slate-900 py-16">
-        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
-            <div class="text-white">
-                <h2 class="text-3xl font-bold">Ready to find the right care?</h2>
-                <p class="text-gray-400 mt-2">Join JobTrust Connect today and start your search.</p>
+    <section id="services" class="py-24 max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+            <div class="max-w-2xl">
+                <h2 class="text-4xl font-bold text-slate-900 mb-4">Comprehensive Care Solutions</h2>
+                <p class="text-slate-500 text-lg">We provide specialized attention across multiple disciplines, ensuring no one is left without the help they need.</p>
             </div>
-            <div class="flex space-x-4">
-                <button class="bg-blue-600 text-white px-8 py-3 rounded-lg font-bold hover:bg-blue-700 transition">Create Profile</button>
-                <button class="text-white border border-gray-700 px-8 py-3 rounded-lg font-bold hover:bg-gray-800 transition">Contact Us</button>
+            <a href="#" class="text-blue-600 font-bold border-b-2 border-blue-600 pb-1 hover:text-blue-700 transition">View All Services</a>
+        </div>
+
+        <div class="grid md:grid-cols-3 gap-10">
+            <div class="bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-blue-100 transition-all duration-500 group">
+                <div class="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-blue-600 transition-colors">
+                    <i class="fas fa-user-nurse text-blue-600 text-2xl group-hover:text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Post-Op Recovery</h3>
+                <p class="text-slate-500 leading-relaxed mb-6">Professional medical monitoring and rehabilitation support following major surgeries or hospital stays.</p>
+                <ul class="space-y-3 text-slate-700 font-medium">
+                    <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Wound Care</li>
+                    <li><i class="fas fa-check-circle text-blue-500 mr-2"></i> Pain Management</li>
+                </ul>
+            </div>
+
+            <div class="bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-blue-100 transition-all duration-500 group">
+                <div class="w-16 h-16 bg-rose-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-rose-600 transition-colors">
+                    <i class="fas fa-brain text-rose-600 text-2xl group-hover:text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Dementia Care</h3>
+                <p class="text-slate-500 leading-relaxed mb-6">Specialized memory care focusing on safety, cognitive stimulation, and emotional well-being for seniors.</p>
+                <ul class="space-y-3 text-slate-700 font-medium">
+                    <li><i class="fas fa-check-circle text-rose-500 mr-2"></i> 24/7 Monitoring</li>
+                    <li><i class="fas fa-check-circle text-rose-500 mr-2"></i> Routine Familiarity</li>
+                </ul>
+            </div>
+
+            <div class="bg-white p-10 rounded-[32px] border border-slate-100 shadow-sm hover:shadow-2xl hover:shadow-blue-100 transition-all duration-500 group">
+                <div class="w-16 h-16 bg-emerald-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-emerald-600 transition-colors">
+                    <i class="fas fa-house-chimney-medical text-emerald-600 text-2xl group-hover:text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold mb-4">Home Assistance</h3>
+                <p class="text-slate-500 leading-relaxed mb-6">Helping with the "small things" that keep a home running—from meal prep to light housekeeping and errands.</p>
+                <ul class="space-y-3 text-slate-700 font-medium">
+                    <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i> Nutritional Support</li>
+                    <li><i class="fas fa-check-circle text-emerald-500 mr-2"></i> Grocery Trips</li>
+                </ul>
             </div>
         </div>
     </section>
 
-    <footer class="bg-white border-t border-gray-100 pt-16 pb-8">
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12 mb-12">
-            <div class="col-span-1 md:col-span-1">
-                <div class="flex items-center space-x-2 mb-6">
-                    <div class="bg-blue-600 p-1.5 rounded-md">
-                        <i class="fas fa-hand-holding-heart text-white text-sm"></i>
+    <footer id="contact" class="bg-slate-900 pt-20 pb-10">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-4 gap-12 mb-20">
+                <div class="col-span-1 md:col-span-1">
+                    <div class="flex items-center space-x-2 mb-8">
+                        <div class="bg-blue-600 p-2 rounded-lg">
+                            <i class="fas fa-heart-pulse text-white text-lg"></i>
+                        </div>
+                        <span class="text-2xl font-bold text-white tracking-tight">JobTrust</span>
                     </div>
-                    <span class="text-xl font-bold text-blue-900">JobTrust</span>
+                    <p class="text-slate-400 leading-relaxed mb-6">
+                        Excellence in care, delivered with empathy. Our mission is to make quality caregiving accessible to every home.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white hover:bg-blue-600 transition"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white hover:bg-blue-600 transition"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center text-white hover:bg-blue-600 transition"><i class="fab fa-instagram"></i></a>
+                    </div>
                 </div>
-                <p class="text-gray-500 text-sm leading-relaxed">
-                    Setting the gold standard in caregiving services through rigorous vetting and heartfelt connections.
-                </p>
-            </div>
-            <div>
-                <h4 class="font-bold mb-6">Company</h4>
-                <ul class="text-gray-500 space-y-4 text-sm">
-                    <li><a href="#" class="hover:text-blue-600">About Us</a></li>
-                    <li><a href="#" class="hover:text-blue-600">Careers</a></li>
-                    <li><a href="#" class="hover:text-blue-600">Privacy Policy</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold mb-6">Support</h4>
-                <ul class="text-gray-500 space-y-4 text-sm">
-                    <li><a href="#" class="hover:text-blue-600">Help Center</a></li>
-                    <li><a href="#" class="hover:text-blue-600">Safety Information</a></li>
-                    <li><a href="#" class="hover:text-blue-600">Contact Support</a></li>
-                </ul>
-            </div>
-            <div>
-                <h4 class="font-bold mb-6">Newsletter</h4>
-                <div class="flex">
-                    <input type="email" placeholder="Email address" class="bg-gray-100 border-none rounded-l-lg px-4 py-2 w-full focus:ring-2 focus:ring-blue-500">
-                    <button class="bg-blue-600 text-white px-4 py-2 rounded-r-lg hover:bg-blue-700 transition">
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
+
+                <div>
+                    <h4 class="text-white font-bold mb-8">Quick Links</h4>
+                    <ul class="text-slate-400 space-y-4 font-medium">
+                        <li><a href="#" class="hover:text-white transition">Search Caregivers</a></li>
+                        <li><a href="#" class="hover:text-white transition">Our Standards</a></li>
+                        <li><a href="#" class="hover:text-white transition">Caregiver Login</a></li>
+                        <li><a href="#" class="hover:text-white transition">Success Stories</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white font-bold mb-8">Contact Us</h4>
+                    <ul class="text-slate-400 space-y-4 font-medium">
+                        <li class="flex items-center"><i class="fas fa-phone-alt mr-3 text-blue-500"></i> +1 (800) JOB-TRUST</li>
+                        <li class="flex items-center"><i class="fas fa-envelope mr-3 text-blue-500"></i> help@jobtrust.connect</li>
+                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-3 text-blue-500"></i> 100 Care Plaza, NY</li>
+                    </ul>
+                </div>
+
+                <div class="bg-slate-800/50 p-8 rounded-[32px] border border-slate-700/50">
+                    <h4 class="text-white font-bold mb-4">Request Callback</h4>
+                    <p class="text-slate-400 text-sm mb-6">Leave your number and we'll call you in 15 mins.</p>
+                    <div class="relative">
+                        <input type="text" placeholder="Your Phone" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:ring-2 focus:ring-blue-500 transition outline-none">
+                        <button class="mt-3 w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 transition shadow-lg shadow-blue-900/20">Submit</button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="max-w-7xl mx-auto px-6 border-t border-gray-100 pt-8 text-center text-gray-400 text-xs">
-            &copy; 2026 JobTrust Connect. All rights reserved. Built for professional excellence.
+
+            <div class="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
+                <p>&copy; 2026 JobTrust Connect Caregiving Services. All Rights Reserved.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-white transition">Privacy Policy</a>
+                    <a href="#" class="hover:text-white transition">Terms of Service</a>
+                </div>
+            </div>
         </div>
     </footer>
 
